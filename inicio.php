@@ -12,6 +12,10 @@ if (!isset($_SESSION['usuario'])) {
 }
 ?>
 
+<?php
+    include "../IMP/php/conexion_back.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
