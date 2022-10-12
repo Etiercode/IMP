@@ -81,6 +81,12 @@ if (!isset($_SESSION['usuario'])) {
     <header class="showcase">
         <h2>Bienvenido <?php echo $_SESSION['usuario']?></h2>
         <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+        <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+        <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+        <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+        <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+        <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+        <p>(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
     </header>
     <div class="footer-links">
         <div class="footer-container">
