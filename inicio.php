@@ -114,7 +114,7 @@ if (!isset($_SESSION['usuario'])) {
                     <td><?php echo $data["progreso"]?></td>
                     <td><?php echo $data["fecha_inicio"]?></td>
                     <td><?php echo $data["fecha_termino"]?></td>
-                    <td><?php echo $data["plazo"]?></td>
+                    <td><?php echo $data["plazo"]?> Días</td>
 
                 </tr>
         <?php          
