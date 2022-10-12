@@ -88,48 +88,6 @@ if (!isset($_SESSION['usuario'])) {
             <h2 class="HeaderLista">Listado de Tareas</h2>
             <p class="subTitleHeader">Lista de tareas asignadas</p>
     <table>
-        <tr>
-            <th>Id tarea</th>
-            <th>Descripción de la tarea</th>
-            <th>Estado de la tarea</th>
-            <th>Progreso</th>
-            <th>Fecha de inicio</th>
-            <th>Fecha de término</th>
-            <th>Plazo</th>
-        </tr>
-    <?php
-
-        $query = mysqli_query($conexion, "SELECT id,descripcion,estado,progreso,fecha_inicio,fecha_termino,plazo FROM tareas");
-
-        $result = mysqli_num_rows($query);
-        if($result > 0){
-
-            while ($data = mysqli_fetch_array($query)) {
-
-        ?>
-            <tr>
-                <td><?php echo $data["id"]?></td>
-                <td><?php echo $data["descripcion"]?></td>
-                <td><?php echo $data["estado"]?></td>
-                <td><?php echo $data["progreso"]?></td>
-                <td><?php echo $data["fecha_inicio"]?></td>
-                <td><?php echo $data["fecha_termino"]?></td>
-                <td><?php echo $data["plazo"]?></td>
-
-            </tr>
-    <?php          
-            }
-        }
-    ?>
-
-    </table>
-
-        <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario']?></h2>
-                <p class="subTitleHeader">(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
-
-                <h2 class="HeaderLista">Listado de Tareas</h2>
-                <p class="subTitleHeader">Lista de tareas asignadas</p>
-        <table>
             <tr>
                 <th>Id tarea</th>
                 <th>Descripción de la tarea</th>
@@ -163,8 +121,9 @@ if (!isset($_SESSION['usuario'])) {
                 }
             }
         ?>
-        
+
     </table>
+
 
     <div class="footer-links">
         <div class="footer-container">
