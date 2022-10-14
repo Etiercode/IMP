@@ -13,7 +13,7 @@ if (!isset($_SESSION['usuario'])) {
 ?>
 
 <?php
-    include "../IMP/php/conexion_back.php";
+include "../IMP/php/conexion_back.php";
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +37,7 @@ if (!isset($_SESSION['usuario'])) {
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
 
     <!--CSS-->
-    <link rel="stylesheet" href="css/inicio.css">
+    <link rel="stylesheet" href="css/inicio1.css">
 
 </head>
 
@@ -77,49 +77,48 @@ if (!isset($_SESSION['usuario'])) {
                 <li>
                     <i class="fa-sharp fa-solid fa-user-shield"></i>
                     &nbsp;&nbsp;
-                    <a href=""><?php echo $_SESSION['usuario']?></a>
+                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
                 </li>
             </ul>
         </nav>
     </div>
-        <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario']?></h2>
-            <p class="subTitleHeader">(PANEL DE CARGA DE TRABAJO PERSONAL)</p>
+    <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario'] ?></h2>
 
-            <h2 class="HeaderLista">Listado de Tareas</h2>
-            <p class="subTitleHeader">Lista de tareas asignadas</p>
+    <h2 class="HeaderLista">Listado de Tareas</h2>
+    <p class="subTitleHeader">Lista de tareas asignadas</p>
     <table>
-            <tr>
-                <th>Id tarea</th>
-                <th>Descripción de la tarea</th>
-                <th>Estado de la tarea</th>
-                <th>Progreso</th>
-                <th>Fecha de inicio</th>
-                <th>Fecha de término</th>
-                <th>Plazo</th>
-            </tr>
+        <tr>
+            <th>Id tarea</th>
+            <th>Descripción de la tarea</th>
+            <th>Estado de la tarea</th>
+            <th>Progreso</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha de término</th>
+            <th>Plazo (Dias)</th>
+        </tr>
         <?php
 
-            $query = mysqli_query($conexion, "SELECT id,descripcion,estado,progreso,fecha_inicio,fecha_termino,plazo FROM tareas");
+        $query = mysqli_query($conexion, "SELECT id_tareas,descripcion,estado,progreso,fecha_inicio,fecha_termino,plazo FROM tareas");
 
-            $result = mysqli_num_rows($query);
-            if($result > 0){
+        $result = mysqli_num_rows($query);
+        if ($result > 0) {
 
-                while ($data = mysqli_fetch_array($query)) {
+            while ($data = mysqli_fetch_array($query)) {
 
-            ?>
+        ?>
                 <tr>
-                    <td><?php echo $data["id"]?></td>
-                    <td><?php echo $data["descripcion"]?></td>
-                    <td><?php echo $data["estado"]?></td>
-                    <td><?php echo $data["progreso"]?></td>
-                    <td><?php echo $data["fecha_inicio"]?></td>
-                    <td><?php echo $data["fecha_termino"]?></td>
-                    <td><?php echo $data["plazo"]?></td>
+                    <td><?php echo $data["id_tareas"] ?></td>
+                    <td><?php echo $data["descripcion"] ?></td>
+                    <td><?php echo $data["estado"] ?></td>
+                    <td><?php echo $data["progreso"] ?></td>
+                    <td><?php echo $data["fecha_inicio"] ?></td>
+                    <td><?php echo $data["fecha_termino"] ?></td>
+                    <td><?php echo $data["plazo"] ?></td>
 
                 </tr>
-        <?php          
-                }
+        <?php
             }
+        }
         ?>
 
     </table>
@@ -130,7 +129,7 @@ if (!isset($_SESSION['usuario'])) {
             <ul>
                 <li>
                     <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>   
+                </li>
             </ul>
             <ul>
                 <li>

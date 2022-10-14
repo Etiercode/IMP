@@ -13,6 +13,9 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 ?>
+<?php
+include "../IMP/php/conexion_back.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,14 +89,16 @@ if (!isset($_SESSION['usuario'])) {
             <input type="text" placeholder="Clave" name="clave">
             <input type="text" placeholder="Correo" name="correo">
             <select name="rol" class="rol">
-                <option type="text" placeholder="rol" name="rol">Administrador</option>
-                <option type="text" placeholder="rol" name="rol">Funcionario</option>
-                <option type="text" placeholder="rol" name="rol">Diseñador de Procesos</option>
+                <option value="1">Administrador</option>
+                <option value="2">Diseñador de Procesos</option>
+                <option value="3">Funcionario</option>
             </select>
             <select name="sexo" class="sexo">
                 <option type="text" placeholder="Sexo" name="sexo">M</option>
                 <option type="text" placeholder="Sexo" name="sexo">F</option>
             </select>
+            <input type="text" placeholder="Numero de Telefono" name="numero_telef">
+            <input type="text" placeholder="Dirección" name="direccion">
             <button class="btn" type="submit">Agregar</button>
         </form>
     </div>
@@ -103,7 +108,7 @@ if (!isset($_SESSION['usuario'])) {
             <ul>
                 <li>
                     <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>   
+                </li>
             </ul>
             <ul>
                 <li>

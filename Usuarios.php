@@ -95,7 +95,7 @@ if (!isset($_SESSION['usuario'])) {
         </tr>
     <?php
 
-        $query = mysqli_query($conexion, "SELECT id, usuario, nombreusuario, clave, rol, sexo, correo FROM login");
+        $query = mysqli_query($conexion, "SELECT id_usuario, usuario, nombreusuario, clave, rol, sexo, correo FROM login");
 
         $result = mysqli_num_rows($query);
         if($result > 0){
@@ -104,7 +104,7 @@ if (!isset($_SESSION['usuario'])) {
 
         ?>
             <tr>
-                <td><?php echo $data["id"]?></td>
+                <td><?php echo $data["id_usuario"]?></td>
                 <td><?php echo $data["usuario"]?></td>
                 <td><?php echo $data["nombreusuario"]?></td>
                 <td><?php echo $data["clave"]?></td>
@@ -112,8 +112,8 @@ if (!isset($_SESSION['usuario'])) {
                 <td><?php echo $data["sexo"]?></td>
                 <td><?php echo $data["correo"]?></td>
                 <td>
-                    <a class="link_edit" href="editar_u.php?id=<?php echo $data["id"]?>">Editar</a>
-                    <a class="link_delete" href="eliminar_u.php?id=<?php echo $data["id"]?>">Eliminar</a>
+                    <a class="link_edit" href="editar_u.php?id=<?php echo $data["id_usuario"]?>">Editar</a>
+                    <a class="link_delete" href="eliminar_u.php?id=<?php echo $data["id_usuario"]?>">Eliminar</a>
                 </td>
             </tr>
     <?php          

@@ -83,12 +83,12 @@ include "../IMP/php/conexion_back.php";
         <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
         <form action="php/registro_tarea_back.php" method="POST" class="formulario_registro">
             <label>Asignar Funcionario</label>
-            <select name="usuario" id="">
+            <select name="id_funcionario">
             <?php 
-                $v = mysqli_query($conexion, "SELECT * FROM login");
-                while($usuario = mysqli_fetch_array($v)){ 
+                $v = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
+                while($id_usuarios = mysqli_fetch_array($v)){ 
             ?>       
-                <option value="usuario"><?php echo $usuario["usuario"]?></option>
+                <option value="id_usuario"><?php echo $id_usuarios["nombreusuario"]?></option>
             <?php  } ?>
             </select>
             <label>Descripción de la tarea a realizar</label>
