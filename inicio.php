@@ -115,6 +115,7 @@ include "../IMP/php/conexion_back.php";
                     <td><?php echo $data["fecha_termino"] ?></td>
                     <td><?php echo $data["plazo"] ?></td>
 
+
                 </tr>
         <?php
             }
