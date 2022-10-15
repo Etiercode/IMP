@@ -1,27 +1,32 @@
 <?php
 
-    session_start();
+$nombreusuario = $_POST['nombreusuario'];
+$clave = $_POST['clave'];
 
-    include 'conexion_back.php';
+session_start();
 
-    $nombreUsuario = $_POST['nombreUsuario'];
-    $clave = $_POST['clave'];
+include 'conexion_back.php';
 
-    $validar_login = mysqli_query($conexion, "SELECT * FROM login WHERE nombreusuario='$nombreUsuario'
-    and clave='$clave'");
+$consulta = "SELECT * FROM login WHERE nombreusuario='$nombreusuario' AND clave='$clave'";
+$resultado = mysqli_query($conexion, $consulta);
 
-    if(mysqli_num_rows($validar_login) > 0){
-        $_SESSION['usuario'] = $nombreUsuario;
-        header("location: ../inicio.php");
-        exit;
-    }else{
-        echo '
+$filas = mysqli_fetch_array($resultado);
+
+if ($filas['rol'] == 1) {
+    header("location: ../admin.php");
+} else
+    if ($filas['rol'] == 2) {
+    header("location: ../diseñadorProcesos.php");
+} else
+    if ($filas['rol'] == 3) {
+    header("location: ../funcionario.php");
+} else {
+    echo '
             <script>
                 alert("Usuario no existe, verifique datos introducidos.");
                 window.location = "../login/login.php";
             </script>
         ';
-        exit;
-    }
+    exit;
+}
 
-?>

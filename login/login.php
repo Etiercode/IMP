@@ -34,7 +34,7 @@
                 <form action="../php/login_usuario_back.php" method="POST" class="formularioLogin">
 
                     <h2>Iniciar sesion</h2>
-                    <input type="text" placeholder="Nombre de usuario" name="nombreUsuario">
+                    <input type="text" placeholder="Nombre de usuario" name="nombreusuario">
                     <input type="password" placeholder="Contraseña" name="clave">
                     <button>Entrar</button>
 

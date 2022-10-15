@@ -8,7 +8,7 @@ $date2 = strtotime($_REQUEST['fecha_termino']);
 
 $plazo = round((((($date2 - $date1) / 60) / 60) / 24), 2);
 
-$id_funcionario = $_POST['id_funcionario'];
+$id_usuario = $_POST['id_funcionario'];
 $descripcion = $_POST['descripcion'];
 $estado = $_POST['estado'];
 $progreso = $_POST['progreso'];

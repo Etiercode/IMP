@@ -5,7 +5,7 @@ include "../IMP/php/conexion_back.php";
 <?php
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM login WHERE id='$id'";
+$sql = "SELECT * FROM login WHERE id_usuario='$id_usuario'";
 $query = mysqli_query($conexion, $sql);
 
 $row = mysqli_fetch_array($query);
@@ -90,6 +90,8 @@ $row = mysqli_fetch_array($query);
                     <option type="text" placeholder="Sexo" name="sexo">M</option>
                     <option type="text" placeholder="Sexo" name="sexo">F</option>
                 </select>
+                <input type="text" placeholder="Numero de Telefono" name="numero_telef">
+                <input type="text" placeholder="Dirección" name="direccion">
                 <button class="btn" type="submit">Actualizar</button>
             </form>
 
@@ -101,7 +103,7 @@ $row = mysqli_fetch_array($query);
             <ul>
                 <li>
                     <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>   
+                </li>
             </ul>
             <ul>
                 <li>
