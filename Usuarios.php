@@ -11,10 +11,23 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
-
+if ($_SESSION['rol'] == 2) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
+if ($_SESSION['rol'] == 3) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
 ?>
 <?php
-    include "../IMP/php/conexion_back.php";
+include "../IMP/php/conexion_back.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,21 +65,25 @@ if (!isset($_SESSION['usuario'])) {
                     &nbsp;&nbsp;
                     <a href="inicio.php">Inicio</a>
                 </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="Usuarios.php">Usuarios</a>
-                </li>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-user"></i>
+                        &nbsp;&nbsp;
+                        <a href="Usuarios.php">Usuarios</a>
+                    </li>
+                <?php } ?>
                 <li>
                     <i class="fa-sharp fa-solid fa-calendar-days"></i>
                     &nbsp;&nbsp;
                     <a href="Tareas.php">Asignar Tareas</a>
                 </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                </li>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-user"></i>
+                        &nbsp;&nbsp;
+                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
+                    </li>
+                <?php } ?>
                 <li>
                     <i class="fa-solid fa-circle-user"></i>
                     &nbsp;&nbsp;
@@ -75,7 +92,7 @@ if (!isset($_SESSION['usuario'])) {
                 <li>
                     <i class="fa-sharp fa-solid fa-user-shield"></i>
                     &nbsp;&nbsp;
-                    <a href=""><?php echo $_SESSION['usuario']?></a>
+                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
                 </li>
             </ul>
         </nav>
@@ -84,7 +101,7 @@ if (!isset($_SESSION['usuario'])) {
     <p class="subTitleHeader">Lista de Usuarios creados en la base de datos</p>
     <table>
         <tr>
-            <th>id</th>
+            <th>id_usuario</th>
             <th>usuario</th>
             <th>nombreusuario</th>
             <th>clave</th>
@@ -93,33 +110,33 @@ if (!isset($_SESSION['usuario'])) {
             <th>correo</th>
             <th>Acciones</th>
         </tr>
-    <?php
+        <?php
 
         $query = mysqli_query($conexion, "SELECT id_usuario, usuario, nombreusuario, clave, rol, sexo, correo FROM login");
 
         $result = mysqli_num_rows($query);
-        if($result > 0){
+        if ($result > 0) {
 
             while ($data = mysqli_fetch_array($query)) {
 
         ?>
-            <tr>
-                <td><?php echo $data["id_usuario"]?></td>
-                <td><?php echo $data["usuario"]?></td>
-                <td><?php echo $data["nombreusuario"]?></td>
-                <td><?php echo $data["clave"]?></td>
-                <td><?php echo $data["rol"]?></td>
-                <td><?php echo $data["sexo"]?></td>
-                <td><?php echo $data["correo"]?></td>
-                <td>
-                    <a class="link_edit" href="editar_u.php?id=<?php echo $data["id_usuario"]?>">Editar</a>
-                    <a class="link_delete" href="eliminar_u.php?id=<?php echo $data["id_usuario"]?>">Eliminar</a>
-                </td>
-            </tr>
-    <?php          
+                <tr>
+                    <td><?php echo $data["id_usuario"] ?></td>
+                    <td><?php echo $data["usuario"] ?></td>
+                    <td><?php echo $data["nombreusuario"] ?></td>
+                    <td><?php echo $data["clave"] ?></td>
+                    <td><?php echo $data["rol"] ?></td>
+                    <td><?php echo $data["sexo"] ?></td>
+                    <td><?php echo $data["correo"] ?></td>
+                    <td>
+                        <a class="link_edit" href="editar_u.php?id=<?php echo $data["id_usuario"] ?>">Editar</a>
+                        <a class="link_delete" href="eliminar_u.php?id=<?php echo $data["id_usuario"] ?>">Eliminar</a>
+                    </td>
+                </tr>
+        <?php
             }
         }
-    ?>
+        ?>
     </table>
     <!----------------------------------------------FOOTER-->
     <div class="footer-links">
@@ -127,7 +144,7 @@ if (!isset($_SESSION['usuario'])) {
             <ul>
                 <li>
                     <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>   
+                </li>
             </ul>
             <ul>
                 <li>

@@ -1,9 +1,36 @@
 <?php
 include "../IMP/php/conexion_back.php";
 ?>
-
 <?php
-$id = $_GET['id'];
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    echo '
+            <script>
+                alert("Debes iniciar sesión.");
+                window.location = "login/login.php";
+            </script>
+        ';
+    session_destroy();
+    die();
+}
+if ($_SESSION['rol'] == 2) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
+if ($_SESSION['rol'] == 3) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
+?>
+<?php
+$id_usuario = $_GET['id_usuario'];
 
 $sql = "SELECT * FROM login WHERE id_usuario='$id_usuario'";
 $query = mysqli_query($conexion, $sql);
@@ -47,25 +74,34 @@ $row = mysqli_fetch_array($query);
                     &nbsp;&nbsp;
                     <a href="inicio.php">Inicio</a>
                 </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="Usuarios.php">Usuarios</a>
-                </li>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-user"></i>
+                        &nbsp;&nbsp;
+                        <a href="Usuarios.php">Usuarios</a>
+                    </li>
+                <?php } ?>
                 <li>
                     <i class="fa-sharp fa-solid fa-calendar-days"></i>
                     &nbsp;&nbsp;
                     <a href="Tareas.php">Asignar Tareas</a>
                 </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                </li>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-user"></i>
+                        &nbsp;&nbsp;
+                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
+                    </li>
+                <?php } ?>
                 <li>
                     <i class="fa-solid fa-circle-user"></i>
                     &nbsp;&nbsp;
                     <a href="php/cerrar_sesion.php">Cerrar Sesión</a>
+                </li>
+                <li>
+                    <i class="fa-sharp fa-solid fa-user-shield"></i>
+                    &nbsp;&nbsp;
+                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
                 </li>
             </ul>
         </nav>
@@ -76,22 +112,22 @@ $row = mysqli_fetch_array($query);
         <div class="Registro_Usuario">
 
             <form action="php/actualizar.php" method="POST" class="formulario_registro">
-                <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+                <input type="hidden" name="id_usuario" value="<?php echo $row['id_usuario'] ?>">
                 <input type="text" placeholder="Nuevo Usuario" name="usuario" value="<?php echo $row['usuario'] ?>">
                 <input type="text" placeholder="Nuevo Nombre de usuario" name="nombreusuario" value="<?php echo $row['nombreusuario'] ?>">
                 <input type="text" placeholder="Nueva Clave" name="clave" value="<?php echo $row['clave'] ?>">
-                <input type="text" placeholder="Correo" name="correo" value="<?php echo $row['correo'] ?>">
                 <select name="rol">
                     <option type="text" placeholder="rol" name="rol">Administrador</option>
                     <option type="text" placeholder="rol" name="rol">Funcionario</option>
                     <option type="text" placeholder="rol" name="rol">Diseñador de Procesos</option>
                 </select>
+                <input type="text" placeholder="Correo" name="correo" value="<?php echo $row['correo'] ?>">
                 <select name="sexo" class="sexo">
                     <option type="text" placeholder="Sexo" name="sexo">M</option>
                     <option type="text" placeholder="Sexo" name="sexo">F</option>
                 </select>
-                <input type="text" placeholder="Numero de Telefono" name="numero_telef">
-                <input type="text" placeholder="Dirección" name="direccion">
+                <input type="text" placeholder="Numero de Telefono" name="numero_telef" value="<?php echo $row['numero_telef'] ?>">
+                <input type="text" placeholder="Dirección" name="direccion" value="<?php echo $row['direccion'] ?>">
                 <button class="btn" type="submit">Actualizar</button>
             </form>
 

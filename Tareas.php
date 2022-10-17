@@ -50,21 +50,25 @@ include "../IMP/php/conexion_back.php";
                     &nbsp;&nbsp;
                     <a href="inicio.php">Inicio</a>
                 </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="Usuarios.php">Usuarios</a>
-                </li>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-user"></i>
+                        &nbsp;&nbsp;
+                        <a href="Usuarios.php">Usuarios</a>
+                    </li>
+                <?php } ?>
                 <li>
                     <i class="fa-sharp fa-solid fa-calendar-days"></i>
                     &nbsp;&nbsp;
                     <a href="Tareas.php">Asignar Tareas</a>
                 </li>
+                <?php if ($_SESSION['rol'] == 1) { ?>
                 <li>
                     <i class="fa-sharp fa-solid fa-user"></i>
                     &nbsp;&nbsp;
                     <a href="agregar_usuario.php">Agregar Usuarios</i></a>
                 </li>
+                <?php } ?>
                 <li>
                     <i class="fa-solid fa-circle-user"></i>
                     &nbsp;&nbsp;

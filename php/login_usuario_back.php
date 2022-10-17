@@ -5,7 +5,7 @@ $clave = $_POST['clave'];
 
 session_start();
 
-include 'conexion_back.php';
+include_once 'conexion_back.php';
 
 $consulta = "SELECT * FROM login WHERE nombreusuario='$nombreusuario' AND clave='$clave'";
 $resultado = mysqli_query($conexion, $consulta);
@@ -13,20 +13,20 @@ $resultado = mysqli_query($conexion, $consulta);
 $filas = mysqli_fetch_array($resultado);
 
 if ($filas['rol'] == 1) {
-    header("location: ../admin.php");
-} else
-    if ($filas['rol'] == 2) {
-    header("location: ../diseñadorProcesos.php");
-} else
-    if ($filas['rol'] == 3) {
-    header("location: ../funcionario.php");
+    $_SESSION['usuario'] = $filas['nombreusuario'];
+    $_SESSION['rol'] = $filas['rol'];
+    header("location: ../inicio.php");
+}
+if ($filas['rol'] == 2) {
+    $_SESSION['usuario'] = $filas['nombreusuario'];
+    $_SESSION['rol'] = $filas['rol'];
+    header("location: ../inicio.php");
+}
+if ($filas['rol'] == 3) {
+    $_SESSION['usuario'] = $filas['nombreusuario'];
+    $_SESSION['rol'] = $filas['rol'];
+    header("location: ../inicio.php");
 } else {
-    echo '
-            <script>
-                alert("Usuario no existe, verifique datos introducidos.");
-                window.location = "../login/login.php";
-            </script>
-        ';
+    echo '<script>alert("Usuario no existe, verifique datos introducidos.");window.location = "../login/login.php";</script>';
     exit;
 }
-
