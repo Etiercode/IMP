@@ -79,6 +79,7 @@ ul{
     align-items: center;
     justify-content: flex;
 }
+
 /*BUTTON*/
 .btn {
     background-color: #00000074;
@@ -89,7 +90,24 @@ ul{
     font-size: 15px;
     border: 1px solid #fafafa;
   }
-
+.btn_cancel{
+    width: 124px;
+    background: rgb(177, 68, 68);
+    color: white;
+    display: inline-block;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn_ok{
+    width: 124px;
+    background: rgb(51, 151, 89);
+    color: white;
+    display: inline-block;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 /*Form Agregar Usuario*/
 input[type=text], select {
     width: 100%;

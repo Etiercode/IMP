@@ -27,7 +27,61 @@ if ($_SESSION['rol'] == 3) {
 }
 ?>
 <?php
-include "../IMP/php/conexion_back.php";
+
+include "php/conexion_back.php";
+
+if (!empty($_POST)) {
+    $idusuario = $_POST['idusuario'];
+
+    $query_delete = mysqli_query($conexion, "DELETE FROM login WHERE id_usuario='$idusuario'");
+    if ($query_delete) {
+        echo '
+        <script>
+            alert("Usuario Eliminado");
+            header("location: usuarios.php");
+        </script>';
+        header("location: usuarios.php");
+    } else {
+        echo '
+        <script>
+            alert("Error al eliminar usuario");
+            header("location: usuarios.php");
+        </script>';
+    }
+}
+
+if (empty($_REQUEST['id'])) {
+    echo '
+    <script>
+        alert("Usuario No existe");
+        header("location: usuarios.php");
+    </script>';
+} else {
+
+    include "php/conexion_back.php";
+
+    $id_usuario = $_REQUEST['id'];
+
+    $sql = mysqli_query($conexion, "SELECT l.id_usuario, l.usuario, l.nombreusuario, l.clave, l.rol, l.correo, l.sexo,l.numero_telef,l.direccion,(r.id_rol) AS rol 
+    FROM login l 
+    INNER JOIN roles r on l.rol = r.id_rol 
+    WHERE id_usuario=$id_usuario");
+
+    $result = mysqli_num_rows($sql);
+
+    if ($result > 0) {
+        while ($data = mysqli_fetch_array($sql)) {
+            $nombreusuario = $data['nombreusuario'];
+            $rol = $data['rol'];
+            $correo = $data['correo'];
+        }
+    } else {
+        header("location: usuarios.php");
+    }
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,9 +90,9 @@ include "../IMP/php/conexion_back.php";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMP | Usuarios</title>
     <!--Icono Pestaña-->
     <link rel="icon" href="img/IMPlogo.png" type="image" sizes="16x16">
+
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
@@ -46,10 +100,9 @@ include "../IMP/php/conexion_back.php";
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-
     <!--CSS-->
-    <link rel="stylesheet" href="css/usuarios1.css">
-
+    <link rel="stylesheet" href="css/editar_u.css">
+    <title>IMP | Editar Usuarios</title>
 </head>
 
 <body>
@@ -97,52 +150,26 @@ include "../IMP/php/conexion_back.php";
             </ul>
         </nav>
     </div>
-    <h2 class="HeaderLista">Listado de Usuarios</h2>
-    <p class="subTitleHeader">Lista de Usuarios creados en la base de datos</p>
-    <table>
-        <tr>
-            <th>id_usuario</th>
-            <th>usuario</th>
-            <th>nombreusuario</th>
-            <th>clave</th>
-            <th>rol</th>
-            <th>sexo</th>
-            <th>correo</th>
-            <th>numero telefonico</th>
-            <th>dirección</th>
-            <th>Acciones</th>
-        </tr>
-        <?php
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="showcase">
+        <h2>Eliminar Usuario</h2>
+        <h3>¿Estás seguro que quieres eliminar este usuario?</h3>
+        <br>
+        <br>
+        <p style="font-size: 25px;">Usuario: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $nombreusuario ?></span></p>
+        <p style="font-size: 25px;">Correo: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $correo ?></span></p>
+        <p style="font-size: 25px;">Rol: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $rol ?></span></p>
 
-        $query = mysqli_query($conexion, "SELECT l.id_usuario, l.usuario, l.nombreusuario, l.clave, l.rol, l.correo, l.sexo,l.numero_telef,l.direccion
-        FROM login l 
-        INNER JOIN roles r on l.rol = r.id_rol");
+        <form method="POST" action="">
+            <input type="hidden" name="idusuario" value="<?php echo $id_usuario ?>">
+            <a href="Usuarios.php" class="btn_cancel">Cancelar</a>
+            <input type="submit" value="aceptar" class="btn_ok">
+        </form>
+    </div>
 
-        $result = mysqli_num_rows($query);
-        if ($result > 0) {
-            while ($data = mysqli_fetch_array($query)) {
-        ?>
-                <tr>
-                    <td><?php echo $data["id_usuario"]; ?></td>
-                    <td><?php echo $data["usuario"]; ?></td>
-                    <td><?php echo $data["nombreusuario"]; ?></td>
-                    <td><?php echo $data["clave"]; ?></td>
-                    <td><?php echo $data["rol"]; ?></td>
-                    <td><?php echo $data["sexo"]; ?></td>
-                    <td><?php echo $data["correo"]; ?></td>
-                    <td><?php echo $data["numero_telef"]; ?></td>
-                    <td><?php echo $data["direccion"]; ?></td>
-                    <td>
-                        <a class="link_edit" href="editar_u.php?id=<?php echo $data["id_usuario"]; ?>">Editar</a>
-                        <a class="link_delete" href="eliminar_usuarios.php?id=<?php echo $data["id_usuario"]; ?>">Eliminar</a>
-                    </td>
-                </tr>
-        <?php
-            }
-        }
-        ?>
-    </table>
-    <!----------------------------------------------FOOTER-->
     <div class="footer-links">
         <div class="footer-container">
             <ul>
