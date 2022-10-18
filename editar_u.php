@@ -39,7 +39,7 @@ if (empty($_GET['id'])) {
 }
 $id_usuario = $_GET['id'];
 
-$sql = mysqli_query($conexion, "SELECT l.id_usuario, l.usuario, l.nombreusuario, l.clave, l.rol, l.correo, l.sexo,l.numero_telef,l.direccion,(r.id_rol) AS rol 
+$sql = mysqli_query($conexion, "SELECT l.id_usuario, l.usuario, l.nombreusuario, l.clave, l.rol, l.correo, l.sexo,l.numero_telef,l.direccion,r.id_rol, r.rol 
 FROM login l 
 INNER JOIN roles r on l.rol = r.id_rol 
 WHERE id_usuario=$id_usuario");
@@ -61,11 +61,20 @@ if ($result_sql == 0) {
         $usuario = $data['usuario'];
         $nombreusuario = $data['nombreusuario'];
         $clave = $data['clave'];
+        $id_rol = $data['id_rol'];
         $rol = $data['rol'];
         $correo = $data['correo'];
         $sexo = $data['sexo'];
         $numero_telef = $data['numero_telef'];
         $direccion = $data['direccion'];
+
+        if ($id_rol == 1) {
+            $option = '<option value="' . $id_rol . '" select>' . $rol . '</option>';
+        } else if ($id_rol == 2) {
+            $option = '<option value="' . $id_rol . '" select>' . $rol . '</option>';
+        } else if ($id_rol == 3) {
+            $option = '<option value="' . $id_rol . '" select>' . $rol . '</option>';
+        }
     }
 }
 
@@ -183,20 +192,39 @@ if (!empty($_POST)) {
         <div class="Registro_Usuario">
             <form action="" method="POST" class="formulario_registro">
                 <input type="hidden" name="idUsuario" value="<?php echo $id_usuario ?>">
+                <label>Usuario</label>
                 <input type="text" placeholder="Nuevo Usuario" name="usuario" value="<?php echo $usuario ?>">
+                <label>Nombre del Usuario</label>
                 <input type="text" placeholder="" name="nombreusuario" value="<?php echo $nombreusuario ?>">
+                <label>Clave</label>
                 <input type="text" placeholder="Nueva Clave" name="clave" value="<?php echo $clave ?>">
-                <select name="rol">
-                    <option type="text" placeholder="rol" name="rol" value="1">Administrador</option>
-                    <option type="text" placeholder="rol" name="rol" value="2">Funcionario</option>
-                    <option type="text" placeholder="rol" name="rol" value="3">Diseñador de Procesos</option>
+                <?php
+                $query_rol = mysqli_query($conexion, "SELECT * FROM roles");
+                $result_rol = mysqli_num_rows($query_rol);
+                ?>
+                <label>Rol</label>
+                <select name="rol" id="rol" class="notItemOne">
+                    <?php
+                    echo $option;
+                    if ($result_rol > 0) {
+                        while ($roles = mysqli_fetch_array($query_rol)) {
+                    ?>
+                            <option value="<?php echo $roles["id_rol"]; ?>"><?php echo $roles["rol"]; ?></option>
+                    <?php
+                        }
+                    }
+                    ?>
                 </select>
+                <label>Correo</label>
                 <input type="text" placeholder="Correo" name="correo" value="<?php echo $correo ?>">
+                <label>Sexo</label>
                 <select name="sexo" class="sexo">
                     <option type="text" placeholder="Sexo" name="sexo">M</option>
                     <option type="text" placeholder="Sexo" name="sexo">F</option>
                 </select>
+                <label>Numero de Teléfono</label>
                 <input type="text" placeholder="Numero de Telefono" name="numero_telef" value="<?php echo $numero_telef ?>">
+                <label>Dirección</label>
                 <input type="text" placeholder="Dirección" name="direccion" value="<?php echo $direccion ?>">
                 <button class="btn" type="submit">Actualizar</button>
             </form>

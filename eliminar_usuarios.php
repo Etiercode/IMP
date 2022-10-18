@@ -165,8 +165,8 @@ if (empty($_REQUEST['id'])) {
 
         <form method="POST" action="">
             <input type="hidden" name="idusuario" value="<?php echo $id_usuario ?>">
-            <a href="Usuarios.php" class="btn_cancel">Cancelar</a>
-            <input type="submit" value="aceptar" class="btn_ok">
+            <a href="Usuarios.php" class="btn_cancel" style="width: 124px;background: rgb(177, 68, 68);color: white;display: inline-block;padding: 9px;border-radius: 5px;cursor: pointer;">Cancelar</a>
+            <input type="submit" value="Aceptar" class="btn_ok" style="width: 124px;background: rgb(51, 151, 89);color: white;display: inline-block;border-radius: 5px;cursor: pointer;">
         </form>
     </div>
 
