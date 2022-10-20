@@ -63,11 +63,11 @@ include "../IMP/php/conexion_back.php";
                     <a href="Tareas.php">Asignar Tareas</a>
                 </li>
                 <?php if ($_SESSION['rol'] == 1) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                </li>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-user"></i>
+                        &nbsp;&nbsp;
+                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
+                    </li>
                 <?php } ?>
                 <li>
                     <i class="fa-solid fa-circle-user"></i>
@@ -88,12 +88,17 @@ include "../IMP/php/conexion_back.php";
         <form action="php/registro_tarea_back.php" method="POST" class="formulario_registro">
             <label>Asignar Funcionario</label>
             <select name="id_funcionario">
-            <?php 
-                $v = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
-                while($id_usuarios = mysqli_fetch_array($v)){ 
-            ?>       
-                <option value="id_usuario"><?php echo $id_usuarios["nombreusuario"]?></option>
-            <?php  } ?>
+                <?php
+                $query = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
+                $funcionarios = mysqli_num_rows($query);
+                if ($funcionarios > 0) {
+                    while ($responsable = mysqli_fetch_array($query)) {
+                ?>
+                        <option value="<?php echo $responsable["id_usuario"]; ?>"><?php echo $responsable["nombreusuario"]; ?></option>
+                <?php
+                    }
+                }
+                ?>
             </select>
             <label>Descripción de la tarea a realizar</label>
             <input type="text" placeholder="Descripción" name="descripcion">
@@ -123,7 +128,7 @@ include "../IMP/php/conexion_back.php";
             <ul>
                 <li>
                     <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>   
+                </li>
             </ul>
             <ul>
                 <li>

@@ -93,6 +93,7 @@ include "../IMP/php/conexion_back.php";
     <table>
         <tr>
             <th>Id tarea</th>
+            <th>Id Usuario</th>
             <th>Descripción de la tarea</th>
             <th>Estado de la tarea</th>
             <th>Progreso</th>
@@ -102,7 +103,7 @@ include "../IMP/php/conexion_back.php";
         </tr>
         <?php
 
-        $query = mysqli_query($conexion, "SELECT id_tareas,descripcion,estado,progreso,fecha_inicio,fecha_termino,plazo FROM tareas");
+        $query = mysqli_query($conexion, "SELECT t.id_tareas,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
 
         $result = mysqli_num_rows($query);
         if ($result > 0) {
@@ -112,6 +113,7 @@ include "../IMP/php/conexion_back.php";
         ?>
                 <tr>
                     <td><?php echo $data["id_tareas"] ?></td>
+                    <td><?php echo $data["id_usuario"] ?></td>
                     <td><?php echo $data["descripcion"] ?></td>
                     <td><?php echo $data["estado"] ?></td>
                     <td><?php echo $data["progreso"] ?></td>

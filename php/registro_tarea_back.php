@@ -28,7 +28,7 @@ if ($plazo < 0) {
 }
 
 $query = "INSERT INTO tareas(id_funcionario, descripcion, estado, progreso, fecha_inicio, fecha_termino, plazo) 
-VALUES('$id_funcionario','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$plazo')";
+VALUES('$id_usuario','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$plazo')";
 
 $ejecutar = mysqli_query($conexion, $query);
 
