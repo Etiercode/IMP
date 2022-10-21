@@ -9,6 +9,7 @@ $date2 = strtotime($_REQUEST['fecha_termino']);
 $plazo = round((((($date2 - $date1) / 60) / 60) / 24), 2);
 
 $id_usuario = $_POST['id_funcionario'];
+$titulo_tarea = $_POST['titulo_tarea'];
 $descripcion = $_POST['descripcion'];
 $estado = $_POST['estado'];
 $progreso = $_POST['progreso'];
@@ -27,8 +28,8 @@ if ($plazo < 0) {
     mysqli_close($conexion);
 }
 
-$query = "INSERT INTO tareas(id_funcionario, descripcion, estado, progreso, fecha_inicio, fecha_termino, plazo) 
-VALUES('$id_usuario','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$plazo')";
+$query = "INSERT INTO tareas(id_funcionario,titulo_tarea, descripcion, estado, progreso, fecha_inicio, fecha_termino, plazo) 
+VALUES('$id_usuario','$titulo_tarea','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$plazo')";
 
 $ejecutar = mysqli_query($conexion, $query);
 

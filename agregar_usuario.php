@@ -96,6 +96,7 @@ include "../IMP/php/conexion_back.php";
             </ul>
         </nav>
     </div>
+    <br>
     <div class="showcase">
         <h2>Agregar Usuarios</h2>
         <h3>Usted está agregando Usuarios como <?php echo $_SESSION['usuario'] ?></h3>

@@ -11,11 +11,12 @@ if (!isset($_SESSION['usuario'])) {
     die();
 }
 ?>
-
 <?php
 include "../IMP/php/conexion_back.php";
 ?>
-
+<?php
+$id = $_SESSION['id_usuario_log'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,73 +87,86 @@ include "../IMP/php/conexion_back.php";
             </ul>
         </nav>
     </div>
+    <br>
     <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario'] ?></h2>
+    <br>
+    <div class="containerTextNoTask" style="display: none;">
+        <div class="notasktext">No tienes tareas asignadas</div>
+    </div>
 
-    <h2 class="HeaderLista">Listado de Tareas</h2>
-    <p class="subTitleHeader">Lista de tareas asignadas</p>
+    <?php
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
+
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+        while ($data = mysqli_fetch_array($query)) {
+    ?>
     <table>
         <tr>
-            <th>Id tarea</th>
-            <th>Id Usuario</th>
+            <?php if ($_SESSION['rol'] == 1) { ?>
+                <th>Id tarea</th>
+            <?php } ?>
+            <?php if ($_SESSION['rol'] == 1) { ?>
+                <th>Id Usuario</th>
+            <?php } ?>
+            <th>Titulo Tarea</th>
             <th>Descripción de la tarea</th>
             <th>Estado de la tarea</th>
             <th>Progreso</th>
             <th>Fecha de inicio</th>
             <th>Fecha de término</th>
             <th>Plazo (Dias)</th>
+            </tr>
+        <tr>
+            <?php if ($_SESSION['rol'] == 1) { ?>
+                <td><?php echo $data["id_tareas"] ?></td>
+            <?php } ?>
+            <?php if ($_SESSION['rol'] == 1) { ?>
+                <td><?php echo $data["id_usuario"] ?></td>
+            <?php } ?>
+            <td><?php echo $data["titulo_tarea"] ?></td>
+            <td><?php echo $data["descripcion"] ?></td>
+            <td><?php echo $data["estado"] ?></td>
+            <td><?php echo $data["progreso"] ?></td>
+            <td><?php echo $data["fecha_inicio"] ?></td>
+            <td><?php echo $data["fecha_termino"] ?></td>
+            <td><?php echo $data["plazo"] ?></td>
         </tr>
         <?php
-
-        $query = mysqli_query($conexion, "SELECT t.id_tareas,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
-
-        $result = mysqli_num_rows($query);
-        if ($result > 0) {
-
-            while ($data = mysqli_fetch_array($query)) {
-
-        ?>
-                <tr>
-                    <td><?php echo $data["id_tareas"] ?></td>
-                    <td><?php echo $data["id_usuario"] ?></td>
-                    <td><?php echo $data["descripcion"] ?></td>
-                    <td><?php echo $data["estado"] ?></td>
-                    <td><?php echo $data["progreso"] ?></td>
-                    <td><?php echo $data["fecha_inicio"] ?></td>
-                    <td><?php echo $data["fecha_termino"] ?></td>
-                    <td><?php echo $data["plazo"] ?></td>
-
-
-                </tr>
-        <?php
             }
+        }else{
+            echo '<div class="notasktext" style="display: block; 
+            background-color: rgb(114, 114, 114);
+            width: 300px;
+            border: 15px solid rgb(94, 94, 94);
+            padding: 50px;
+            margin: auto; margin-top: 135px; margin-bottom: 135px">No tienes tareas asignadas</div>';
         }
         ?>
-
     </table>
 
-
     <div class="footer-links">
-        <div class="footer-container">
-            <ul>
-                <li>
-                    <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Aplicación de Escritorio</h2>
-                </li>
-                <li>
+                <div class="footer-container">
+                    <ul>
+                        <li>
+                            <h2>Recuerda Guardar Bien tus Documentos</h2>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <h2>Aplicación de Escritorio</h2>
+                        </li>
+                        <li>
 
-                    <a href="">(URL DESCARGA)</a>
-                </li>
-            </ul>
-        </div>
-        <footer class="footer">
-            <h3>Improve My Process Copyright</h3>
-        </footer>
-        <script src="js/navbar.js"></script>
-    </div>
+                            <a href="">(URL DESCARGA)</a>
+                        </li>
+                    </ul>
+                </div>
+                <footer class="footer">
+                    <h3>Improve My Process Copyright</h3>
+                </footer>
+                <script src="js/navbar.js"></script>
+            </div>
 </body>
 
 </html>

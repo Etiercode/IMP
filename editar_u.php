@@ -145,6 +145,7 @@ if (!empty($_POST)) {
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
+    <br>
     <div class:="container">
         <nav class="nav-main">
             <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">

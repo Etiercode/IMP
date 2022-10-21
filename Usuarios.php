@@ -97,6 +97,7 @@ include "../IMP/php/conexion_back.php";
             </ul>
         </nav>
     </div>
+    <br>
     <h2 class="HeaderLista">Listado de Usuarios</h2>
     <p class="subTitleHeader">Lista de Usuarios creados en la base de datos</p>
     <table>

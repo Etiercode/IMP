@@ -82,6 +82,7 @@ include "../IMP/php/conexion_back.php";
             </ul>
         </nav>
     </div>
+    <br>
     <div class="showcase">
         <h2>Agregar Tareas</h2>
         <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
@@ -100,6 +101,8 @@ include "../IMP/php/conexion_back.php";
                 }
                 ?>
             </select>
+            <label>Titulo Tarea</label>
+            <input type="text" placeholder="Titulo" name="titulo_tarea">
             <label>Descripción de la tarea a realizar</label>
             <input type="text" placeholder="Descripción" name="descripcion">
             <label>Estado</label>

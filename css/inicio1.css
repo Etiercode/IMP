@@ -18,16 +18,18 @@ table{
     height: 500px;
 }
 table th{
-    text-align: left;
-    padding: 10px;
-    background: #004678;
+    text-align: center;
+    background: #1d4562;
     color: #ffff;
+    height: 50px;
+    padding: 5px;
 }
 table tr:nth-child(odd){
     background-color: rgba(51, 50, 50, 0.518);
 }
 table td{
-    padding: 10px;
+    padding: 5px;
+    height: 100px;
 }
 
 body {
@@ -52,7 +54,16 @@ ul {
     width: 90%;
     margin: auto;
 }
-
+/*NO TASK TEXT AND IMG*/
+.notasktext{
+    display: none;
+}
+.notaskimg{
+    display: none;
+}
+.containerTextNoTask{
+    height: 200px;
+}
 /*Navegacion*/
 
 .nav-main {
