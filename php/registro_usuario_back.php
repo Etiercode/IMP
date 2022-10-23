@@ -12,64 +12,81 @@ $numero_telef = $_POST['numero_telef'];
 $direccion = $_POST['direccion'];
 
 if (empty($usuario)) {
-    echo '<script>alert("Campo usuario Vacío");
-        window.location = "../agregar_usuario.php";</script>';
-    mysqli_close($conexion);
-}
-if (is_numeric($usuario)) {
-    echo '<script>alert("Campo usuario debe ser solo texto");
-            window.location = "../agregar_usuario.php";</script>';
-    mysqli_close($conexion);
-}
-if (empty($nombreusuario)) {
-    echo '<script>alert("Campo Nombre de Usuario Vacío");
-        window.location = "../agregar_usuario.php";</script>';
-}
-if (is_numeric($nombreusuario)) {
-    echo '<script>alert("Campo Nombre de Usuario debe ser solo texto");
-            window.location = "../agregar_usuario.php";</script>';
-    mysqli_close($conexion);
-}
-if (empty($clave)) {
-    echo '<script>alert("Campo Clave Vacío");
-        window.location = "../agregar_usuario.php";</script>';
-    mysqli_close($conexion);
-}
-if (empty($correo)) {
-    echo '<script>alert("Campo Correo Vacío");
-        window.location = "../agregar_usuario.php";</script>';
-    mysqli_close($conexion);
-}
-if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-    echo '<script>alert("Campo Correo es Incorrecto");
-            window.location = "../agregar_usuario.php";</script>';
-    mysqli_close($conexion);
-}
+    echo '
+    <script>
+        alert("Campo usuario vacio");
+        window.location = "../agregar_usuarios.php";
+    </script>';
+    
+} elseif (is_numeric($usuario)) {
+    echo '
+        <script>
+            alert("Campo usuario tiene que ser de formato texto");
+            window.location = "../agregar_usuarios.php";
+        </script>';
+} elseif (empty($nombreusuario)) {
+    echo '
+    <script>
+        alert("Campo Nombre de Usuario Vacio");
+        window.location = "../agregar_usuarios.php";
+    </script>';
+} elseif (is_numeric($nombreusuario)) {
+    echo '
+    <script>
+        alert("Campo de Nombre de usuario debe ser de formato texto");
+        window.location = "../agregar_usuarios.php";
+        </script>';
+} elseif (empty($clave)) {
+    echo '
+    <script>
+        alert("Campo de Clave no debe estar vacio");
+        window.location = "../agregar_usuarios.php";
+    </script>';
+} elseif (empty($correo)) {
+    echo '
+    <script>
+        alert("Campo de Correo no debe estar vacio");
+        window.location = "../agregar_usuarios.php";
+    </script>';
+} elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+    echo '
+    <script>
+        alert("Campo Correo Invalido");
+        window.location = "../agregar_usuarios.php";
+    </script>';
+} elseif (empty($numero_telef)) {
+    echo '
+    <script>
+        alert("Campo de numero de telefono vacio");
+        window.location = "../agregar_usuarios.php";
 
-$query = "INSERT INTO login(usuario, nombreusuario, clave, rol, correo, sexo, direccion, numero_telef) 
+    </script>';
+} elseif (empty($direccion)) {
+    echo '
+    <script>
+        alert("Campo Dirección vacio");
+        window.location = "../agregar_usuarios.php";
+    </script>';
+} else {
+    $query = "INSERT INTO login(usuario, nombreusuario, clave, rol, correo, sexo, direccion, numero_telef) 
     VALUES('$usuario', '$nombreusuario', '$clave', '$rol', '$correo', '$sexo', '$direccion', '$numero_telef')";
 
-$ejecutar = mysqli_query($conexion, $query);
+    $ejecutar = mysqli_query($conexion, $query);
 
-if ($ejecutar) {
-    echo '
+    if ($ejecutar) {
+        echo '
+    <script>
+        alert("Usuario Agregado");
+        header("../usuarios.php");
+    </script>';
+    } else {
 
-<script>
-alert("Usuario Agregado");
-window.location = "../agregar_usuario.php";
-</script>
+        echo '
+    <script>
+        alert("Usuario no Agregado");
+        header("../usuarios.php");
+    </script>';
+    }
 
-';
-} else {
-
-    echo '
-
-<script>
-alert("Usuario no Almacenado");
-window.location = "../agregar_usuario.php";
-</script>
-
-';
+    mysqli_close($conexion);
 }
-
-mysqli_close($conexion);

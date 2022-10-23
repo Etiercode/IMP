@@ -62,11 +62,34 @@ $id = $_SESSION['id_usuario_log'];
                         <a href="Usuarios.php">Usuarios</a>
                     </li>
                 <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
                 <li>
                     <i class="fa-sharp fa-solid fa-calendar-days"></i>
                     &nbsp;&nbsp;
                     <a href="Tareas.php">Asignar Tareas</a>
                 </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                <li>
+                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                    &nbsp;&nbsp;
+                    <a href="Tareas.php">Asignar Tareas</a>
+                </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 2) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                    </li>
+                <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-user"></i>
@@ -89,13 +112,14 @@ $id = $_SESSION['id_usuario_log'];
     </div>
     <br>
     <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario'] ?></h2>
+    <h2 class="HeaderLista">Aqui su carga de trabajo</h2>
     <br>
     <div class="containerTextNoTask" style="display: none;">
         <div class="notasktext">No tienes tareas asignadas</div>
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -107,7 +131,10 @@ $id = $_SESSION['id_usuario_log'];
                 <th>Id tarea</th>
             <?php } ?>
             <?php if ($_SESSION['rol'] == 1) { ?>
-                <th>Id Usuario</th>
+                <th>Responsable</th>
+            <?php } ?>
+            <?php if ($_SESSION['rol'] == 1) { ?>
+            <th>Id</th>
             <?php } ?>
             <th>Titulo Tarea</th>
             <th>Descripción de la tarea</th>
@@ -122,7 +149,10 @@ $id = $_SESSION['id_usuario_log'];
                 <td><?php echo $data["id_tareas"] ?></td>
             <?php } ?>
             <?php if ($_SESSION['rol'] == 1) { ?>
-                <td><?php echo $data["id_usuario"] ?></td>
+                <td><?php echo $data["nombreusuario"] ?></td>
+            <?php } ?>
+            <?php if ($_SESSION['rol'] == 1) { ?>
+            <td><?php echo $data["id_usuario"] ?></td>
             <?php } ?>
             <td><?php echo $data["titulo_tarea"] ?></td>
             <td><?php echo $data["descripcion"] ?></td>

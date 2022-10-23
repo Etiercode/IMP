@@ -72,11 +72,34 @@ include "../IMP/php/conexion_back.php";
                         <a href="Usuarios.php">Usuarios</a>
                     </li>
                 <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
                 <li>
                     <i class="fa-sharp fa-solid fa-calendar-days"></i>
                     &nbsp;&nbsp;
                     <a href="Tareas.php">Asignar Tareas</a>
                 </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                <li>
+                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                    &nbsp;&nbsp;
+                    <a href="Tareas.php">Asignar Tareas</a>
+                </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 2) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                    </li>
+                <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-user"></i>

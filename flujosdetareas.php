@@ -12,16 +12,8 @@ if (!isset($_SESSION['usuario'])) {
     die();
 }
 ?>
-
-<?php
-include "../IMP/php/conexion_back.php";
-if ($_SESSION['rol'] == 2) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
-}
+<?php 
+include "php/conexion_back.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,8 +33,8 @@ if ($_SESSION['rol'] == 2) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <!--CSS-->
-    <link rel="stylesheet" href="css/tareas1.css">
-    <title>IMP | Agregar Tareas</title>
+    <link rel="stylesheet" href="css/flujosdetareas.css">
+    <title>IMP | Crear Flujos de Tareas</title>
 </head>
 
 <body>
@@ -66,18 +58,18 @@ if ($_SESSION['rol'] == 2) {
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 3) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                    &nbsp;&nbsp;
-                    <a href="Tareas.php">Asignar Tareas</a>
-                </li>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Tareas.php">Asignar Tareas</a>
+                    </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                    &nbsp;&nbsp;
-                    <a href="Tareas.php">Asignar Tareas</a>
-                </li>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Tareas.php">Asignar Tareas</a>
+                    </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
@@ -115,11 +107,13 @@ if ($_SESSION['rol'] == 2) {
     </div>
     <br>
     <div class="showcase">
-        <h2>Agregar Tareas</h2>
-        <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
-        <form action="php/registro_tarea_back.php" method="POST" class="formulario_registro">
-            <label>Asignar Funcionario</label>
-            <select name="id_funcionario">
+        <h2>Crear Flujos de Tareas</h2>
+        <h3>Usted está creando flujos de tareas como <?php echo $_SESSION['usuario'] ?></h3>
+        <p class="error_msg"></p>
+        <p class="eror_msg"></p>
+        <form action="php/flujo_tarea_back.php" method="POST" class="formulario_registro">
+            <label>Asignar Funcionario <span style="color: red;">*</span></label>
+            <select name="id_funcionario_flujo">
                 <?php
                 $query = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
                 $funcionarios = mysqli_num_rows($query);
@@ -132,31 +126,66 @@ if ($_SESSION['rol'] == 2) {
                 }
                 ?>
             </select>
-            <label>Titulo Tarea</label>
-            <input type="text" placeholder="Titulo" name="titulo_tarea">
-            <label>Descripción de la tarea a realizar</label>
-            <input type="text" placeholder="Descripción" name="descripcion">
-            <label>Estado</label>
-            <select name="estado" class="estado">
-                <option type="text" placeholder="Estado" name="estado">Sin Terminar</option>
+            <label>Seleccionar Tarea 1 <span style="color: red;">*</span></label>
+            <select name="id_tarea_flujo1">
+                <?php
+                $query_tarea1 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
+                $tarea1 = mysqli_num_rows($query_tarea1);
+                if ($tarea1 > 0) {
+                    while ($tarea1 = mysqli_fetch_array($query_tarea1)) {
+                ?>
+                        <option value="<?php echo $tarea1["id_tareas"]; ?>"><?php echo $tarea1["titulo_tarea"]; ?></option>
+                <?php
+                    }
+                }
+                ?>
             </select>
-            <label>Progreso</label>
-            <select name="progreso" class="progreso">
-                <option type="text" placeholder="progreso" name="progreso">0%</option>
+            <label>Seleccionar Tarea 2 </label>
+            <select name="id_tarea_flujo2">
+                <?php
+                $query_tarea2 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
+                $tarea2 = mysqli_num_rows($query_tarea2);
+                if ($tarea2 > 0) {
+                    while ($tarea2 = mysqli_fetch_array($query_tarea2)) {
+                ?>
+                        <option value="<?php echo $tarea2["id_tareas"]; ?>"><?php echo $tarea2["titulo_tarea"]; ?></option>
+                <?php
+                    }
+                }
+                ?>
             </select>
+            <label>Seleccionar Tarea 3 </label>
+            <select name="id_tarea_flujo3">
+                <?php
+                $query_tarea3 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
+                $tarea3 = mysqli_num_rows($query_tarea3);
+                if ($tarea3 > 0) {
+                    while ($tarea3 = mysqli_fetch_array($query_tarea3)) {
+                ?>
+                        <option value="<?php echo $tarea3["id_tareas"]; ?>"><?php echo $tarea3["titulo_tarea"]; ?></option>
+                <?php
+                    }
+                }
+                ?>
+            </select>
+            <label>Titulo Flujo de Tareas <span style="color: red;">*</span></label>
+            <input type="text" placeholder="Titulo Flujo de Tareas" name="titulo_flujo">
+            <label>Descripción del Flujo <span style="color: red;">*</span></label>
+            <input type="text" placeholder="Descripción del Flujo" name="desc_flujo">
             <div class="row">
                 <div class="col">
-                    <label style="padding-right: 30px;">Fecha Inicio</label>
-                    <input type="date" name="fecha_inicio">
+                    <label style="padding-right: 30px;">Fecha Inicio <span style="color: red;">*</span></label>
+                    <input type="date" name="fecha_inicio_f">
                 </div>
                 <div class="col">
-                    <label style="padding-right: 15px;">Fecha Termino</label>
-                    <input type="date" name="fecha_termino">
+                    <label style="padding-right: 15px;">Fecha Termino <span style="color: red;">*</span></label>
+                    <input type="date" name="fecha_termino_f">
                 </div>
             </div>
-            <button class="btn" style="margin-top: 15px;">Crear Tarea</button>
+            <button class="btn" style="margin-top: 15px;" type="submit">Crear Flujo</button>
         </form>
     </div>
+    
     <div class="footer-links">
         <div class="footer-container">
             <ul>
