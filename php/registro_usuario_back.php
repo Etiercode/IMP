@@ -15,57 +15,57 @@ if (empty($usuario)) {
     echo '
     <script>
         alert("Campo usuario vacio");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
     </script>';
     
 } elseif (is_numeric($usuario)) {
     echo '
         <script>
             alert("Campo usuario tiene que ser de formato texto");
-            window.location = "../agregar_usuarios.php";
+            window.location = "../agregar_usuario.php";
         </script>';
 } elseif (empty($nombreusuario)) {
     echo '
     <script>
         alert("Campo Nombre de Usuario Vacio");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
     </script>';
 } elseif (is_numeric($nombreusuario)) {
     echo '
     <script>
         alert("Campo de Nombre de usuario debe ser de formato texto");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
         </script>';
 } elseif (empty($clave)) {
     echo '
     <script>
         alert("Campo de Clave no debe estar vacio");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
     </script>';
 } elseif (empty($correo)) {
     echo '
     <script>
         alert("Campo de Correo no debe estar vacio");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
     </script>';
 } elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     echo '
     <script>
         alert("Campo Correo Invalido");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
     </script>';
 } elseif (empty($numero_telef)) {
     echo '
     <script>
         alert("Campo de numero de telefono vacio");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
 
     </script>';
 } elseif (empty($direccion)) {
     echo '
     <script>
         alert("Campo Dirección vacio");
-        window.location = "../agregar_usuarios.php";
+        window.location = "../agregar_usuario.php";
     </script>';
 } else {
     $query = "INSERT INTO login(usuario, nombreusuario, clave, rol, correo, sexo, direccion, numero_telef) 
