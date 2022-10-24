@@ -1,4 +1,7 @@
 <?php
+include "../IMP/php/conexion_back.php";
+?>
+<?php
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
@@ -11,9 +14,86 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
+if ($_SESSION['rol'] == 2) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
+if ($_SESSION['rol'] == 3) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
+?>
+
+<?php
+if (empty($_GET['id'])) {
+    echo '
+    <script>
+        alert("Id de tarea no existe");
+    </script>';
+    header('location: inicio.php');
+}
+$id_tarea = $_GET['id'];
+if ($_SESSION['rol'] == 1) {
+
+    $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino, t.plazo 
+    FROM tareas t 
+    INNER JOIN login l 
+    ON t.id_funcionario = l.id_usuario");
+
+    $result_sql = mysqli_num_rows($sql);
+
+    if ($result_sql == 0) {
+        echo '
+        <script>
+            alert("Tarea no existe");
+            window.location = "usuarios.php";
+        </script>
+        ';
+        header('location: inicio.php');
+    } else {
+        while ($data = mysqli_fetch_array($sql)) {
+            $id_tareas = $data['id_tareas'];
+            $id_funcionario = $data['id_usuario'];
+            $titulo_tarea = $data['titulo_tarea'];
+            $descripcion = $data['descripcion'];
+            $estado = $data['estado'];
+            $fecha_inicio = $data['fecha_inicio'];
+            $fecha_termino = $data['fecha_termino'];
+            $plazo = $data['plazo'];
+        }
+    }
+}
 ?>
 <?php
-include "php/conexion_back.php";
+if (!empty($_POST)) {
+
+    $estado = $_POST['estado'];
+
+    date("Y-m-d");
+
+    $sql_update = mysqli_query($conexion, "UPDATE tareas SET estado='$estado' WHERE id_tareas='$id_tarea'");
+
+    if ($sql_update) {
+        echo '
+                <script>
+                    alert("Tarea Actualizada Correctamente");
+                    window.location = "usuarios.php";
+                </script>';
+    } else {
+        echo '
+                <script>
+                    alert("Error al actualizar tarea");
+                    window.location = "usuarios.php";
+                </script>';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,14 +113,15 @@ include "php/conexion_back.php";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <!--CSS-->
-    <link rel="stylesheet" href="css/flujosdetareas.css">
-    <title>IMP | Crear Flujos de Tareas</title>
+    <link rel="stylesheet" href="css/editar_u.css">
+    <title>IMP | Editar Usuarios</title>
 </head>
 
 <body>
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
+    <br>
     <div class:="container">
         <nav class="nav-main">
             <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">
@@ -105,88 +186,35 @@ include "php/conexion_back.php";
             </ul>
         </nav>
     </div>
-    <br>
     <div class="showcase">
-        <h2>Crear Flujos de Tareas</h2>
-        <h3>Usted está creando flujos de tareas como <?php echo $_SESSION['usuario'] ?></h3>
-        <form action="php/flujo_tarea_back.php" method="POST" class="formulario_registro">
-            <label>Asignar Funcionario <span style="color: red;">*</span></label>
-            <select name="id_funcionario_flujo">
-                <?php
-                $query = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
-                $funcionarios = mysqli_num_rows($query);
-                if ($funcionarios > 0) {
-                    while ($responsable = mysqli_fetch_array($query)) {
-                ?>
-                        <option value="<?php echo $responsable["id_usuario"]; ?>"><?php echo $responsable["nombreusuario"]; ?></option>
-                <?php
-                    }
-                }
-                ?>
-            </select>
-            <label>Seleccionar Tarea 1 <span style="color: red;">*</span></label>
-            <select name="id_tarea_flujo1">
-                <?php
-                $query_tarea1 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
-                $tarea1 = mysqli_num_rows($query_tarea1);
-                if ($tarea1 > 0) {
-                    while ($tarea1 = mysqli_fetch_array($query_tarea1)) {
-                ?>
-                        <option value="<?php echo $tarea1["id_tareas"]; ?>"><?php echo $tarea1["titulo_tarea"]; ?></option>
-                <?php
-                    }
-                }
-                ?>
-            </select>
-
-            <div id="id_tarea_flujo2">
-                <label>Seleccionar Tarea 2 <span style="color: red;">*</span></label>
-                <select name="id_tarea_flujo2">
-                    <?php
-                    $query_tarea2 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
-                    $tarea2 = mysqli_num_rows($query_tarea2);
-                    if ($tarea2 > 0) {
-                        while ($tarea2 = mysqli_fetch_array($query_tarea2)) {
-                    ?>      
-                            <option value="<?php echo $tarea2["id_tareas"]; ?>"><?php echo $tarea2["titulo_tarea"]; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
+        <h2>Editar Tareas</h2>
+        <h3>Usted está Editando Tareas</h3>
+        <div class="Registro_Usuario">
+            <form action="" method="POST" class="formulario_registro">
+                <input type="hidden" name="idTareas" value="<?php echo $id_tarea ?>">
+                <label>Titulo Tarea</label>
+                <input type="text" placeholder="Titulo" name="titulo_tarea" value="<?php echo $titulo_tarea ?>">
+                <label>Descripcion</label>
+                <input type="text" placeholder="Descripcion" name="descripcion" value="<?php echo $descripcion ?>">
+                <label>Estado</label>
+                <select name="estado" class="sexo">
+                    <option type="text" placeholder="estado" name="estado">Sin Terminar</option>
+                    <option type="text" placeholder="estado" name="estado">En Progreso</option>
+                    <option type="text" placeholder="estado" name="estado">Terminado</option>
                 </select>
-            </div>
-            <div id="id_tarea_flujo3" >
-                <label>Seleccionar Tarea 3 <span style="color: red;">*</span></label>
-                <select name="id_tarea_flujo3">
-                    <?php
-                    $query_tarea3 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
-                    $tarea3 = mysqli_num_rows($query_tarea3);
-                    if ($tarea3 > 0) {
-                        while ($tarea3 = mysqli_fetch_array($query_tarea3)) {
-                    ?>
-                            <option value="<?php echo $tarea3["id_tareas"]; ?>"><?php echo $tarea3["titulo_tarea"]; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
-                </select>
-            </div>
-            <label>Titulo Flujo de Tareas <span style="color: red;">*</span></label>
-            <input type="text" placeholder="Titulo Flujo de Tareas" name="titulo_flujo">
-            <label>Descripción del Flujo <span style="color: red;">*</span></label>
-            <input type="text" placeholder="Descripción del Flujo" name="desc_flujo">
-            <div class="row">
-                <div class="col">
-                    <label style="padding-right: 30px;">Fecha Inicio <span style="color: red;">*</span></label>
-                    <input type="date" name="fecha_inicio_f">
+                <div class="row">
+                    <div class="col">
+                        <label style="padding-right: 30px;">Fecha Inicio</label>
+                        <input type="date" name="fecha_inicio">
+                    </div>
+                    <div class="col">
+                        <label style="padding-right: 15px;">Fecha Termino</label>
+                        <input type="date" name="fecha_termino">
+                    </div>
                 </div>
-                <div class="col">
-                    <label style="padding-right: 15px;">Fecha Termino <span style="color: red;">*</span></label>
-                    <input type="date" name="fecha_termino_f">
-                </div>
-            </div>
-            <button class="btn" style="margin-top: 15px;" type="submit">Crear Flujo</button>
-        </form>
+                <button class="btn" type="submit">Actualizar</button>
+            </form>
+        </div>
     </div>
 
     <div class="footer-links">

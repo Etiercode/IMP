@@ -143,6 +143,7 @@ $id = $_SESSION['id_usuario_log'];
             <th>Fecha de inicio</th>
             <th>Fecha de término</th>
             <th>Plazo (Dias)</th>
+            <th>Acciones</th>
             </tr>
         <tr>
             <?php if ($_SESSION['rol'] == 1) { ?>
@@ -161,6 +162,10 @@ $id = $_SESSION['id_usuario_log'];
             <td><?php echo $data["fecha_inicio"] ?></td>
             <td><?php echo $data["fecha_termino"] ?></td>
             <td><?php echo $data["plazo"] ?></td>
+            <td>
+                <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
+                <a class="link_delete" href="eliminar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
+            </td>
         </tr>
         <?php
             }

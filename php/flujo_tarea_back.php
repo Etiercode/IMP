@@ -22,6 +22,21 @@
         echo '
         <script>
             alert("La tarea 1 no puede ser la misma que la tarea 2");
+            window.location = "../flujosdetareas.php";
+        </script>';
+    }
+    if ($id_tarea_flujo2 == $id_tarea_flujo3) {
+        echo '
+        <script>
+            alert("La tarea 2 no puede ser la misma que la tarea 3");
+            window.location = "../flujosdetareas.php";
+        </script>';
+    }
+    if ($id_tarea_flujo1 == $id_tarea_flujo3) {
+        echo '
+        <script>
+            alert("La tarea 1 no puede ser la misma que la tarea 3");
+            window.location = "../flujosdetareas.php";
         </script>';
     }
 
