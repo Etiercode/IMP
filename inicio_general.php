@@ -10,6 +10,20 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
+if ($_SESSION['rol'] == 2) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
+if ($_SESSION['rol'] == 3) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
 ?>
 <?php
 include "../IMP/php/conexion_back.php";
@@ -24,7 +38,7 @@ $id = $_SESSION['id_usuario_log'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMP | Inicio</title>
+    <title>IMP | Panel General</title>
 
     <!--Icono Pestaña-->
     <link rel="icon" href="img/IMPlogo.png" type="image" sizes="16x16">
@@ -112,17 +126,15 @@ $id = $_SESSION['id_usuario_log'];
     </div>
     <br>
     <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario'] ?></h2>
-    <h2 class="HeaderLista">Aqui su carga de trabajo</h2>
-    <?php if ($_SESSION['rol'] == 1) { ?>
-        <a href="inicio_general.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
-    <?php } ?>
+    <h2 class="HeaderLista">Carga de Trabajo de todos los usuarios</h2>
+    <a href="inicio.php" style="margin-left: 45%; Color: green">Ver Mis Tareas</a>
     <br>
     <div class="containerTextNoTask" style="display: none;">
         <div class="notasktext">No tienes tareas asignadas</div>
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -130,15 +142,9 @@ $id = $_SESSION['id_usuario_log'];
     ?>
             <table>
                 <tr>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <th>Id tarea</th>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <th>Responsable</th>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <th>Id</th>
-                    <?php } ?>
+                    <th>Id tarea</th>
+                    <th>Responsable</th>
+                    <th>Id</th>
                     <th>Titulo Tarea</th>
                     <th>Descripción de la tarea</th>
                     <th>Estado de la tarea</th>
@@ -149,15 +155,9 @@ $id = $_SESSION['id_usuario_log'];
                     <th>Acciones</th>
                 </tr>
                 <tr>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <td data-titulo="Id Tareas"><?php echo $data["id_tareas"] ?></td>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"] ?></td>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <td data-titulo="Id Usuario"><?php echo $data["id_usuario"] ?></td>
-                    <?php } ?>
+                    <td data-titulo="Id Tarea"><?php echo $data["id_tareas"] ?></td>
+                    <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"] ?></td>
+                    <td data-titulo="Id Usuario"><?php echo $data["id_usuario"] ?></td>
                     <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
                     <td data-titulo="Estado"><?php echo $data["estado"] ?></td>

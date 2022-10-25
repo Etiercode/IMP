@@ -48,7 +48,7 @@ include "../IMP/php/conexion_back.php";
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
 
     <!--CSS-->
-    <link rel="stylesheet" href="css/usuarios1.css">
+    <link rel="stylesheet" href="css/usuarios.css">
 
 </head>
 
@@ -137,7 +137,6 @@ include "../IMP/php/conexion_back.php";
             <th>Acciones</th>
         </tr>
         <?php
-
         $query = mysqli_query($conexion, "SELECT l.id_usuario, l.usuario, l.nombreusuario, l.clave, l.rol, l.correo, l.sexo,l.numero_telef,l.direccion
         FROM login l 
         INNER JOIN roles r on l.rol = r.id_rol");
@@ -147,16 +146,16 @@ include "../IMP/php/conexion_back.php";
             while ($data = mysqli_fetch_array($query)) {
         ?>
                 <tr>
-                    <td><?php echo $data["id_usuario"]; ?></td>
-                    <td><?php echo $data["usuario"]; ?></td>
-                    <td><?php echo $data["nombreusuario"]; ?></td>
-                    <td><?php echo $data["clave"]; ?></td>
-                    <td><?php echo $data["rol"]; ?></td>
-                    <td><?php echo $data["sexo"]; ?></td>
-                    <td><?php echo $data["correo"]; ?></td>
-                    <td><?php echo $data["numero_telef"]; ?></td>
-                    <td><?php echo $data["direccion"]; ?></td>
-                    <td>
+                    <td data-titulo="Id Usuario"><?php echo $data["id_usuario"]; ?></td>
+                    <td data-titulo="Usuario"><?php echo $data["usuario"]; ?></td>
+                    <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"]; ?></td>
+                    <td data-titulo="Clave"><?php echo $data["clave"]; ?></td>
+                    <td data-titulo="Rol"><?php echo $data["rol"]; ?></td>
+                    <td data-titulo="Sexo"><?php echo $data["sexo"]; ?></td>
+                    <td data-titulo="Correo"><?php echo $data["correo"]; ?></td>
+                    <td data-titulo="Numero Telefonico"><?php echo $data["numero_telef"]; ?></td>
+                    <td data-titulo="Dirección"><?php echo $data["direccion"]; ?></td>
+                    <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_u.php?id=<?php echo $data["id_usuario"]; ?>">Editar</a>
                         <a class="link_delete" href="eliminar_usuarios.php?id=<?php echo $data["id_usuario"]; ?>">Eliminar</a>
                     </td>

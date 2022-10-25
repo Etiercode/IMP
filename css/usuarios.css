@@ -79,6 +79,7 @@ table{
     font-size: 20px;
     width: 100%;
     height: 200px;
+    margin-bottom: 200px;
 }
 table th{
     text-align: left;
@@ -159,5 +160,27 @@ table td{
     }
     .footer-links .footer-container{
         grid-template-columns: repeat(2, 1fr);
+    }
+    table tr{
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+    table th{
+        display: none;
+    }
+    table td{
+        padding: 0;
+    }
+    table td [data-titulo]{
+        display: flex;
+    }
+    table td[data-titulo]::before{
+        content: attr(data-titulo);
+        width: 90px;
+        font-weight: bold;
+        padding-right: 15px;
+        color: rgb(88, 169, 166);
     }
 }
