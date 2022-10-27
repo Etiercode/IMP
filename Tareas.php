@@ -15,6 +15,7 @@ if (!isset($_SESSION['usuario'])) {
 
 <?php
 include "../IMP/php/conexion_back.php";
+
 if ($_SESSION['rol'] == 2) {
     echo '
     <script>
@@ -66,31 +67,45 @@ if ($_SESSION['rol'] == 2) {
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 3) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                    &nbsp;&nbsp;
-                    <a href="Tareas.php">Asignar Tareas</a>
-                </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                    &nbsp;&nbsp;
-                    <a href="Tareas.php">Asignar Tareas</a>
-                </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="Tareas.php">Crear Tareas</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 2) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
@@ -118,6 +133,7 @@ if ($_SESSION['rol'] == 2) {
         <h2>Agregar Tareas</h2>
         <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
         <form action="php/registro_tarea_back.php" method="POST" class="formulario_registro">
+            <input type="hidden" value="<?php echo $_SESSION['id_usuario_log'] ?>" name="id_asignador">
             <label>Asignar Funcionario</label>
             <select name="id_funcionario">
                 <?php
@@ -148,10 +164,14 @@ if ($_SESSION['rol'] == 2) {
                 <div class="col">
                     <label style="padding-right: 30px;">Fecha Inicio</label>
                     <input type="date" name="fecha_inicio">
+                    <label style="padding-right: 30px;">Hora Inicio</label>
+                    <input type="time" name="hora_inicio_t">
                 </div>
                 <div class="col">
                     <label style="padding-right: 15px;">Fecha Termino</label>
                     <input type="date" name="fecha_termino">
+                    <label style="padding-right: 15px;">Hora Termino</label>
+                    <input type="time" name="hora_termino_t">
                 </div>
             </div>
             <button class="btn" style="margin-top: 15px;">Crear Tarea</button>

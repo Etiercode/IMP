@@ -15,6 +15,9 @@ $estado = $_POST['estado'];
 $progreso = $_POST['progreso'];
 $fecha_inicio = $_POST['fecha_inicio'];
 $fecha_termino = $_POST['fecha_termino'];
+$hora_inicio_t = $_POST['hora_inicio_t'];
+$hora_termino_t = $_POST['hora_termino_t'];
+$id_asignador = $_POST['id_asignador'];
 
 if (empty($descripcion)) {
     echo '<script>alert("Campo Descripción Vacío");
@@ -28,8 +31,9 @@ if ($plazo < 0) {
     mysqli_close($conexion);
 }
 
-$query = "INSERT INTO tareas(id_funcionario,titulo_tarea, descripcion, estado, progreso, fecha_inicio, fecha_termino, plazo) 
-VALUES('$id_usuario','$titulo_tarea','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$plazo')";
+
+$query = "INSERT INTO tareas(id_funcionario,id_asignador,titulo_tarea, descripcion, estado, progreso, fecha_inicio, fecha_termino,hora_inicio_t,hora_termino_t, plazo) 
+VALUES('$id_usuario','$id_asignador','$titulo_tarea','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$hora_inicio_t', '$hora_termino_t', '$plazo')";
 
 $ejecutar = mysqli_query($conexion, $query);
 
@@ -47,7 +51,7 @@ if ($ejecutar) {
     echo '
 
         <script>
-        alert("Tarea no Agregada");
+        alert("Tarea no Agregada favor de revisar bien");
         window.location = "../tareas.php";
         </script>
 

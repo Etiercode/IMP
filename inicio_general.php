@@ -80,28 +80,42 @@ $id = $_SESSION['id_usuario_log'];
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
@@ -134,7 +148,7 @@ $id = $_SESSION['id_usuario_log'];
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.hora_inicio_t,t.hora_termino_t,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -151,6 +165,8 @@ $id = $_SESSION['id_usuario_log'];
                     <th>Progreso</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha de término</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Término</th>
                     <th>Plazo (Dias)</th>
                     <th>Acciones</th>
                 </tr>
@@ -164,6 +180,8 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Progreso"><?php echo $data["progreso"] ?></td>
                     <td data-titulo="Fecha Inicio"><?php echo $data["fecha_inicio"] ?></td>
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
+                    <td data-titulo="Hora Inicio"><?php echo $data["hora_inicio_t"] ?></td>
+                    <td data-titulo="Hora Termino"><?php echo $data["hora_termino_t"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>

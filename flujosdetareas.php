@@ -11,6 +11,13 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
+if ($_SESSION['rol'] == 3) {
+    echo '
+    <script>
+        alert("Debes iniciar sesión con un rol diferente");
+        window.location = "inicio.php";
+    </script>';
+}
 ?>
 <?php
 include "php/conexion_back.php";
@@ -61,28 +68,42 @@ include "php/conexion_back.php";
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
@@ -109,6 +130,8 @@ include "php/conexion_back.php";
     <div class="showcase">
         <h2>Crear Flujos de Tareas</h2>
         <h3>Usted está creando flujos de tareas como <?php echo $_SESSION['usuario'] ?></h3>
+        <P><span style="color: red;">RECUERDA QUE DEBEN HABER MINIMO 3 TAREAS PARA CREAR UN FLUJO</span></P>
+        <P><span style="color: red;">Al crear un flujo NO puedes eliminar tareas ni usuarios relacionados a esta</span></P>
         <form action="php/flujo_tarea_back.php" method="POST" class="formulario_registro">
             <label>Asignar Funcionario <span style="color: red;">*</span></label>
             <select name="id_funcionario_flujo">
@@ -147,7 +170,7 @@ include "php/conexion_back.php";
                     $tarea2 = mysqli_num_rows($query_tarea2);
                     if ($tarea2 > 0) {
                         while ($tarea2 = mysqli_fetch_array($query_tarea2)) {
-                    ?>      
+                    ?>
                             <option value="<?php echo $tarea2["id_tareas"]; ?>"><?php echo $tarea2["titulo_tarea"]; ?></option>
                     <?php
                         }
@@ -155,7 +178,7 @@ include "php/conexion_back.php";
                     ?>
                 </select>
             </div>
-            <div id="id_tarea_flujo3" >
+            <div id="id_tarea_flujo3">
                 <label>Seleccionar Tarea 3 <span style="color: red;">*</span></label>
                 <select name="id_tarea_flujo3">
                     <?php
@@ -179,10 +202,14 @@ include "php/conexion_back.php";
                 <div class="col">
                     <label style="padding-right: 30px;">Fecha Inicio <span style="color: red;">*</span></label>
                     <input type="date" name="fecha_inicio_f">
+                    <label style="padding-right: 30px;">Hora Inicio</label>
+                    <input type="time" name="hora_inicio_f">
                 </div>
                 <div class="col">
                     <label style="padding-right: 15px;">Fecha Termino <span style="color: red;">*</span></label>
                     <input type="date" name="fecha_termino_f">
+                    <label style="padding-right: 15px;">Hora Termino</label>
+                    <input type="time" name="hora_termino_f">
                 </div>
             </div>
             <button class="btn" style="margin-top: 15px;" type="submit">Crear Flujo</button>

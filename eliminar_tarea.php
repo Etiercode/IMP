@@ -11,20 +11,20 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
-if ($_SESSION['rol'] == 2) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
-}
-if ($_SESSION['rol'] == 3) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
-}
+// if ($_SESSION['rol'] == 2) {
+//     echo '
+//     <script>
+//         alert("Debes iniciar sesión con un rol diferente");
+//         window.location = "inicio.php";
+//     </script>';
+// }
+// if ($_SESSION['rol'] == 3) {
+//     echo '
+//     <script>
+//         alert("Debes iniciar sesión con un rol diferente");
+//         window.location = "inicio.php";
+//     </script>';
+// }
 ?>
 <?php
 include "php/conexion_back.php";
@@ -41,11 +41,11 @@ if (!empty($_POST)) {
             window.location = "inicio.php";
         </script>
         ';
-    }else{
+    } else {
         '
         <script>
             alert("Error al eliminar tarea");
-            window.location = "login/login.php";
+            window.location = "inicio.php";
         </script>
     ';
     }

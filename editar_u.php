@@ -163,31 +163,45 @@ if (!empty($_POST)) {
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 3) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                    &nbsp;&nbsp;
-                    <a href="Tareas.php">Asignar Tareas</a>
-                </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                <li>
-                    <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                    &nbsp;&nbsp;
-                    <a href="Tareas.php">Asignar Tareas</a>
-                </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="Tareas.php">Crear Tareas</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 2) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>

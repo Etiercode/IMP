@@ -4,6 +4,36 @@
     padding: 0;
 }
 
+.HeaderLista{
+    text-align: center;
+}
+.subTitleHeader{
+    text-align: center;
+}
+
+table{
+    border-collapse: separate;
+    width: 100%;
+    height: auto;
+}
+table th{
+    font-size: 22px;
+    text-align: center;
+    background: #284356;
+    color: #ffff;
+    padding: 10px;
+}
+table td{
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    font-size: 20px;
+}
+table tr:nth-child(odd){
+    background-color: rgba(51, 50, 50, 0.518);
+}
+
+
 body {
     background: black;
     color: white;
@@ -26,7 +56,16 @@ ul {
     width: 90%;
     margin: auto;
 }
-
+/*NO TASK TEXT AND IMG*/
+.notasktext{
+    display: none;
+}
+.notaskimg{
+    display: none;
+}
+.containerTextNoTask{
+    height: 200px;
+}
 /*Navegacion*/
 
 .nav-main {
@@ -72,57 +111,25 @@ ul {
 }
 
 /*SHOWCASE*/
-.formulario_registro{
-    margin-left: 20%;    
-    margin-right: 20%;
-
-}
 .showcase {
     margin-top: 20px;
     width: 100%;
-    height: auto;
-    padding-bottom: 150px;
+    height: 600px;
+    padding-bottom: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex;
-    padding-bottom: 50px;
 }
-
-/*Form Agregar Usuario*/
-input[type=text],
-select {
-    margin: auto;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.link_delete{
+    color: rgba(255, 0, 0, 0.823);
 }
-
-input[type=text] {
-    margin: auto;
-    margin-bottom: 5px;
-    border: 2px solid rgba(151, 82, 82, 0.642);
-    border-radius: 4px;
+.link_edit{
+    color: rgb(247, 251, 7);
 }
-input[type=date]{
-    margin-top: 5px;
-    padding: 7px;
+.link_reasignar{
+    color: rgb(18, 170, 216);
 }
-/*BUTTON*/
-.btn {
-    background-color: #00000074;
-    color: white;
-    padding: 10px 25px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    border: 1px solid #fafafa;
-}
-
 /*FOOTER LINKS*/
 
 .footer-links {
@@ -189,5 +196,27 @@ input[type=date]{
 
     .footer-links .footer-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+    table tr{
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        margin-bottom: 1em;
+    }
+    table th{
+        display: none;
+    }
+    table td{
+        padding: 0;
+    }
+    table td [data-titulo]{
+        display: flex;
+    }
+    table td[data-titulo]::before{
+        content: attr(data-titulo);
+        width: 90px;
+        font-weight: bold;
+        padding-right: 15px;
+        color: rgb(88, 169, 166);
     }
 }

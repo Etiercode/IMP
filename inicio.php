@@ -12,10 +12,15 @@ if (!isset($_SESSION['usuario'])) {
 }
 ?>
 <?php
+date_default_timezone_set("America/Santiago");
+$fecha_actual = new DateTime(date("d-m-Y"));
+?>
+<?php
 include "../IMP/php/conexion_back.php";
 ?>
 <?php
 $id = $_SESSION['id_usuario_log'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,28 +71,42 @@ $id = $_SESSION['id_usuario_log'];
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 2) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
@@ -115,6 +134,7 @@ $id = $_SESSION['id_usuario_log'];
     <h2 class="HeaderLista">Aqui su carga de trabajo</h2>
     <?php if ($_SESSION['rol'] == 1) { ?>
         <a href="inicio_general.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
+
     <?php } ?>
     <br>
     <div class="containerTextNoTask" style="display: none;">
@@ -122,10 +142,11 @@ $id = $_SESSION['id_usuario_log'];
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.hora_inicio_t,t.hora_termino_t,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
+
         while ($data = mysqli_fetch_array($query)) {
     ?>
             <table>
@@ -145,6 +166,8 @@ $id = $_SESSION['id_usuario_log'];
                     <th>Progreso</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha de término</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Término</th>
                     <th>Plazo (Dias)</th>
                     <th>Acciones</th>
                 </tr>
@@ -161,14 +184,26 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
                     <td data-titulo="Estado"><?php echo $data["estado"] ?></td>
-                    <td data-titulo="Progreso"><?php echo $data["progreso"] ?></td>
+                    <td data-titulo="Progreso">
+                        <?php
+                        $fecha_termino_t = new DateTime($data['fecha_termino']);
+                        $diff = date_diff($fecha_termino_t, $fecha_actual);
+                        echo $diff->d ."  dias  ";
+                        echo $diff->m ."  meses  ";
+                        echo $diff->invert;
+                        ?>
+                    </td>
                     <td data-titulo="Fecha Inicio"><?php echo $data["fecha_inicio"] ?></td>
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
+                    <td data-titulo="Hora Inicio"><?php echo $data["hora_inicio_t"] ?></td>
+                    <td data-titulo="Hora Término"><?php echo $data["hora_termino_t"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
                         <a class="link_delete" href="eliminar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
-                        <a class="link_reasignar" href="reasignar_f?id=<?php echo $data["id_usuario"]; ?>">Reasignar</a>
+                        <?php if ($_SESSION['rol'] == 1) { ?>
+                            <a class="link_reasignar" href="reasignar_f?id=<?php echo $data["id_usuario"]; ?>">Reasignar</a>
+                        <?php } ?>
                     </td>
                 </tr>
         <?php
@@ -189,6 +224,7 @@ $id = $_SESSION['id_usuario_log'];
                     <ul>
                         <li>
                             <h2>Recuerda Guardar Bien tus Documentos</h2>
+
                         </li>
                     </ul>
                     <ul>

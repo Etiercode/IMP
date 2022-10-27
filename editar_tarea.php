@@ -16,17 +16,17 @@ if (!isset($_SESSION['usuario'])) {
 }
 if ($_SESSION['rol'] == 2) {
     echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
+     <script>
+         alert("Debes iniciar sesión con un rol diferente");
+         window.location = "inicio.php";
+     </script>';
 }
 if ($_SESSION['rol'] == 3) {
     echo '
     <script>
         alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
+         window.location = "inicio.php";
+     </script>';
 }
 ?>
 
@@ -41,7 +41,7 @@ if (empty($_GET['id'])) {
 $id_tarea = $_GET['id'];
 if ($_SESSION['rol'] == 1) {
 
-    $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino, t.plazo 
+    $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino,t.hora_inicio_t,t.hora_termino_t, t.plazo 
     FROM tareas t 
     INNER JOIN login l 
     ON t.id_funcionario = l.id_usuario");
@@ -65,6 +65,8 @@ if ($_SESSION['rol'] == 1) {
             $estado = $data['estado'];
             $fecha_inicio = $data['fecha_inicio'];
             $fecha_termino = $data['fecha_termino'];
+            $hora_inicio_t = $data['hora_inicio_t'];
+            $hora_termino_t = $data['hora_termino_t'];
             $plazo = $data['plazo'];
         }
     }
@@ -72,12 +74,36 @@ if ($_SESSION['rol'] == 1) {
 ?>
 <?php
 if (!empty($_POST)) {
-
+    $titulo_tarea = $_POST['titulo_tarea'];
+    $descripcion = $_POST['descripcion'];
     $estado = $_POST['estado'];
+    $fecha_inicio = $_POST['fecha_inicio'];
+    $fecha_termino = $_POST['fecha_termino'];
+    $hora_inicio_t = $_POST['hora_inicio_t'];
+    $hora_termino_t = $_POST['hora_termino_t'];
 
     date("Y-m-d");
 
-    $sql_update = mysqli_query($conexion, "UPDATE tareas SET estado='$estado' WHERE id_tareas='$id_tarea'");
+    $date1 = strtotime($_REQUEST['fecha_inicio']);
+    $date2 = strtotime($_REQUEST['fecha_termino']);
+
+    $plazo = round((((($date2 - $date1) / 60) / 60) / 24), 2);
+
+    if (empty($descripcion)) {
+        echo '<script>alert("Campo Descripción Vacío");
+            window.location = "../agregar_usuario.php";</script>';
+        mysqli_close($conexion);
+    }
+
+    if ($plazo < 0) {
+        echo '<script>alert("Plazo tiene un valor Negativo, Revisar las fechas");
+        window.location = "../tareas.php";</script>';
+        mysqli_close($conexion);
+    }
+
+    date("Y-m-d");
+
+    $sql_update = mysqli_query($conexion, "UPDATE tareas SET titulo_tarea='$titulo_tarea', descripcion='$descripcion', estado='$estado', fecha_inicio='$fecha_inicio', fecha_termino='$fecha_termino',hora_inicio_t='$hora_inicio_t',hora_termino_t='$hora_termino_t' WHERE id_tareas='$id_tarea'");
 
     if ($sql_update) {
         echo '
@@ -142,28 +168,42 @@ if (!empty($_POST)) {
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="Tareas.php">Asignar Tareas</a>
+                        <a href="Tareas.php">Crear Tareas</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 2) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
                     <li>
                         <i class="fa-sharp fa-solid fa-calendar-days"></i>
                         &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos de Tareas</i></a>
+                        <a href="flujosdetareas.php">Crear Flujos</i></a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 1) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
+                    </li>
+                <?php } ?>
+                <?php if ($_SESSION['rol'] == 3) { ?>
+                    <li>
+                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
+                        &nbsp;&nbsp;
+                        <a href="Flujos_tarea.php">Ver Flujos</a>
                     </li>
                 <?php } ?>
                 <?php if ($_SESSION['rol'] == 1) { ?>
@@ -206,10 +246,14 @@ if (!empty($_POST)) {
                     <div class="col">
                         <label style="padding-right: 30px;">Fecha Inicio</label>
                         <input type="date" name="fecha_inicio">
+                        <label style="padding-right: 30px;">Hora Inicio</label>
+                        <input type="time" name="hora_inicio_t">
                     </div>
                     <div class="col">
                         <label style="padding-right: 15px;">Fecha Termino</label>
                         <input type="date" name="fecha_termino">
+                        <label style="padding-right: 15px;">Hora Termino</label>
+                        <input type="time" name="hora_termino_t">
                     </div>
                 </div>
                 <button class="btn" type="submit">Actualizar</button>
