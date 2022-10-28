@@ -237,7 +237,7 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
                         <a class="link_delete" href="eliminar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
-                        <a class="link_reasignar" href="reasignar_f?id=<?php echo $data["id_usuario"]; ?>">Reasignar</a>
+                        <a class="link_reasignar" href="reasignar_f.php?id=<?php echo $data["id_tareas"]; ?>">Reasignar</a>
                     </td>
                 </tr>
         <?php
