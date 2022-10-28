@@ -142,7 +142,7 @@ $id = $_SESSION['id_usuario_log'];
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.hora_inicio_t,t.hora_termino_t,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario AND estado = 'Sin Terminar' OR estado = 'En Progreso'");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -151,60 +151,74 @@ $id = $_SESSION['id_usuario_log'];
     ?>
             <table>
                 <tr>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <th>Id tarea</th>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <th>Responsable</th>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <th>Id</th>
-                    <?php } ?>
                     <th>Titulo Tarea</th>
                     <th>Descripción de la tarea</th>
                     <th>Estado de la tarea</th>
                     <th>Progreso</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha de término</th>
-                    <th>Hora Inicio</th>
-                    <th>Hora Término</th>
                     <th>Plazo (Dias)</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <td data-titulo="Id Tareas"><?php echo $data["id_tareas"] ?></td>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"] ?></td>
-                    <?php } ?>
-                    <?php if ($_SESSION['rol'] == 1) { ?>
-                        <td data-titulo="Id Usuario"><?php echo $data["id_usuario"] ?></td>
-                    <?php } ?>
+                    <?php
+                    $fecha_termino_t = new DateTime($data['fecha_termino']);
+                    $diff = date_diff($fecha_termino_t, $fecha_actual);
+                    $meses = $diff->m;
+                    $dias = $diff->d;
+                    $anio = $diff->y;
+                    $vencido = $diff->invert;
+                    //INVERT 1 DENTRO DEL PLAZO Y 0 FUERA DEL PLAZO
+                    if ($vencido == 0) {
+                        $meses = $meses * (-1);
+                        $dias = $dias * (-1);
+                        $atrasado = 'danger';
+                    } else {
+                        if ($dias > 3) {
+                            $atrasado = 'light';
+                        }
+                        if ($dias <= 3) {
+                            $atrasado = 'warning';
+                        }
+                    }
+                    ?>
                     <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
-                    <td data-titulo="Estado"><?php echo $data["estado"] ?></td>
-                    <td data-titulo="Progreso">
-                        <?php
-                        $fecha_termino_t = new DateTime($data['fecha_termino']);
-                        $diff = date_diff($fecha_termino_t, $fecha_actual);
-                        echo $diff->d ."  dias  ";
-                        echo $diff->m ."  meses  ";
-                        echo $diff->invert;
-                        ?>
-                    </td>
+                    <?php if ($data['estado'] == 'Sin Terminar') {
+                        echo '<td data-titulo="Estado">Sin Terminar</td>';
+                        if ($atrasado == 'light') {
+                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'warning') {
+                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'danger') {
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
+                        }
+                    } ?>
+                    <?php if ($data['estado'] == 'En Progreso') {
+                        echo '<td data-titulo="Estado">En Progreso</td>';
+                        if ($atrasado == 'light') {
+                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'warning') {
+                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'danger') {
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
+                        }
+                    } ?>
+                    <?php if ($data['estado'] == 'Terminado') {
+                        echo '<td data-titulo="Estado">Terminado</td>';
+                        echo '<td data-titulo="Progreso" style="color: green;">Tarea Terminada</td>';
+                    } ?>
                     <td data-titulo="Fecha Inicio"><?php echo $data["fecha_inicio"] ?></td>
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
-                    <td data-titulo="Hora Inicio"><?php echo $data["hora_inicio_t"] ?></td>
-                    <td data-titulo="Hora Término"><?php echo $data["hora_termino_t"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
                     <td data-titulo="Acciones">
-                        <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
-                        <a class="link_delete" href="eliminar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
-                        <?php if ($_SESSION['rol'] == 1) { ?>
-                            <a class="link_reasignar" href="reasignar_f?id=<?php echo $data["id_usuario"]; ?>">Reasignar</a>
-                        <?php } ?>
+                        <a class="link_edit" href="editar_estado.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
                     </td>
+
                 </tr>
         <?php
         }

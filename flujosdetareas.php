@@ -202,14 +202,10 @@ include "php/conexion_back.php";
                 <div class="col">
                     <label style="padding-right: 30px;">Fecha Inicio <span style="color: red;">*</span></label>
                     <input type="date" name="fecha_inicio_f">
-                    <label style="padding-right: 30px;">Hora Inicio</label>
-                    <input type="time" name="hora_inicio_f">
                 </div>
                 <div class="col">
                     <label style="padding-right: 15px;">Fecha Termino <span style="color: red;">*</span></label>
                     <input type="date" name="fecha_termino_f">
-                    <label style="padding-right: 15px;">Hora Termino</label>
-                    <input type="time" name="hora_termino_f">
                 </div>
             </div>
             <button class="btn" style="margin-top: 15px;" type="submit">Crear Flujo</button>

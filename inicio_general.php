@@ -29,6 +29,10 @@ if ($_SESSION['rol'] == 3) {
 include "../IMP/php/conexion_back.php";
 ?>
 <?php
+date_default_timezone_set("America/Santiago");
+$fecha_actual = new DateTime(date("d-m-Y"));
+?>
+<?php
 $id = $_SESSION['id_usuario_log'];
 ?>
 <!DOCTYPE html>
@@ -148,7 +152,7 @@ $id = $_SESSION['id_usuario_log'];
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.hora_inicio_t,t.hora_termino_t,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -165,23 +169,70 @@ $id = $_SESSION['id_usuario_log'];
                     <th>Progreso</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha de término</th>
-                    <th>Hora Inicio</th>
-                    <th>Hora Término</th>
                     <th>Plazo (Dias)</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
+                    <?php
+                    $fecha_termino_t = new DateTime($data['fecha_termino']);
+                    $diff = date_diff($fecha_termino_t, $fecha_actual);
+                    $meses = $diff->m;
+                    $dias = $diff->d;
+                    $anio = $diff->y;
+                    $vencido = $diff->invert;
+                    if ($vencido == 0) {
+                        $meses = $meses * (-1);
+                        $dias = $dias * (-1);
+                        $atrasado = 'danger';
+                    } else {
+                        if ($dias > 3) {
+                            $atrasado = 'light';
+                        }
+                        if ($dias <= 3) {
+                            $atrasado = 'warning';
+                        }
+                    }
+                    ?>
                     <td data-titulo="Id Tarea"><?php echo $data["id_tareas"] ?></td>
                     <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"] ?></td>
                     <td data-titulo="Id Usuario"><?php echo $data["id_usuario"] ?></td>
                     <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
-                    <td data-titulo="Estado"><?php echo $data["estado"] ?></td>
-                    <td data-titulo="Progreso"><?php echo $data["progreso"] ?></td>
+                    <?php if ($data['estado'] == 'Sin Terminar') {
+                        echo '<td data-titulo="Estado">Sin Terminar</td>';
+                        if ($atrasado == 'light') {
+                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'warning') {
+                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'danger') {
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
+                        }
+                    } ?>
+                    <?php if ($data['estado'] == 'En Progreso') {
+                        echo '<td data-titulo="Estado">En Progreso</td>';
+                        if ($atrasado == 'light') {
+                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'warning') {
+                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
+                        }
+                        if ($atrasado == 'danger') {
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
+                        }
+                    } ?>
+                    <?php if ($data['estado'] == 'Terminado') {
+                        echo '<td data-titulo="Estado">Terminado</td>';
+                        if($vencido == 1){
+                            echo '<td data-titulo="Progreso" style="color: green;">Tarea Terminada</td>';
+                        }
+                        if($vencido == 0){
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Terminada con Atraso</td>';
+                        }
+                    } ?>
                     <td data-titulo="Fecha Inicio"><?php echo $data["fecha_inicio"] ?></td>
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
-                    <td data-titulo="Hora Inicio"><?php echo $data["hora_inicio_t"] ?></td>
-                    <td data-titulo="Hora Termino"><?php echo $data["hora_termino_t"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>

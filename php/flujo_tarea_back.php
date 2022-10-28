@@ -10,8 +10,6 @@ $titulo_flujo = $_POST['titulo_flujo'];
 $desc_flujo = $_POST['desc_flujo'];
 $fecha_inicio_f = $_POST['fecha_inicio_f'];
 $fecha_termino_f = $_POST['fecha_termino_f'];
-$hora_inicio_f = $_POST['hora_inicio_f'];
-$hora_termino_f = $_POST['hora_termino_f'];
 
 date("Y-m-d");
 
@@ -42,8 +40,8 @@ if ($id_tarea_flujo1 == $id_tarea_flujo3) {
         </script>';
 }
 
-$query_flujo = "INSERT INTO flujos_tarea(id_funcionario_flujo, id_tarea_flujo1, id_tarea_flujo2, id_tarea_flujo3, titulo_flujo, desc_flujo, fecha_inicio_f, fecha_termino_f, hora_inicio_f, hora_termino_f) 
-    VALUES('$id_funcionario_flujo', '$id_tarea_flujo1', '$id_tarea_flujo2', '$id_tarea_flujo3', '$titulo_flujo', '$desc_flujo', '$fecha_inicio_f', '$fecha_termino_f', '$hora_inicio_f', '$hora_termino_f')";
+$query_flujo = "INSERT INTO flujos_tarea(id_funcionario_flujo, id_tarea_flujo1, id_tarea_flujo2, id_tarea_flujo3, titulo_flujo, desc_flujo, fecha_inicio_f, fecha_termino_f) 
+    VALUES('$id_funcionario_flujo', '$id_tarea_flujo1', '$id_tarea_flujo2', '$id_tarea_flujo3', '$titulo_flujo', '$desc_flujo', '$fecha_inicio_f', '$fecha_termino_f')";
 
 
 $ejecutar_flujo = mysqli_query($conexion, $query_flujo);

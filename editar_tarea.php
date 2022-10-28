@@ -41,7 +41,7 @@ if (empty($_GET['id'])) {
 $id_tarea = $_GET['id'];
 if ($_SESSION['rol'] == 1) {
 
-    $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino,t.hora_inicio_t,t.hora_termino_t, t.plazo 
+    $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino, t.plazo 
     FROM tareas t 
     INNER JOIN login l 
     ON t.id_funcionario = l.id_usuario");
@@ -65,8 +65,6 @@ if ($_SESSION['rol'] == 1) {
             $estado = $data['estado'];
             $fecha_inicio = $data['fecha_inicio'];
             $fecha_termino = $data['fecha_termino'];
-            $hora_inicio_t = $data['hora_inicio_t'];
-            $hora_termino_t = $data['hora_termino_t'];
             $plazo = $data['plazo'];
         }
     }
@@ -79,8 +77,6 @@ if (!empty($_POST)) {
     $estado = $_POST['estado'];
     $fecha_inicio = $_POST['fecha_inicio'];
     $fecha_termino = $_POST['fecha_termino'];
-    $hora_inicio_t = $_POST['hora_inicio_t'];
-    $hora_termino_t = $_POST['hora_termino_t'];
 
     date("Y-m-d");
 
@@ -103,19 +99,19 @@ if (!empty($_POST)) {
 
     date("Y-m-d");
 
-    $sql_update = mysqli_query($conexion, "UPDATE tareas SET titulo_tarea='$titulo_tarea', descripcion='$descripcion', estado='$estado', fecha_inicio='$fecha_inicio', fecha_termino='$fecha_termino',hora_inicio_t='$hora_inicio_t',hora_termino_t='$hora_termino_t' WHERE id_tareas='$id_tarea'");
+    $sql_update = mysqli_query($conexion, "UPDATE tareas SET titulo_tarea='$titulo_tarea', descripcion='$descripcion', estado='$estado', fecha_inicio='$fecha_inicio', fecha_termino='$fecha_termino' WHERE id_tareas='$id_tarea'");
 
     if ($sql_update) {
         echo '
                 <script>
                     alert("Tarea Actualizada Correctamente");
-                    window.location = "usuarios.php";
+                    window.location = "tareas.php";
                 </script>';
     } else {
         echo '
                 <script>
                     alert("Error al actualizar tarea");
-                    window.location = "usuarios.php";
+                    window.location = "tareas.php";
                 </script>';
     }
 }
@@ -246,14 +242,10 @@ if (!empty($_POST)) {
                     <div class="col">
                         <label style="padding-right: 30px;">Fecha Inicio</label>
                         <input type="date" name="fecha_inicio">
-                        <label style="padding-right: 30px;">Hora Inicio</label>
-                        <input type="time" name="hora_inicio_t">
                     </div>
                     <div class="col">
                         <label style="padding-right: 15px;">Fecha Termino</label>
                         <input type="date" name="fecha_termino">
-                        <label style="padding-right: 15px;">Hora Termino</label>
-                        <input type="time" name="hora_termino_t">
                     </div>
                 </div>
                 <button class="btn" type="submit">Actualizar</button>

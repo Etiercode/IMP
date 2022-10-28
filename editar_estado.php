@@ -1,4 +1,7 @@
 <?php
+include "../IMP/php/conexion_back.php";
+?>
+<?php
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
@@ -14,15 +17,61 @@ if (!isset($_SESSION['usuario'])) {
 ?>
 
 <?php
-include "../IMP/php/conexion_back.php";
-
-if ($_SESSION['rol'] == 2) {
+if (empty($_GET['id'])) {
     echo '
     <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
+        alert("Id de tarea no existe");
     </script>';
+    header('location: inicio.php');
 }
+$id_tarea = $_GET['id'];
+
+$sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino, t.plazo 
+    FROM tareas t 
+    INNER JOIN login l 
+    ON t.id_funcionario = l.id_usuario");
+
+$result_sql = mysqli_num_rows($sql);
+
+if ($result_sql == 0) {
+    echo '
+        <script>
+            alert("Tarea no existe");
+            window.location = "usuarios.php";
+        </script>
+        ';
+    header('location: inicio.php');
+} else {
+    while ($data = mysqli_fetch_array($sql)) {
+        $id_tareas = $data['id_tareas'];
+        $id_funcionario = $data['id_usuario'];
+        $estado = $data['estado'];
+
+    }
+}
+
+?>
+<?php
+if (!empty($_POST)) {
+    $estado = $_POST['estado'];
+
+    $sql_update = mysqli_query($conexion, "UPDATE tareas SET estado='$estado' WHERE id_tareas='$id_tarea'");
+
+    if ($sql_update) {
+        echo '
+                <script>
+                    alert("Tarea Actualizada Correctamente");
+                    window.location = "inicio.php";
+                </script>';
+    } else {
+        echo '
+                <script>
+                    alert("Error al actualizar tarea");
+                    window.location = "inicio.php";
+                </script>';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,14 +91,15 @@ if ($_SESSION['rol'] == 2) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <!--CSS-->
-    <link rel="stylesheet" href="css/tareas1.css">
-    <title>IMP | Agregar Tareas</title>
+    <link rel="stylesheet" href="css/editar_u.css">
+    <title>IMP | Editar Estado</title>
 </head>
 
 <body>
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
+    <br>
     <div class:="container">
         <nav class="nav-main">
             <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">
@@ -128,51 +178,27 @@ if ($_SESSION['rol'] == 2) {
             </ul>
         </nav>
     </div>
-    <br>
     <div class="showcase">
-        <h2>Agregar Tareas</h2>
-        <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
-        <form action="php/registro_tarea_back.php" method="POST" class="formulario_registro">
-            <input type="hidden" value="<?php echo $_SESSION['id_usuario_log'] ?>" name="id_asignador">
-            <label>Asignar Funcionario</label>
-            <select name="id_funcionario">
-                <?php
-                $query = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
-                $funcionarios = mysqli_num_rows($query);
-                if ($funcionarios > 0) {
-                    while ($responsable = mysqli_fetch_array($query)) {
-                ?>
-                        <option value="<?php echo $responsable["id_usuario"]; ?>"><?php echo $responsable["nombreusuario"]; ?></option>
-                <?php
-                    }
-                }
-                ?>
-            </select>
-            <label>Titulo Tarea</label>
-            <input type="text" placeholder="Titulo" name="titulo_tarea">
-            <label>Descripción de la tarea a realizar</label>
-            <input type="text" placeholder="Descripción" name="descripcion">
-            <label>Estado</label>
-            <select name="estado" class="estado">
-                <option type="text" placeholder="Estado" name="estado">Sin Terminar</option>
-            </select>
-            <label>Progreso</label>
-            <select name="progreso" class="progreso">
-                <option type="text" placeholder="progreso" name="progreso">0%</option>
-            </select>
-            <div class="row">
-                <div class="col">
-                    <label style="padding-right: 30px;">Fecha Inicio</label>
-                    <input type="date" name="fecha_inicio">
-                </div>
-                <div class="col">
-                    <label style="padding-right: 15px;">Fecha Termino</label>
-                    <input type="date" name="fecha_termino">
-                </div>
-            </div>
-            <button class="btn" style="margin-top: 15px;">Crear Tarea</button>
-        </form>
+        <h2>Editar Estado</h2>
+        <h3>Usted está Editando Estado de tarea</h3>
+        
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div class="Registro_Usuario">
+            <form action="" method="POST" class="formulario_registro">
+                <select name="estado" class="sexo">
+                    <option type="text" placeholder="estado" name="estado">En Progreso</option>
+                    <option type="text" placeholder="estado" name="estado">Terminado</option>
+                </select>
+                <button class="btn" type="submit" style="margin-left: 25%;">Actualizar</button>
+            </form>
+        </div>
     </div>
+
     <div class="footer-links">
         <div class="footer-container">
             <ul>
