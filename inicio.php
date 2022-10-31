@@ -20,7 +20,6 @@ include "../IMP/php/conexion_back.php";
 ?>
 <?php
 $id = $_SESSION['id_usuario_log'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -134,7 +133,6 @@ $id = $_SESSION['id_usuario_log'];
     <h2 class="HeaderLista">Aqui su carga de trabajo</h2>
     <?php if ($_SESSION['rol'] == 1) { ?>
         <a href="inicio_general.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
-
     <?php } ?>
     <br>
     <div class="containerTextNoTask" style="display: none;">
@@ -172,13 +170,13 @@ $id = $_SESSION['id_usuario_log'];
                     if ($vencido == 0) {
                         $meses = $meses * (-1);
                         $dias = $dias * (-1);
-                        $atrasado = 'danger';
+                        $atrasado = 'Tarea_Terminada_con_Atraso';
                     } else {
                         if ($dias > 3) {
-                            $atrasado = 'light';
+                            $atrasado = 'Tarea_Terminada';
                         }
                         if ($dias <= 3) {
-                            $atrasado = 'warning';
+                            $atrasado = 'Tarea_Terminada_';
                         }
                     }
                     ?>
@@ -186,25 +184,25 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
                     <?php if ($data['estado'] == 'Sin Terminar') {
                         echo '<td data-titulo="Estado">Sin Terminar</td>';
-                        if ($atrasado == 'light') {
+                        if ($atrasado == 'Tarea_Terminada') {
                             echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
-                        if ($atrasado == 'warning') {
+                        if ($atrasado == 'Tarea_Terminada_') {
                             echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
-                        if ($atrasado == 'danger') {
+                        if ($atrasado == 'Tarea_Terminada_con_Atraso') {
                             echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
                         }
                     } ?>
                     <?php if ($data['estado'] == 'En Progreso') {
                         echo '<td data-titulo="Estado">En Progreso</td>';
-                        if ($atrasado == 'light') {
+                        if ($atrasado == 'Tarea_Terminada') {
                             echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
-                        if ($atrasado == 'warning') {
+                        if ($atrasado == 'Tarea_Terminada_') {
                             echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
-                        if ($atrasado == 'danger') {
+                        if ($atrasado == 'Tarea_Terminada_con_Atraso') {
                             echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
                         }
                     } ?>
@@ -216,9 +214,10 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
                     <td data-titulo="Acciones">
-                        <a class="link_edit" href="editar_estado.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
+                        <a class="link_edit" href="editar_estado.php?id=<?php echo $data["id_tareas"];?>&progreso_tarea=<?php echo $atrasado ?>">Editar</a>
+                        <br>
+                        <a class="link_reasignar" href="reportar_t.php?id=<?php echo $data["id_tareas"]; ?>">Reportar Tarea</a>
                     </td>
-
                 </tr>
         <?php
         }

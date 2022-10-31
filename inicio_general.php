@@ -149,6 +149,7 @@ $id = $_SESSION['id_usuario_log'];
     <br>
     <div class="containerTextNoTask" style="display: none;">
         <div class="notasktext">No tienes tareas asignadas</div>
+        <a href="inicio.php" style="margin-left: 45%; Color: green">Ver Mis Tareas</a>
     </div>
 
     <?php
@@ -237,6 +238,7 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
                         <a class="link_delete" href="eliminar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
+                        <br>
                         <a class="link_reasignar" href="reasignar_f.php?id=<?php echo $data["id_tareas"]; ?>">Reasignar</a>
                     </td>
                 </tr>

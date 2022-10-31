@@ -2,7 +2,7 @@
 include "../IMP/php/conexion_back.php";
 ?>
 <?php
-session_start();
+session_start();    
 
 if (!isset($_SESSION['usuario'])) {
     echo '
@@ -24,7 +24,17 @@ if (empty($_GET['id'])) {
     </script>';
     header('location: inicio.php');
 }
+
 $id_tarea = $_GET['id'];
+$progreso_tarea = $_GET ['progreso_tarea'];
+
+if (empty($_GET['progreso_tarea'])) {
+    echo '
+    <script>
+        alert("Progreso de Tarea Invalido");
+    </script>';
+    header('location: inicio.php');
+}
 
 $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino, t.plazo 
     FROM tareas t 
@@ -54,8 +64,9 @@ if ($result_sql == 0) {
 <?php
 if (!empty($_POST)) {
     $estado = $_POST['estado'];
+    $progreso = $_POST['progreso'];
 
-    $sql_update = mysqli_query($conexion, "UPDATE tareas SET estado='$estado' WHERE id_tareas='$id_tarea'");
+    $sql_update = mysqli_query($conexion, "UPDATE tareas SET estado='$estado', progreso='$progreso' WHERE id_tareas='$id_tarea'");
 
     if ($sql_update) {
         echo '
@@ -190,6 +201,7 @@ if (!empty($_POST)) {
 
         <div class="Registro_Usuario">
             <form action="" method="POST" class="formulario_registro">
+                <input type="hidden" name="progreso" value="<?php echo $progreso_tarea ?>">
                 <select name="estado" class="sexo">
                     <option type="text" placeholder="estado" name="estado">En Progreso</option>
                     <option type="text" placeholder="estado" name="estado">Terminado</option>
