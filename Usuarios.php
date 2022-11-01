@@ -136,18 +136,18 @@ include "../IMP/php/conexion_back.php";
     </div>
     <br>
     <h2 class="HeaderLista">Listado de Usuarios</h2>
-    <p class="subTitleHeader">Lista de Usuarios creados en la base de datos</p>
+    <p class="subTitleHeader">Administradores</p>
     <table>
         <tr>
-            <th>id_usuario</th>
-            <th>usuario</th>
-            <th>nombreusuario</th>
-            <th>clave</th>
-            <th>rol</th>
-            <th>sexo</th>
-            <th>correo</th>
-            <th>numero telefonico</th>
-            <th>dirección</th>
+            <th>Id Usuario</th>
+            <th>Usuario</th>
+            <th>Nombre de Usuario</th>
+            <th>Clave</th>
+            <th>Rol</th>
+            <th>Sexo</th>
+            <th>Correo</th>
+            <th>Número Telefónico</th>
+            <th>Dirección</th>
             <th>Acciones</th>
         </tr>
         <?php
@@ -164,7 +164,17 @@ include "../IMP/php/conexion_back.php";
                     <td data-titulo="Usuario"><?php echo $data["usuario"]; ?></td>
                     <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"]; ?></td>
                     <td data-titulo="Clave"><?php echo $data["clave"]; ?></td>
-                    <td data-titulo="Rol"><?php echo $data["rol"]; ?></td>
+                    <?php 
+                        if($data["rol"] == 1){
+                            echo '<td data-titulo="Rol">Administrador</td>';
+                        }
+                        if($data["rol"] == 2){
+                            echo '<td data-titulo="Rol">Diseñador de Procesos</td>';
+                        }
+                        if($data["rol"] == 3){
+                            echo '<td data-titulo="Rol">Funcionario</td>';
+                        }
+                    ?>
                     <td data-titulo="Sexo"><?php echo $data["sexo"]; ?></td>
                     <td data-titulo="Correo"><?php echo $data["correo"]; ?></td>
                     <td data-titulo="Numero Telefonico"><?php echo $data["numero_telef"]; ?></td>
@@ -179,7 +189,6 @@ include "../IMP/php/conexion_back.php";
         }
         ?>
     </table>
-    <!----------------------------------------------FOOTER-->
     <div class="footer-links">
         <div class="footer-container">
             <ul>

@@ -148,7 +148,7 @@ $id = $_SESSION['id_usuario_log'];
     <a href="inicio.php" style="margin-left: 45%; Color: green">Ver Mis Tareas</a>
     <br>
     <div class="containerTextNoTask" style="display: none;">
-        <div class="notasktext">No tienes tareas asignadas</div>
+        <div class="notasktext">No Hay tareaas en ningun usuario</div>
         <a href="inicio.php" style="margin-left: 45%; Color: green">Ver Mis Tareas</a>
     </div>
 
@@ -250,7 +250,7 @@ $id = $_SESSION['id_usuario_log'];
             width: 300px;
             border: 15px solid rgb(94, 94, 94);
             padding: 50px;
-            margin: auto; margin-top: 135px; margin-bottom: 135px">No tienes tareas asignadas</div>';
+            margin: auto; margin-top: 135px; margin-bottom: 135px">No Hay tareas Asignadas</div>';
     }
         ?>
             </table>

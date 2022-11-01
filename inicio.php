@@ -140,7 +140,7 @@ $id = $_SESSION['id_usuario_log'];
     </div>
 
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario AND estado = 'Sin Terminar' OR estado = 'En Progreso'");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario,t.id_asignador FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario AND estado = 'Sin Terminar' OR estado = 'En Progreso'");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -191,7 +191,7 @@ $id = $_SESSION['id_usuario_log'];
                             echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
                         if ($atrasado == 'Tarea_Terminada_con_Atraso') {
-                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';  
                         }
                     } ?>
                     <?php if ($data['estado'] == 'En Progreso') {
@@ -216,7 +216,7 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_estado.php?id=<?php echo $data["id_tareas"];?>&progreso_tarea=<?php echo $atrasado ?>">Editar</a>
                         <br>
-                        <a class="link_reasignar" href="reportar_t.php?id=<?php echo $data["id_tareas"]; ?>">Reportar Tarea</a>
+                        <a class="link_reasignar" href="reportar_t.php?id=<?php echo $data["id_tareas"];?>&id_usuario_r=<?php echo $data["id_usuario"];?>&id_asignador_t=<?php echo $data["id_asignador"];?>">Reportar Tarea</a>
                     </td>
                 </tr>
         <?php

@@ -133,7 +133,7 @@ include "../IMP/php/conexion_back.php";
     <h2 class="HeaderLista">Todos los Flujos Creados</h2>
     <br>
     <?php
-    $query = mysqli_query($conexion, "SELECT f.id_flujo, f.titulo_flujo, l.id_usuario, l.nombreusuario, t.id_tareas, f.id_tarea_flujo2, f.id_tarea_flujo3
+    $query = mysqli_query($conexion, "SELECT f.id_flujo, f.titulo_flujo, l.id_usuario, l.nombreusuario, t.id_tareas, f.id_tarea_flujo2, f.id_tarea_flujo3, t.estado
     FROM flujos_tarea f
     INNER JOIN login l
     ON f.id_funcionario_flujo=l.id_usuario
@@ -153,6 +153,7 @@ include "../IMP/php/conexion_back.php";
                     <th>Tarea 1</th>
                     <th>Tarea 2</th>
                     <th>Tarea 3</th>
+                    <th>Progreso Flujo</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
@@ -160,20 +161,52 @@ include "../IMP/php/conexion_back.php";
                     <td data-titulo="Titulo Flujo"><?php echo $data["titulo_flujo"] ?></td>
                     <td data-titulo="Id Usuario"><?php echo $data["id_usuario"] ?></td>
                     <td data-titulo="Nombre Usuario"><?php echo $data['nombreusuario'] ?></td>
-                    <td data-titulo="Descripcion"><?php echo $data["id_tareas"] ?></td>
-                    <td data-titulo="Estado"><?php echo $data["id_tarea_flujo2"] ?></td>
-                    <td data-titulo="Progreso"><?php echo $data["id_tarea_flujo3"] ?></td>
+                    <td data-titulo="Tarea 1"><?php echo $data["id_tareas"] ?></td>
+                    <td data-titulo="Tarea 2"><?php echo $data["id_tarea_flujo2"] ?></td>
+                    <td data-titulo="Tarea 3"><?php echo $data["id_tarea_flujo3"] ?></td>
+                    <?php
+                    $avance = 0;
+                    $query_Estado_t1 = mysqli_query($conexion, "SELECT t.estado,t.id_tareas FROM tareas t INNER JOIN flujos_tarea f WHERE id_tareas=id_tareas");
+                    $estado_t1 = mysqli_fetch_array($query_Estado_t1);
+                    if ($estado_t1['estado'] == 'Sin Terminar' || $estado_t1['estado'] == 'En Progreso') {
+                        $avance = $avance + 0;
+                    } else {
+                        $avance = $avance + 33;
+                    }
+                    $query_Estado_t2 = mysqli_query($conexion, "SELECT t.estado,t.id_tareas FROM tareas t INNER JOIN flujos_tarea f WHERE id_tareas=id_tarea_flujo2");
+                    $estado_t2 = mysqli_fetch_array($query_Estado_t2);
+                    if ($estado_t2['estado'] == 'Sin Terminar' || $estado_t2['estado'] == 'En Progreso') {
+                        $avance = $avance + 0;
+                    } else {
+                        $avance = $avance + 33;
+                    }
+                    $query_Estado_t3 = mysqli_query($conexion, "SELECT t.estado,t.id_tareas FROM tareas t INNER JOIN flujos_tarea f WHERE id_tareas=id_tarea_flujo3");
+                    $estado_t3 = mysqli_fetch_array($query_Estado_t3);
+                    if ($estado_t3['estado'] == 'Sin Terminar' || $estado_t3['estado'] == 'En Progreso') {
+                        $avance = $avance + 0;
+                    } else {
+                        $avance = $avance + 34;
+                    }
+                    echo '<td data-titulo="Progreso">Avance ',$avance,'%</td>';
+                    ?>
                     <td data-titulo="Acciones">
                         <a class="link_edit" href="editar_flujo.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
-                        <a class="link_delete" href="eliminar_flujo.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
-                        <?php if ($_SESSION['rol'] == 1) { ?>
-                            <a class="link_reasignar" href="reasignar_f?id=<?php echo $data["id_usuario"]; ?>">Reasignar</a>
-                        <?php } ?>
+                        <?php
+                        if ($avance == 100) {
+                            echo '<a class="link_delete" href="eliminar_flujo.php?id=<?php echo $data["id_tareas"]; ?>Eliminar</a>';
+                        }
+                        ?>
                     </td>
                 </tr>
         <?php
         }
     } else {
+        echo '<div class="notasktext" style="display: block; 
+        background-color: rgb(114, 114, 114);
+        width: 300px;
+        border: 15px solid rgb(94, 94, 94);
+        padding: 50px;
+        margin: auto; margin-top: 135px; margin-bottom: 135px">No hay flujos creados</div>';
     }
         ?>
             </table>

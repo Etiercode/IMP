@@ -1,7 +1,10 @@
 <?php
 
 include 'conexion_back.php';
-date("Y-m-d");
+
+date_default_timezone_set("America/Santiago");
+$fecha_actual = new DateTime(date("d-m-Y"));
+
 
 $date1 = strtotime($_REQUEST['fecha_inicio']);
 $date2 = strtotime($_REQUEST['fecha_termino']);
@@ -19,10 +22,9 @@ $id_asignador = $_POST['id_asignador'];
 
 if (empty($descripcion)) {
     echo '<script>alert("Campo Descripción Vacío");
-        window.location = "../agregar_usuario.php";</script>';
+        window.location = "../tareas.php";</script>';
     mysqli_close($conexion);
 }
-
 if ($plazo < 0) {
     echo '<script>alert("Plazo tiene un valor Negativo, Revisar las fechas");
     window.location = "../tareas.php";</script>';

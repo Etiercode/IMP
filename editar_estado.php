@@ -66,6 +66,7 @@ if (!empty($_POST)) {
     $estado = $_POST['estado'];
     $progreso = $_POST['progreso'];
 
+
     $sql_update = mysqli_query($conexion, "UPDATE tareas SET estado='$estado', progreso='$progreso' WHERE id_tareas='$id_tarea'");
 
     if ($sql_update) {
@@ -192,6 +193,7 @@ if (!empty($_POST)) {
     <div class="showcase">
         <h2>Editar Estado</h2>
         <h3>Usted está Editando Estado de tarea</h3>
+        <p style="color: red;">Recuerda que al colocar la tarea en "Terminado", esta se eliminarán de tu carga de trabajo</p>
         
         <br>
         <br>

@@ -236,7 +236,6 @@ if (!empty($_POST)) {
                 <select name="estado" class="sexo">
                     <option type="text" placeholder="estado" name="estado">Sin Terminar</option>
                     <option type="text" placeholder="estado" name="estado">En Progreso</option>
-                    <option type="text" placeholder="estado" name="estado">Terminado</option>
                 </select>
                 <div class="row">
                     <div class="col">
