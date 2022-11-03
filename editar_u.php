@@ -35,7 +35,7 @@ if (empty($_GET['id'])) {
     <script>
         alert("Id de usuario no existe");
     </script>';
-    header('location: usuarios.php');
+    header('location: Usuarios.php');
 }
 $id_usuario = $_GET['id'];
 
@@ -50,10 +50,10 @@ if ($result_sql == 0) {
     echo '
     <script>
         alert("Usuario no existe");
-        window.location = "usuarios.php";
+        window.location = "Usuarios.php";
     </script>
     ';
-    header('location: usuarios.php');
+    header('location: Usuarios.php');
 } else {
     while ($data = mysqli_fetch_array($sql)) {
         $option = '';
@@ -107,13 +107,13 @@ if (!empty($_POST)) {
             echo '
             <script>
                 alert("Usuario Actualizado Correctamente");
-                window.location = "usuarios.php";
+                window.location = "Usuarios.php";
             </script>';
         } else {
             echo '
             <script>
                 alert("Error al actualizar usuario");
-                window.location = "usuarios.php";
+                window.location = "Usuarios.php";
             </script>';
         }
     }
