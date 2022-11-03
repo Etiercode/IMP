@@ -22,12 +22,12 @@ $id_asignador = $_POST['id_asignador'];
 
 if (empty($descripcion)) {
     echo '<script>alert("Campo Descripción Vacío");
-        window.location = "../tareas.php";</script>';
+        window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
 if ($plazo < 0) {
     echo '<script>alert("Plazo tiene un valor Negativo, Revisar las fechas");
-    window.location = "../tareas.php";</script>';
+    window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
 
@@ -42,7 +42,7 @@ if ($ejecutar) {
 
         <script>
         alert("Tarea Agregada");
-        window.location = "../tareas.php";
+        window.location = "../Tareas.php";
         </script>
 
         ';
@@ -52,7 +52,7 @@ if ($ejecutar) {
 
         <script>
         alert("Tarea no Agregada favor de revisar bien");
-        window.location = "../tareas.php";
+        window.location = "../Tareas.php";
         </script>
 
         ';

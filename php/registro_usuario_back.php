@@ -77,14 +77,14 @@ if (empty($usuario)) {
         echo '
     <script>
         alert("Usuario Agregado");
-        header("../usuarios.php");
+        header("../Usuarios.php");
     </script>';
     } else {
 
         echo '
     <script>
         alert("Usuario no Agregado");
-        header("../usuarios.php");
+        header("../Usuarios.php");
     </script>';
     }
 
