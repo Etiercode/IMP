@@ -2,68 +2,71 @@
 
 include_once "conexion_back.php";
 
+date_default_timezone_set("America/Santiago");
+$fecha_actual = new DateTime(date("d-m-Y"));
+
 $id_funcionario_flujo = $_POST['id_funcionario_flujo'];
-$id_tarea_flujo1 = $_POST['id_tarea_flujo1'];
-$id_tarea_flujo2 = $_POST['id_tarea_flujo2'];
-$id_tarea_flujo3 = $_POST['id_tarea_flujo3'];
 $titulo_flujo = $_POST['titulo_flujo'];
 $desc_flujo = $_POST['desc_flujo'];
-$fecha_inicio_f = $_POST['fecha_inicio_f'];
-$fecha_termino_f = $_POST['fecha_termino_f'];
+$estatus = $_POST['estatus'];
+$usuario_log = $_POST['usuario_log'];
+$tareas_sin_f = $_POST['tarea'];
+$t=implode(', ',$tareas_sin_f);
 
-date("Y-m-d");
-
-$date1 = strtotime($_REQUEST['fecha_inicio_f']);
-$date2 = strtotime($_REQUEST['fecha_termino_f']);
-
-$plazo = round((((($date2 - $date1) / 60) / 60) / 24), 2);
-
-if ($id_tarea_flujo1 == $id_tarea_flujo2) {
-    echo '
-        <script>
-            alert("La tarea 1 no puede ser la misma que la tarea 2");
-            window.location = "../flujosdetareas.php";
-        </script>';
-}
-if ($id_tarea_flujo2 == $id_tarea_flujo3) {
-    echo '
-        <script>
-            alert("La tarea 2 no puede ser la misma que la tarea 3");
-            window.location = "../flujosdetareas.php";
-        </script>';
-}
-if ($id_tarea_flujo1 == $id_tarea_flujo3) {
-    echo '
-        <script>
-            alert("La tarea 1 no puede ser la misma que la tarea 3");
-            window.location = "../flujosdetareas.php";
-        </script>';
+if($tareas_sin_f = ''){
+    echo '<script>alert("No Hay tareas seleccionadas");
+    window.location = "../flujosdetareas.php";</script>';
+    mysqli_close($conexion);
 }
 
-$query_flujo = "INSERT INTO flujos_tarea(id_funcionario_flujo, id_tarea_flujo1, id_tarea_flujo2, id_tarea_flujo3, titulo_flujo, desc_flujo, fecha_inicio_f, fecha_termino_f) 
-    VALUES('$id_funcionario_flujo', '$id_tarea_flujo1', '$id_tarea_flujo2', '$id_tarea_flujo3', '$titulo_flujo', '$desc_flujo', '$fecha_inicio_f', '$fecha_termino_f')";
+if($estatus == 'on'){
+    $estatus = '1';
+}
+if($estatus == ''){
+    $estatus = '0';
+}
+
+if (strlen($desc_flujo) > 200) {
+    echo '<script>alert("Campo Descripcion supera lo permitido");
+    window.location = "../tareas.php";</script>';
+    mysqli_close($conexion);
+}
+if (strlen($titulo_flujo) > 30) {
+    echo '<script>alert("Campo Titulo supera lo permitido");
+    window.location = "../tareas.php";</script>';
+    mysqli_close($conexion);
+}
+
+if (empty($titulo_flujo)) {
+    echo '<script>alert("Campo Titulo del Flujo Vacio");
+    window.location = "../flujosdetareas.php";</script>';
+    mysqli_close($conexion);
+}
+if (empty($desc_flujo)) {
+    echo '<script>alert("Campo Descripcion del Flujo Vacio");
+    window.location = "../flujosdetareas.php";</script>';
+    mysqli_close($conexion);
+}
+
+$query_flujo = "INSERT INTO flujos_tarea(id_funcionario_flujo, id_creador_flujo, titulo_flujo, desc_flujo, tareas_sin_f, estatus) 
+    VALUES('$id_funcionario_flujo', '$usuario_log', '$titulo_flujo', '$desc_flujo', '$t', '$estatus')";
 
 
 $ejecutar_flujo = mysqli_query($conexion, $query_flujo);
 
 if ($ejecutar_flujo) {
     echo '
-
         <script>
         alert("Flujo de Tareas Creado");
         window.location = "../flujosdetareas.php";
         </script>
-
         ';
 } else {
-
     echo '
-
         <script>
         alert("Flujo de Tareas no Creado");
         window.location = "../flujosdetareas.php";
         </script>
-
         ';
 }
 

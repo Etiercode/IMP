@@ -93,6 +93,7 @@ table tr:nth-child(odd){
 }
 table td{
     padding: 10px;
+    height: 100px;
 }
 .link_edit{
     color: rgb(64, 170, 145);

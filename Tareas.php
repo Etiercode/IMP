@@ -50,88 +50,14 @@ if ($_SESSION['rol'] == 2) {
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
-    <div class:="container">
-        <nav class="nav-main">
-            <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">
-            <ul class="nav-menu">
-                <li>
-                    <i class="fa-solid fa-inbox"></i>
-                    &nbsp;&nbsp;
-                    <a href="inicio.php">Inicio</a>
-                </li>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="Usuarios.php">Usuarios</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                    </li>
-                <?php } ?>
-                <li>
-                    <i class="fa-solid fa-circle-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="php/cerrar_sesion.php">Cerrar Sesión</a>
-                </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user-shield"></i>
-                    &nbsp;&nbsp;
-                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <?php
+    include "header.php";
+    ?>
     <br>
     <div class="showcase">
         <h2>Agregar Tareas</h2>
         <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
+        <p><a href="tareas_sin.php" style="color: red;">Agregar Tareas Sin Responsable</a></p>
         <form action="php/registro_tarea_back.php" method="POST" class="formulario_registro">
             <input type="hidden" value="<?php echo $_SESSION['id_usuario_log'] ?>" name="id_asignador">
             <label>Asignar Funcionario</label>
@@ -154,7 +80,7 @@ if ($_SESSION['rol'] == 2) {
             <input type="text" placeholder="Descripción" name="descripcion">
             <label>Estado</label>
             <select name="estado" class="estado">
-                <option type="text" placeholder="Estado" name="estado">Sin Terminar</option>
+                <option type="text" placeholder="Estado" name="estado">En Progreso</option>
             </select>
             <label>Progreso</label>
             <select name="progreso" class="progreso">
@@ -173,28 +99,9 @@ if ($_SESSION['rol'] == 2) {
             <button class="btn" style="margin-top: 15px;">Crear Tarea</button>
         </form>
     </div>
-    <div class="footer-links">
-        <div class="footer-container">
-            <ul>
-                <li>
-                    <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Aplicación de Escritorio</h2>
-                </li>
-                <li>
-
-                    <a href="">(URL DESCARGA)</a>
-                </li>
-            </ul>
-        </div>
-        <footer class="footer">
-            <h3>Improve My Process Copyright</h3>
-        </footer>
-        <script src="js/navbar.js"></script>
-    </div>
+    <?php
+    include "footer.php";
+    ?>
 </body>
 
 </html>

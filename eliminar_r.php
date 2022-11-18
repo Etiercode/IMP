@@ -11,41 +11,27 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
-if ($_SESSION['rol'] == 2) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
-}
-if ($_SESSION['rol'] == 3) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
-}
 ?>
 <?php
 
 include "php/conexion_back.php";
 
 if (!empty($_POST)) {
-    $idusuario = $_POST['idusuario'];
+    $idReporte = $_POST['idReporte'];
 
-    $query_delete = mysqli_query($conexion, "DELETE FROM login WHERE id_usuario='$idusuario'");
+    $query_delete = mysqli_query($conexion, "DELETE FROM reportes WHERE id_reporte='$idReporte'");
     if ($query_delete) {
         echo '
         <script>
-            alert("Usuario Eliminado");
-            header("location: usuarios.php");
+            alert("Reporte Eliminado");
+            header("location: reportes.php");
         </script>';
-        header("location: usuarios.php");
+        header("location: reportes.php");
     } else {
         echo '
         <script>
-            alert("Error al eliminar usuario");
-            header("location: usuarios.php");
+            alert("Error al eliminar Reporte");
+            header("location: reportes.php");
         </script>';
     }
 }
@@ -53,30 +39,28 @@ if (!empty($_POST)) {
 if (empty($_REQUEST['id'])) {
     echo '
     <script>
-        alert("Usuario No existe");
-        header("location: usuarios.php");
+        alert("Reporte No existe");
+        header("location: reportes.php");
     </script>';
 } else {
 
     include "php/conexion_back.php";
 
-    $id_usuario = $_REQUEST['id'];
+    $id_reporte = $_REQUEST['id'];
 
-    $sql = mysqli_query($conexion, "SELECT l.id_usuario, l.usuario, l.nombreusuario, l.clave, l.rol, l.correo, l.sexo,l.numero_telef,l.direccion,(r.id_rol) AS rol 
-    FROM login l 
-    INNER JOIN roles r on l.rol = r.id_rol 
-    WHERE id_usuario=$id_usuario");
+    $sql = mysqli_query($conexion, "SELECT * FROM reportes 
+    WHERE id_reporte=$id_reporte");
 
     $result = mysqli_num_rows($sql);
 
     if ($result > 0) {
         while ($data = mysqli_fetch_array($sql)) {
-            $nombreusuario = $data['nombreusuario'];
-            $rol = $data['rol'];
-            $correo = $data['correo'];
+            $id_reporte = $data['id_reporte'];
+            $mensaje = $data['mensaje'];
+            $id_funcionario_r = $data['id_funcionario_r'];
         }
     } else {
-        header("location: usuarios.php");
+        header("location: reportes.php");
     }
 }
 
@@ -117,17 +101,17 @@ if (empty($_REQUEST['id'])) {
     <br>
     <br>
     <div class="showcase">
-        <h2>Eliminar Usuario</h2>
-        <h3>¿Estás seguro que quieres eliminar este usuario?</h3>
+        <h2>Eliminar Reporte</h2>
+        <h3>¿Estás seguro que quieres eliminar este reporte?</h3>
         <br>
         <br>
-        <p style="font-size: 25px;">Usuario: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $nombreusuario ?></span></p>
-        <p style="font-size: 25px;">Correo: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $correo ?></span></p>
-        <p style="font-size: 25px;">Rol: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $rol ?></span></p>
+        <p style="font-size: 25px;">Id Reporte: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $id_reporte ?></span></p>
+        <p style="font-size: 25px;">Id Funcionario Responsable: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $id_funcionario_r ?></span></p>
+        <p style="font-size: 25px;">Mensaje: <span style="font-weight: bold; color: #4f72d4; font-size: 20px;"><?php echo $mensaje ?></span></p>
 
         <form method="POST" action="">
-            <input type="hidden" name="idusuario" value="<?php echo $id_usuario ?>">
-            <a href="Usuarios.php" class="btn_cancel" style="width: 124px;background: rgb(177, 68, 68);color: white;display: inline-block;padding: 9px;border-radius: 5px;cursor: pointer;">Cancelar</a>
+            <input type="hidden" name="idReporte" value="<?php echo $id_reporte ?>">
+            <a href="reportes.php" class="btn_cancel" style="width: 124px;background: rgb(177, 68, 68);color: white;display: inline-block;padding: 9px;border-radius: 5px;cursor: pointer;">Cancelar</a>
             <input type="submit" value="Aceptar" class="btn_ok" style="width: 124px;background: rgb(51, 151, 89);color: white;display: inline-block;border-radius: 5px;cursor: pointer;">
         </form>
     </div>

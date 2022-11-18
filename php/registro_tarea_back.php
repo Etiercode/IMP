@@ -20,13 +20,28 @@ $fecha_inicio = $_POST['fecha_inicio'];
 $fecha_termino = $_POST['fecha_termino'];
 $id_asignador = $_POST['id_asignador'];
 
+if (strlen($descripcion) > 200) {
+    echo '<script>alert("Campo Descripcion supera lo permitido");
+    window.location = "../tareas.php";</script>';
+    mysqli_close($conexion);
+}
+if (strlen($titulo_tarea) > 30) {
+    echo '<script>alert("Campo Titulo supera lo permitido");
+    window.location = "../tareas.php";</script>';
+    mysqli_close($conexion);
+}
+if (empty($titulo_tarea)) {
+    echo '<script>alert("Campo Titulo Vacío");
+        window.location = "../tareas.php";</script>';
+    mysqli_close($conexion);
+}
 if (empty($descripcion)) {
     echo '<script>alert("Campo Descripción Vacío");
         window.location = "../tareas.php";</script>';
     mysqli_close($conexion);
 }
-if ($plazo < 0) {
-    echo '<script>alert("Plazo tiene un valor Negativo, Revisar las fechas");
+if ($plazo <= 0) {
+    echo '<script>alert("Fechas Introducidas son Invalidas");
     window.location = "../tareas.php";</script>';
     mysqli_close($conexion);
 }

@@ -50,95 +50,17 @@ $id = $_SESSION['id_usuario_log'];
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
-    <div class:="container">
-        <nav class="nav-main">
-            <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">
-            <ul class="nav-menu">
-                <li>
-                    <i class="fa-solid fa-inbox"></i>
-                    &nbsp;&nbsp;
-                    <a href="inicio.php">Inicio</a>
-                </li>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="Usuarios.php">Usuarios</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                    </li>
-                <?php } ?>
-                <li>
-                    <i class="fa-solid fa-circle-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="php/cerrar_sesion.php">Cerrar Sesión</a>
-                </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user-shield"></i>
-                    &nbsp;&nbsp;
-                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <?php
+    include "header.php";
+    ?>
     <br>
     <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario'] ?></h2>
     <h2 class="HeaderLista">Aqui su carga de trabajo</h2>
     <?php if ($_SESSION['rol'] == 1) { ?>
         <a href="inicio_general.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
     <?php } ?>
+    <h3 class="HeaderLista">Tareas Asignadas a usted</h3>
     <br>
-    <div class="containerTextNoTask" style="display: none;">
-        <div class="notasktext">No tienes tareas asignadas</div>
-    </div>
-
     <?php
     $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario,t.id_asignador FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario AND estado = 'Sin Terminar' OR estado = 'En Progreso'");
 
@@ -182,18 +104,6 @@ $id = $_SESSION['id_usuario_log'];
                     ?>
                     <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
-                    <?php if ($data['estado'] == 'Sin Terminar') {
-                        echo '<td data-titulo="Estado">Sin Terminar</td>';
-                        if ($atrasado == 'Tarea_Terminada') {
-                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
-                        }
-                        if ($atrasado == 'Tarea_Terminada_') {
-                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
-                        }
-                        if ($atrasado == 'Tarea_Terminada_con_Atraso') {
-                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';  
-                        }
-                    } ?>
                     <?php if ($data['estado'] == 'En Progreso') {
                         echo '<td data-titulo="Estado">En Progreso</td>';
                         if ($atrasado == 'Tarea_Terminada') {
@@ -214,9 +124,9 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
                     <td data-titulo="Acciones">
-                        <a class="link_edit" href="editar_estado.php?id=<?php echo $data["id_tareas"];?>&progreso_tarea=<?php echo $atrasado ?>">Editar</a>
+                        <a class="link_edit" href="editar_estado.php?id=<?php echo $data["id_tareas"]; ?>&progreso_tarea=<?php echo $atrasado ?>">Terminar Tarea</a>
                         <br>
-                        <a class="link_reasignar" href="reportar_t.php?id=<?php echo $data["id_tareas"];?>&id_usuario_r=<?php echo $data["id_usuario"];?>&id_asignador_t=<?php echo $data["id_asignador"];?>">Reportar Tarea</a>
+                        <a class="link_reasignar" href="reportar_t.php?id=<?php echo $data["id_tareas"]; ?>&id_usuario_r=<?php echo $data["id_usuario"]; ?>&id_asignador_t=<?php echo $data["id_asignador"]; ?>">Reportar Tarea</a>
                     </td>
                 </tr>
         <?php
@@ -231,30 +141,64 @@ $id = $_SESSION['id_usuario_log'];
     }
         ?>
             </table>
+            <hr>
+            <br>
+            <br>
+            <h3 class="HeaderLista">Flujos Asignadas a usted</h3>
+            <?php
+            $query_flujo = mysqli_query($conexion, "SELECT f.id_flujo,f.titulo_flujo, f.desc_flujo, f.plazo, f.estatus 
+                FROM flujos_tarea f
+                INNER JOIN login l
+                ON id_funcionario_flujo = id_usuario
+                WHERE $_SESSION[id_usuario_log]=id_funcionario_flujo
+                AND estatus=1");
 
-            <div class="footer-links">
-                <div class="footer-container">
-                    <ul>
-                        <li>
-                            <h2>Recuerda Guardar Bien tus Documentos</h2>
+            $validacion_f = mysqli_num_rows($query_flujo);
+            if ($validacion_f > 0) {
 
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <h2>Aplicación de Escritorio</h2>
-                        </li>
-                        <li>
+                while ($data_f = mysqli_fetch_array($query_flujo)) {
+            ?>
+                    <table>
+                        <tr>
+                            <th>Titulo Flujo</th>
+                            <th>Descripción Flujo</th>
+                            <th>Plazo</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td data-titulo="Titulo Flujo"><?php echo $data_f["titulo_flujo"] ?></td>
+                            <td data-titulo="Descripcion Flujo"><?php echo $data_f["desc_flujo"] ?></td>
+                            <td data-titulo="Plazo"><?php echo $data_f["plazo"] ?></td>
+                            <?php
+                            if ($data_f['estatus'] == 0) {
+                                echo '<td data-titulo="Estatus" style="color: red;">' . 'Desactivado' . '</td>';
+                            }
+                            if ($data_f['estatus'] == 1) {
+                                echo '<td data-titulo="Estatus" style="color: green;">' . 'Activado' . '</td>';
+                            }
+                            ?>
+                            <td data-titulo="Acciones">
+                                <a class="link_reasignar" href="reporte_f.php?id=<?php echo $data_f["id_flujo"]; ?>">Mensaje de Reporte</a>
+                            </td>
+                        </tr>
+                <?php
+                }
+            } else {
+                echo '<div class="notasktext" style="display: block; 
+                    background-color: rgb(114, 114, 114);
+                    width: 300px;
+                    border: 15px solid rgb(94, 94, 94);
+                    padding: 50px;
+                    margin: auto; margin-top: 135px; margin-bottom: 135px">No tienes Flujos Asignados</div>';
+            }
+                ?>
+                    </table>
 
-                            <a href="">(URL DESCARGA)</a>
-                        </li>
-                    </ul>
-                </div>
-                <footer class="footer">
-                    <h3>Improve My Process Copyright</h3>
-                </footer>
-                <script src="js/navbar.js"></script>
-            </div>
+
+                    <?php
+                    include "footer.php";
+                    ?>
 </body>
 
 </html>

@@ -11,13 +11,50 @@ $correo = $_POST['correo'];
 $numero_telef = $_POST['numero_telef'];
 $direccion = $_POST['direccion'];
 
+//STRLEN
+if (strlen($usuario) > 20) {
+    echo '
+    <script>
+        alert("Usuario supera los caracteres permitidos");
+        window.location = "../agregar_usuario.php";
+    </script>';
+}
+if (strlen($nombreusuario) > 20) {
+    echo '
+    <script>
+        alert("Nombre del Usuario supera los caracteres permitidos");
+        window.location = "../agregar_usuario.php";
+    </script>';
+}
+if (strlen($clave) > 20) {
+    echo '
+    <script>
+        alert("Clave supera los caracteres permitidos");
+        window.location = "../agregar_usuario.php";
+    </script>';
+}
+if (strlen($correo) > 50) {
+    echo '
+    <script>
+        alert("Clave supera los caracteres permitidos");
+        window.location = "../agregar_usuario.php";
+    </script>';
+}
+if (strlen($direccion) > 20) {
+    echo '
+    <script>
+        alert("Direccion supera los caracteres permitidos");
+        window.location = "../agregar_usuario.php";
+    </script>';
+}
+
+//EMPTY OR IS_NUMERIC
 if (empty($usuario)) {
     echo '
     <script>
         alert("Campo usuario vacio");
         window.location = "../agregar_usuario.php";
     </script>';
-    
 } elseif (is_numeric($usuario)) {
     echo '
         <script>
@@ -54,12 +91,11 @@ if (empty($usuario)) {
         alert("Campo Correo Invalido");
         window.location = "../agregar_usuario.php";
     </script>';
-} elseif (empty($numero_telef)) {
+} elseif (strlen($numero_telef) > 9 || strlen($numero_telef) <= 8) {
     echo '
     <script>
-        alert("Campo de numero de telefono vacio");
+        alert("Numero de telefono es invalido");
         window.location = "../agregar_usuario.php";
-
     </script>';
 } elseif (empty($direccion)) {
     echo '
@@ -77,14 +113,14 @@ if (empty($usuario)) {
         echo '
     <script>
         alert("Usuario Agregado");
-        header("../usuarios.php");
+        window.location = "../usuarios.php";
     </script>';
     } else {
 
         echo '
     <script>
         alert("Usuario no Agregado");
-        header("../usuarios.php");
+        window.location = "../usuarios.php";
     </script>';
     }
 

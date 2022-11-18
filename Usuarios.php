@@ -56,87 +56,11 @@ include "../IMP/php/conexion_back.php";
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
-    <div class:="container">
-        <nav class="nav-main">
-            <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">
-            <ul class="nav-menu">
-                <li>
-                    <i class="fa-solid fa-inbox"></i>
-                    &nbsp;&nbsp;
-                    <a href="inicio.php">Inicio</a>
-                </li>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="Usuarios.php">Usuarios</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                    </li>
-                <?php } ?>
-                <li>
-                    <i class="fa-solid fa-circle-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="php/cerrar_sesion.php">Cerrar Sesión</a>
-                </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user-shield"></i>
-                    &nbsp;&nbsp;
-                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <?php
+    include "header.php";
+    ?>
     <br>
     <h2 class="HeaderLista">Listado de Usuarios</h2>
-    <p class="subTitleHeader">Administradores</p>
     <table>
         <tr>
             <th>Id Usuario</th>
@@ -164,16 +88,16 @@ include "../IMP/php/conexion_back.php";
                     <td data-titulo="Usuario"><?php echo $data["usuario"]; ?></td>
                     <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"]; ?></td>
                     <td data-titulo="Clave"><?php echo $data["clave"]; ?></td>
-                    <?php 
-                        if($data["rol"] == 1){
-                            echo '<td data-titulo="Rol">Administrador</td>';
-                        }
-                        if($data["rol"] == 2){
-                            echo '<td data-titulo="Rol">Diseñador de Procesos</td>';
-                        }
-                        if($data["rol"] == 3){
-                            echo '<td data-titulo="Rol">Funcionario</td>';
-                        }
+                    <?php
+                    if ($data["rol"] == 1) {
+                        echo '<td data-titulo="Rol">Administrador</td>';
+                    }
+                    if ($data["rol"] == 2) {
+                        echo '<td data-titulo="Rol">Diseñador de Procesos</td>';
+                    }
+                    if ($data["rol"] == 3) {
+                        echo '<td data-titulo="Rol">Funcionario</td>';
+                    }
                     ?>
                     <td data-titulo="Sexo"><?php echo $data["sexo"]; ?></td>
                     <td data-titulo="Correo"><?php echo $data["correo"]; ?></td>
@@ -186,31 +110,14 @@ include "../IMP/php/conexion_back.php";
                 </tr>
         <?php
             }
+        } else {
+            
         }
         ?>
     </table>
-    <div class="footer-links">
-        <div class="footer-container">
-            <ul>
-                <li>
-                    <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Aplicación de Escritorio</h2>
-                </li>
-                <li>
-
-                    <a href="">(URL DESCARGA)</a>
-                </li>
-            </ul>
-        </div>
-        <footer class="footer">
-            <h3>Improve My Process Copyright</h3>
-        </footer>
-        <script src="js/navbar.js"></script>
-    </div>
+    <?php
+    include "footer.php";
+    ?>
 </body>
 
 </html>

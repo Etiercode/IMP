@@ -21,6 +21,11 @@ if ($_SESSION['rol'] == 3) {
 ?>
 <?php
 include "php/conexion_back.php";
+$usuario_log = $_SESSION['id_usuario_log'];
+?>
+<?php
+$fechaactual = date_default_timezone_set("America/Santiago");
+$fecha_actual = new DateTime(date("d-m-Y"));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,97 +47,25 @@ include "php/conexion_back.php";
     <!--CSS-->
     <link rel="stylesheet" href="css/flujosdetareas.css">
     <title>IMP | Crear Flujos de Tareas</title>
+
+    <!--JS-->
+    <script src="js/showPlazo.js"></script>
+
 </head>
 
 <body>
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
-    <div class:="container">
-        <nav class="nav-main">
-            <img src="img/IMPlogo.png" alt="Imp Logo" class="nav-brand">
-            <ul class="nav-menu">
-                <li>
-                    <i class="fa-solid fa-inbox"></i>
-                    &nbsp;&nbsp;
-                    <a href="inicio.php">Inicio</a>
-                </li>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="Usuarios.php">Usuarios</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Tareas.php">Crear Tareas</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 2) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="flujosdetareas.php">Crear Flujos</i></a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 3) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-calendar-days"></i>
-                        &nbsp;&nbsp;
-                        <a href="Flujos_tarea.php">Ver Flujos</a>
-                    </li>
-                <?php } ?>
-                <?php if ($_SESSION['rol'] == 1) { ?>
-                    <li>
-                        <i class="fa-sharp fa-solid fa-user"></i>
-                        &nbsp;&nbsp;
-                        <a href="agregar_usuario.php">Agregar Usuarios</i></a>
-                    </li>
-                <?php } ?>
-                <li>
-                    <i class="fa-solid fa-circle-user"></i>
-                    &nbsp;&nbsp;
-                    <a href="php/cerrar_sesion.php">Cerrar Sesión</a>
-                </li>
-                <li>
-                    <i class="fa-sharp fa-solid fa-user-shield"></i>
-                    &nbsp;&nbsp;
-                    <a href=""><?php echo $_SESSION['usuario'] ?></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <?php
+    include "header.php";
+    ?>
     <br>
     <div class="showcase">
         <h2>Crear Flujos de Tareas</h2>
         <h3>Usted está creando flujos de tareas como <?php echo $_SESSION['usuario'] ?></h3>
-        <P><span style="color: red;">RECUERDA QUE DEBEN HABER MINIMO 3 TAREAS PARA CREAR UN FLUJO</span></P>
-        <P><span style="color: red;">Al crear un flujo NO puedes eliminar tareas ni usuarios relacionados a esta</span></P>
         <form action="php/flujo_tarea_back.php" method="POST" class="formulario_registro">
+            <input type="hidden" value="<?php echo $usuario_log ?>" name="usuario_log">
             <label>Asignar Funcionario <span style="color: red;">*</span></label>
             <select name="id_funcionario_flujo">
                 <?php
@@ -147,93 +80,39 @@ include "php/conexion_back.php";
                 }
                 ?>
             </select>
-            <label>Seleccionar Tarea 1 <span style="color: red;">*</span></label>
-            <select name="id_tarea_flujo1">
-                <?php
-                $query_tarea1 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
-                $tarea1 = mysqli_num_rows($query_tarea1);
-                if ($tarea1 > 0) {
-                    while ($tarea1 = mysqli_fetch_array($query_tarea1)) {
-                ?>
-                        <option value="<?php echo $tarea1["id_tareas"]; ?>"><?php echo $tarea1["titulo_tarea"]; ?></option>
-                <?php
-                    }
-                }
-                ?>
-            </select>
-
-            <div id="id_tarea_flujo2">
-                <label>Seleccionar Tarea 2 <span style="color: red;">*</span></label>
-                <select name="id_tarea_flujo2">
-                    <?php
-                    $query_tarea2 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
-                    $tarea2 = mysqli_num_rows($query_tarea2);
-                    if ($tarea2 > 0) {
-                        while ($tarea2 = mysqli_fetch_array($query_tarea2)) {
-                    ?>
-                            <option value="<?php echo $tarea2["id_tareas"]; ?>"><?php echo $tarea2["titulo_tarea"]; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
-                </select>
-            </div>
-            <div id="id_tarea_flujo3">
-                <label>Seleccionar Tarea 3 <span style="color: red;">*</span></label>
-                <select name="id_tarea_flujo3">
-                    <?php
-                    $query_tarea3 = mysqli_query($conexion, "SELECT id_tareas, titulo_tarea FROM tareas");
-                    $tarea3 = mysqli_num_rows($query_tarea3);
-                    if ($tarea3 > 0) {
-                        while ($tarea3 = mysqli_fetch_array($query_tarea3)) {
-                    ?>
-                            <option value="<?php echo $tarea3["id_tareas"]; ?>"><?php echo $tarea3["titulo_tarea"]; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
-                </select>
-            </div>
             <label>Titulo Flujo de Tareas <span style="color: red;">*</span></label>
             <input type="text" placeholder="Titulo Flujo de Tareas" name="titulo_flujo">
             <label>Descripción del Flujo <span style="color: red;">*</span></label>
             <input type="text" placeholder="Descripción del Flujo" name="desc_flujo">
-            <div class="row">
-                <div class="col">
-                    <label style="padding-right: 30px;">Fecha Inicio <span style="color: red;">*</span></label>
-                    <input type="date" name="fecha_inicio_f">
-                </div>
-                <div class="col">
-                    <label style="padding-right: 15px;">Fecha Termino <span style="color: red;">*</span></label>
-                    <input type="date" name="fecha_termino_f">
-                </div>
-            </div>
+
+            <label>Seleccione las Tareas que se incluirán dentro del flujo<span style="color: red;">*</span></label>
+            <br>
+            <?php 
+                $query_checkbox = mysqli_query($conexion, "SELECT * FROM tareas_sin");
+                $result_checkbox = mysqli_num_rows($query_checkbox);
+                if($result_checkbox > 0){
+                    while($data_checkbox = mysqli_fetch_array($query_checkbox)){
+                        echo '<br> <input type="checkbox" value="'.$data_checkbox['id_tarea_sin'].'" name="tarea[]">'.$data_checkbox['titulo_tarea_r'].'<br> <br>';
+                    }
+                }else{
+                    echo '<br> No hay tareas creadas para seleccionar <br> <br>' ;
+                }
+            ?>
+            <label for="checkbox" class="mycheckbox">
+                <input type="checkbox" id="checkbox" name="estatus">
+                <label>Estatus</label>
+                <span>
+                    <i class="fas fa-checko"></i>
+                </span>
+            </label>
+            <br>
             <button class="btn" style="margin-top: 15px;" type="submit">Crear Flujo</button>
         </form>
     </div>
 
-    <div class="footer-links">
-        <div class="footer-container">
-            <ul>
-                <li>
-                    <h2>Recuerda Guardar Bien tus Documentos</h2>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Aplicación de Escritorio</h2>
-                </li>
-                <li>
-
-                    <a href="">(URL DESCARGA)</a>
-                </li>
-            </ul>
-        </div>
-        <footer class="footer">
-            <h3>Improve My Process Copyright</h3>
-        </footer>
-        <script src="js/navbar.js"></script>
-    </div>
+    <?php
+    include "footer.php";
+    ?>
 </body>
 
 </html>
