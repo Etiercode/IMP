@@ -44,7 +44,8 @@ if ($_SESSION['rol'] == 1) {
     $sql = mysqli_query($conexion, "SELECT t.id_tareas, t.id_funcionario, l.id_usuario, t.titulo_tarea, t.descripcion, t.estado, t.fecha_inicio, t.fecha_termino, t.plazo 
     FROM tareas t 
     INNER JOIN login l 
-    ON t.id_funcionario = l.id_usuario");
+    ON t.id_funcionario = l.id_usuario
+    WHERE id_tareas=$id_tarea");
 
     $result_sql = mysqli_num_rows($sql);
 
@@ -52,17 +53,17 @@ if ($_SESSION['rol'] == 1) {
         echo '
         <script>
             alert("Tarea no existe");
-            window.location = "usuarios.php";
+            window.location = "inicio_general.php";
         </script>
         ';
-        header('location: inicio.php');
+        header('location: inicio_general.php');
     } else {
         while ($data = mysqli_fetch_array($sql)) {
             $id_tareas = $data['id_tareas'];
             $id_funcionario = $data['id_usuario'];
             $titulo_tarea = $data['titulo_tarea'];
             $descripcion = $data['descripcion'];
-            $estado = $data['estado'];
+            $estado_actual = $data['estado'];
             $fecha_inicio = $data['fecha_inicio'];
             $fecha_termino = $data['fecha_termino'];
             $plazo = $data['plazo'];
@@ -87,13 +88,23 @@ if (!empty($_POST)) {
 
     if (empty($descripcion)) {
         echo '<script>alert("Campo Descripción Vacío");
-            window.location = "../agregar_usuario.php";</script>';
+        window.location = "editar_tarea.php?id=' . $id_tarea . '";</script>';
+        mysqli_close($conexion);
+    }
+    if (empty($titulo_tarea)) {
+        echo '<script>alert("Campo titulo Vacío");
+        window.location = "editar_tarea.php?id=' . $id_tarea . '";</script>';
         mysqli_close($conexion);
     }
 
     if ($plazo < 0) {
         echo '<script>alert("Plazo tiene un valor Negativo, Revisar las fechas");
-        window.location = "../tareas.php";</script>';
+        window.location = "editar_tarea.php?id=' . $id_tarea . '";</script>';
+        mysqli_close($conexion);
+    }
+    if ($plazo == 0 || $plazo == '') {
+        echo '<script>alert("Plazo tiene un valor invalido, Revisar las fechas");
+        window.location = "editar_tarea.php?id=' . $id_tarea . '";</script>';
         mysqli_close($conexion);
     }
 
@@ -105,13 +116,13 @@ if (!empty($_POST)) {
         echo '
                 <script>
                     alert("Tarea Actualizada Correctamente");
-                    window.location = "tareas.php";
+                    window.location = "inicio_general.php";
                 </script>';
     } else {
         echo '
                 <script>
                     alert("Error al actualizar tarea");
-                    window.location = "tareas.php";
+                    window.location = "inicio_general.php";
                 </script>';
     }
 }
@@ -159,9 +170,18 @@ if (!empty($_POST)) {
                 <input type="text" placeholder="Descripcion" name="descripcion" value="<?php echo $descripcion ?>">
                 <label>Estado</label>
                 <select name="estado" class="sexo">
-                    <option type="text" placeholder="estado" name="estado">Sin Terminar</option>
-                    <option type="text" placeholder="estado" name="estado">En Progreso</option>
+                    <?php
+                    if ($estado_actual == 'Terminado') {
+                        echo '<option type="text" placeholder="estado" name="estado">Terminado</option>';
+                    } 
+                    if ($estado_actual == 'En Progreso'){
+                        echo '<option type="text" placeholder="estado" name="estado">En Progreso</option>';
+                    }
+                    ?>
                 </select>
+                <label><br><?php echo 'La fecha inicio anterior era: '.'<span style="color: red;">'.$fecha_inicio.'</span>'.' y la Fecha Termino anterior era: '.'<span style="color: red;">'.$fecha_termino.'</span>'  ?></label>
+                <br>
+                <br>
                 <div class="row">
                     <div class="col">
                         <label style="padding-right: 30px;">Fecha Inicio</label>
@@ -172,6 +192,7 @@ if (!empty($_POST)) {
                         <input type="date" name="fecha_termino">
                     </div>
                 </div>
+                <br>
                 <button class="btn" type="submit">Actualizar</button>
             </form>
         </div>

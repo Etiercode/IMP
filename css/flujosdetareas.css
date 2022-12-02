@@ -101,14 +101,6 @@ select {
     border-radius: 4px;
     box-sizing: border-box;
 }
-input[type="checkbox"]{
-    appearance: none;
-    height: 80px;
-    width: 80px;
-    background-color: #d5d5d5;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 input[type=text] {
     margin: auto;
@@ -168,7 +160,7 @@ input[type=date]{
     top: 7px;
     z-index: 1;
     transition: 0.5s;
-}
+} 
 
 /*FOOTER LINKS*/
 

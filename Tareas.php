@@ -84,7 +84,7 @@ if ($_SESSION['rol'] == 2) {
             </select>
             <label>Progreso</label>
             <select name="progreso" class="progreso">
-                <option type="text" placeholder="progreso" name="progreso">Sin Terminar</option>
+                <option type="text" placeholder="progreso" name="progreso">En Progreso</option>
             </select>
             <div class="row">
                 <div class="col">

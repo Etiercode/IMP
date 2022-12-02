@@ -58,11 +58,21 @@ include "../IMP/php/conexion_back.php";
     <h2 class="HeaderLista">Todos los Flujos Creados</h2>
     <br>
     <?php
-    $query = mysqli_query($conexion, "SELECT f.id_flujo, f.id_funcionario_flujo, f.id_creador_flujo, f.titulo_flujo, f.desc_flujo, f.estatus, f.plazo,
+    $query = mysqli_query($conexion, "SELECT 	
+    f.id_flujo,	
+    f.id_funcionario_flujo,	
+    f.id_creador_flujo,	
+    f.titulo_flujo,	
+    f.desc_flujo,	
+    f.tareas_sin_f,
+    tsf.titulo_tarea_r,
+    f.estatus,
     l.nombreusuario
     FROM flujos_tarea f
     INNER JOIN login l
-    ON id_funcionario_flujo=id_usuario");
+    ON id_funcionario_flujo=id_usuario
+    INNER JOIN tareas_sin tsf
+    ON id_tarea_sin=tareas_sin_f");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -72,11 +82,11 @@ include "../IMP/php/conexion_back.php";
                 <tr>
                     <th>Id Flujo</th>
                     <th>Id Responsable</th>
-                    <th>Nombre</th>
+                    <th>Responsable</th>
                     <th>Titulo</th>
                     <th>Descripcion</th>
                     <th>Estatus</th>
-                    <th>Plazo</th>
+                    <th>Tareas Asignadas al Flujo</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
@@ -93,15 +103,25 @@ include "../IMP/php/conexion_back.php";
                         echo '<td data-titulo="Estatus"><a style="color: red" href="editar_estatus.php?id_flujo=' . $data['id_flujo'] . '&estatus=1">Desactivado</a></td>';
                     }
                     ?></td>
-                    <td data-titulo="Plazo"><?php echo $data['plazo'] ?></td>
+
+                    <td data-titulo="Tareas Asignadas">
+                        <ul>
+                            <?php foreach (explode(', ', $data['tareas_sin_f']) as $tareas_sin){ ?>
+                               <li><?php echo 'Id: ',htmlspecialchars($tareas_sin) ?></li> 
+                            <?php } ?>
+                        </ul>
+                    </td>
                     <td data-titulo="Acciones">
-                        <a class="link_reasignar" href="reasignar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>">Reasignar</a>
+                        <a class="link_reasignar" href="reasignar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>&responsable_actual=<?php echo $data['nombreusuario'] ?>">Reasignar</a>
+                        <br>
+                        <a href="editar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>" style="color: rgb(4, 167, 4);">Editar</a>
                         <br>
                         <a class="link_delete" href="eliminar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>&titulo_flujo=<?php echo $data["titulo_flujo"]; ?>">Eliminar</a>
                         <br>
                         <a class="link_edit" href="reporte_f.php?id_flujo=<?php echo $data["id_flujo"]; ?>">Reporte</a>
                     </td>
                 </tr>
+                
         <?php
         }
     } else {

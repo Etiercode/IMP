@@ -146,12 +146,23 @@ $id = $_SESSION['id_usuario_log'];
             <br>
             <h3 class="HeaderLista">Flujos Asignadas a usted</h3>
             <?php
-            $query_flujo = mysqli_query($conexion, "SELECT f.id_flujo,f.titulo_flujo, f.desc_flujo, f.plazo, f.estatus 
-                FROM flujos_tarea f
-                INNER JOIN login l
-                ON id_funcionario_flujo = id_usuario
-                WHERE $_SESSION[id_usuario_log]=id_funcionario_flujo
-                AND estatus=1");
+            $query_flujo = mysqli_query($conexion, "SELECT 	
+            f.id_flujo,	
+            f.id_funcionario_flujo,	
+            f.id_creador_flujo,	
+            f.titulo_flujo,	
+            f.desc_flujo,	
+            f.tareas_sin_f,
+            tsf.titulo_tarea_r,
+            f.estatus,
+            l.nombreusuario
+            FROM flujos_tarea f
+            INNER JOIN login l
+            ON id_funcionario_flujo=id_usuario
+            INNER JOIN tareas_sin tsf
+            ON id_tarea_sin=tareas_sin_f
+            WHERE $_SESSION[id_usuario_log]=id_funcionario_flujo
+            AND estatus=1");
 
             $validacion_f = mysqli_num_rows($query_flujo);
             if ($validacion_f > 0) {
@@ -162,14 +173,13 @@ $id = $_SESSION['id_usuario_log'];
                         <tr>
                             <th>Titulo Flujo</th>
                             <th>Descripción Flujo</th>
-                            <th>Plazo</th>
                             <th>Estatus</th>
+                            <th>Tareas Asignadas al Flujo</th>
                             <th>Acciones</th>
                         </tr>
                         <tr>
                             <td data-titulo="Titulo Flujo"><?php echo $data_f["titulo_flujo"] ?></td>
                             <td data-titulo="Descripcion Flujo"><?php echo $data_f["desc_flujo"] ?></td>
-                            <td data-titulo="Plazo"><?php echo $data_f["plazo"] ?></td>
                             <?php
                             if ($data_f['estatus'] == 0) {
                                 echo '<td data-titulo="Estatus" style="color: red;">' . 'Desactivado' . '</td>';
@@ -178,8 +188,15 @@ $id = $_SESSION['id_usuario_log'];
                                 echo '<td data-titulo="Estatus" style="color: green;">' . 'Activado' . '</td>';
                             }
                             ?>
+                            <td data-titulo="Tareas Asignadas">
+                                <ul>
+                                    <?php foreach (explode(', ', $data_f['tareas_sin_f']) as $tareas_sin) { ?>
+                                        <li><?php echo 'Id: ', htmlspecialchars($tareas_sin) ?></li>
+                                    <?php } ?>
+                                </ul>
+                            </td>
                             <td data-titulo="Acciones">
-                                <a class="link_reasignar" href="reporte_f.php?id=<?php echo $data_f["id_flujo"]; ?>">Mensaje de Reporte</a>
+                                <a class="link_reasignar" href="reportar_f.php?id_flujo=<?php echo $data_f["id_flujo"]; ?>&id_funcionario_flujo=<?php echo $data_f["id_funcionario_flujo"]; ?>&id_creador_flujo=<?php echo $data_f["id_creador_flujo"]; ?>">Mensaje de Reporte</a>
                             </td>
                         </tr>
                 <?php
@@ -194,8 +211,62 @@ $id = $_SESSION['id_usuario_log'];
             }
                 ?>
                     </table>
+                    <hr>
+                    <br>
+                    <br>
+                    <h3 class="HeaderLista">Tareas Generales</h3>
+                    <br>
+                    <div style="overflow-x:auto;overflow-y:auto;max-height: 400px;">
+                        <?php
+                        $query_sin = mysqli_query($conexion, "SELECT * FROM tareas_sin");
 
+                        $result = mysqli_num_rows($query_sin);
+                        if ($result > 0) {
+                            while ($data_sin = mysqli_fetch_array($query_sin)) {
 
+                        ?>
+                                <table>
+                                    <tr>
+                                        <th>Id Asignador</th>
+                                        <th>Titulo Tarea</th>
+                                        <th>Descripción Tarea</th>
+                                        <th>Fecha Creación Tarea</th>
+                                        <th>Duración</th>
+                                        <?php
+                                        if ($_SESSION['id_usuario_log'] == $data_sin['id_asignador_r']) {
+                                            echo '<th>Acciones</th>';
+                                        }
+                                        ?>
+                                    </tr>
+                                    <tr>
+
+                                        <td data-titulo="Id Asignador"><?php echo $data_sin["id_asignador_r"] ?></td>
+                                        <td data-titulo="Titulo"><?php echo $data_sin["titulo_tarea_r"] ?></td>
+                                        <td data-titulo="Descripción"><?php echo $data_sin["descripcion_r"] ?></td>
+                                        <td data-titulo="Fecha Creacion"><?php echo $data_sin["fecha_creacion"] ?></td>
+                                        <td data-titulo="Duracion"><?php echo $data_sin["duracion_tarea"] ?></td>
+                                        <td data-titulo="Acciones">
+                                            <?php
+                                            if ($_SESSION['id_usuario_log'] == $data_sin['id_asignador_r']) {
+                                                echo '<a class="link_edit" href="editar_tarea_sin.php?id_tarea_sin=' . $data_sin['id_tarea_sin'] . '">Editar</a> <br>';
+                                                echo '<a class="link_delete" href="eliminar_tarea_sin.php?id_tarea_sin=' . $data_sin['id_tarea_sin'] . '">Eliminar</a>';
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+                            <?php
+                            }
+                        } else {
+                            echo '<div class="notasktext" style="display: block; 
+                            background-color: rgb(114, 114, 114);
+                            width: 300px;
+                            border: 15px solid rgb(94, 94, 94);
+                            padding: 50px;
+                            margin: auto; margin-top: 135px; margin-bottom: 135px">No Hay tareas</div>';
+                        }
+                            ?>
+                                </table>
+                    </div>
                     <?php
                     include "footer.php";
                     ?>

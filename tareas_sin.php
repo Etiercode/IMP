@@ -75,11 +75,11 @@ $fecha_now = date("Y-m-d");
                 <input type="text" placeholder="Descripción" name="descripcion_r">
                 <div>
                     <div>
-                        <input type="hidden" name="fecha_creacion_flujo" value="<?php echo $fecha_now ?>">
+                        <input type="hidden" name="fecha_creacion" value="<?php echo $fecha_now ?>">
                     </div>
                     <div>
                         <label style="padding-right: 15px;">Duración de la Tarea (Dias)</label>
-                        <select name="duracion_flujo">
+                        <select name="duracion_tarea">
                             <option value='01'>01</option>
                             <option value='02'>02</option>
                             <option value='03'>03</option>
@@ -115,49 +115,12 @@ $fecha_now = date("Y-m-d");
                     </div>
                 </div>
                 <button class="btn" style="margin-top: 15px;">Crear Tarea</button>
+                <br>
+                <br>
             </form>
-            <div style="overflow-x:auto;overflow-y:auto;max-height: 400px;">
-                <table>
-                    <tr>
-                        <th>Id Asignador</th>
-                        <th>Titulo Tarea</th>
-                        <th>Descripción Tarea</th>
-                        <th>Fecha Creación Tarea</th>
-                        <th>Duración</th>
-                        <th>Acciones</th>
-                    </tr>
-                    <tr>
-                        <?php
-                        $query = mysqli_query($conexion, "SELECT * FROM tareas_sin");
-
-                        $result = mysqli_num_rows($query);
-                        if ($result > 0) {
-                            while ($data = mysqli_fetch_array($query)) {
-
-                        ?>
-                                <td data-titulo="Id Asignador"><?php echo $data["id_asignador_r"] ?></td>
-                                <td data-titulo="Titulo"><?php echo $data["titulo_tarea_r"] ?></td>
-                                <td data-titulo="Descripción"><?php echo $data["descripcion_r"] ?></td>
-                                <td data-titulo="Fecha Creacion"><?php echo $data["fecha_creacion_flujo"] ?></td>
-                                <td data-titulo="Duracion"><?php echo $data["duracion_flujo"] ?></td>
-                                <td data-titulo="Acciones">
-                                    <a class="link_edit" href="">Editar</a>
-                                    <a class="link_delete" href="">Eliminar</a>
-                                </td>
-                    </tr>
-            <?php
-                            }
-                        } else {
-                            echo '<div class="notasktext" style="display: block; 
-            background-color: rgb(114, 114, 114);
-            width: 300px;
-            border: 15px solid rgb(94, 94, 94);
-            padding: 50px;
-            margin: auto; margin-top: 135px; margin-bottom: 135px">No Hay tareas</div>';
-                        }
-            ?>
-                </table>
-            </div>
+<br>
+<br>
+<br>
 
 
         </div>

@@ -14,26 +14,47 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
-
 ?>
 
 <?php
 if (empty($_GET['id_flujo'])) {
     echo '
     <script>
-        alert("Id de Flujo no existe");
+        alert("Url Invalida");
+    </script>';
+    header('location: inicio.php');
+}
+if (empty($_GET['id_flujo'])) {
+    echo '
+    <script>
+        alert("Url Invalida");
+    </script>';
+    header('location: inicio.php');
+}
+if (empty($_GET['id_funcionario_flujo'])) {
+    echo '
+    <script>
+        alert("Url Invalida");
+    </script>';
+    header('location: inicio.php');
+}
+if (empty($_GET['id_creador_flujo'])) {
+    echo '
+    <script>
+        alert("Url Invalida");
     </script>';
     header('location: inicio.php');
 }
 
 $id_flujo_actual = $_GET['id_flujo'];
-$responsable_actual = $_GET['responsable_actual'];
+$id_funcionario_flujo = $_GET['id_funcionario_flujo'];
+$id_creador_flujo = $_GET['id_creador_flujo'];
 
-$sql = mysqli_query($conexion, "SELECT l.id_usuario, ft.id_flujo
-    FROM login l
-    INNER JOIN flujos_tarea ft
-    ON id_usuario=id_funcionario_flujo
-    WHERE id_flujo='$id_flujo_actual'");
+$sql = mysqli_query($conexion, "SELECT f.id_flujo, f.id_funcionario_flujo, f.id_creador_flujo
+FROM flujos_tarea f
+INNER JOIN login l
+ON id_usuario=id_funcionario_flujo
+WHERE id_flujo='$id_flujo_actual'");
 
 $result_sql = mysqli_num_rows($sql);
 
@@ -41,35 +62,41 @@ if ($result_sql == 0) {
     echo '
         <script>
             alert("Flujo no existe");
-            window.location = "Flujos_tarea.php";
+            window.location = "inicio.php";
         </script>
         ';
-    header('location: Flujos_tarea.php');
+    header('location: Inicio.php');
 } else {
     while ($data = mysqli_fetch_array($sql)) {
+        $id_funcionario = $data['id_funcionario_flujo'];
         $id_flujo = $data['id_flujo'];
+        $id_creador_flujo = $data['id_creador_flujo'];
     }
 }
 
 ?>
 <?php
+
 if (!empty($_POST)) {
     $idFlujo = $_POST['idFlujo'];
-    $idUsuario = $_POST['id_usuario'];
+    $idResponsable = $_POST['idResponsable'];
+    $idAsignadorTarea = $_POST['idAsignadorTarea'];
+    $mensaje = $_POST['mensaje'];
 
-    $sql_update = mysqli_query($conexion, "UPDATE flujos_tarea SET id_funcionario_flujo='$idUsuario' WHERE id_flujo='$idFlujo'");
+    $sql_reportes = mysqli_query($conexion, "INSERT INTO reportes_f (id_funcionario_f,id_flujo_f,id_asignador_f,mensaje_f)
+    VALUES ('$idResponsable','$idFlujo','$idAsignadorTarea','$mensaje')");
 
-    if ($sql_update) {
+    if ($sql_reportes) {
         echo '
                 <script>
-                    alert("Responsable Actualizado Correctamente");
-                    window.location = "inicio_general.php";
+                    alert("Reportes enviado Correctamente");
+                    window.location = "inicio.php";
                 </script>';
     } else {
         echo '
                 <script>
-                    alert("Error al actualizar responsable");
-                    window.location = "inicio_general.php";
+                    alert("Error al enviar reporte");
+                    window.location = "inicio.php";
                 </script>';
     }
 }
@@ -106,8 +133,8 @@ if (!empty($_POST)) {
     include "header.php";
     ?>
     <div class="showcase">
-        <h2>Reasignar Funcionario</h2>
-        <h3>Usted está Editando Estado de tarea</h3>
+        <h2>Reportar Flujo</h2>
+        <h3>Usted está Reportanto una Flujo</h3>
 
         <br>
         <br>
@@ -118,21 +145,10 @@ if (!empty($_POST)) {
         <div class="Registro_Usuario">
             <form action="" method="POST" class="formulario_registro">
                 <input type="hidden" name="idFlujo" value="<?php echo $id_flujo_actual ?>">
-                <label>Responsable anterior: <?php echo '<span style="color: red;">'.$responsable_actual.'</span>' ?></label>
-                <select name="id_usuario">
-                    <?php
-                    $query = mysqli_query($conexion, "SELECT id_usuario, nombreusuario FROM login");
-                    $funcionarios = mysqli_num_rows($query);
-                    if ($funcionarios > 0) {
-                        while ($responsable = mysqli_fetch_array($query)) {
-                    ?>
-                            <option value="<?php echo $responsable["id_usuario"]; ?>"><?php echo $responsable["nombreusuario"]; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
-                </select>
-                <button class="btn" type="submit" style="margin-left: 25%;">Actualizar</button>
+                <input type="hidden" name="idResponsable" value="<?php echo $id_funcionario_flujo ?>">
+                <input type="hidden" name="idAsignadorTarea" value="<?php echo $id_creador_flujo ?>">
+                <input type="text" name="mensaje" placeholder="Ingresa Mensaje" value="" style="margin: auto; margin-bottom: 15px;">
+                <button class="btn" type="submit" style="margin-left: 25%;">Reportar Flujo</button>
             </form>
         </div>
     </div>

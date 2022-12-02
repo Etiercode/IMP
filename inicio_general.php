@@ -126,27 +126,27 @@ $id = $_SESSION['id_usuario_log'];
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
                     <?php if ($data['estado'] == 'En Progreso') {
                         if ($atrasado == 'light') {
-                            echo '<td data-titulo="Estado">'.$data["progreso"].'</td>';
+                            echo '<td data-titulo="Estado">' . $data["progreso"] . '</td>';
                             echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
                         if ($atrasado == 'warning') {
-                            echo '<td data-titulo="Estado">'.$data["progreso"].'</td>';
+                            echo '<td data-titulo="Estado">' . $data["progreso"] . '</td>';
                             echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
                         }
                         if ($atrasado == 'danger') {
-                            echo '<td data-titulo="Estado">'.$data["progreso"].'</td>';
+                            echo '<td data-titulo="Estado">' . $data["progreso"] . '</td>';
                             echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
                         }
                     } ?>
-                    <?php 
-                        if($data['progreso']=='Tarea_Terminada' || $data['progreso']=='Tarea_Terminada_'){
-                            echo '<td data-titulo="Estado">'.$data['estado'].'</td>';
-                            echo '<td data-titulo="Progreso" style="color: green">Tarea Terminada</td>';
-                        }
-                        if($data['progreso']=='Tarea_Terminada_con_Atraso'){
-                            echo '<td data-titulo="Estado">'.$data['estado'].'</td>';
-                            echo '<td data-titulo="Progreso" style="color: red">Tarea Terminada con Atraso</td>';
-                        }
+                    <?php
+                    if ($data['progreso'] == 'Tarea_Terminada' || $data['progreso'] == 'Tarea_Terminada_') {
+                        echo '<td data-titulo="Estado">' . $data['estado'] . '</td>';
+                        echo '<td data-titulo="Progreso" style="color: green">Tarea Terminada</td>';
+                    }
+                    if ($data['progreso'] == 'Tarea_Terminada_con_Atraso') {
+                        echo '<td data-titulo="Estado">' . $data['estado'] . '</td>';
+                        echo '<td data-titulo="Progreso" style="color: red">Tarea Terminada con Atraso</td>';
+                    }
                     ?>
                     <td data-titulo="Fecha Inicio"><?php echo $data["fecha_inicio"] ?></td>
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
@@ -155,7 +155,10 @@ $id = $_SESSION['id_usuario_log'];
                         <a class="link_edit" href="editar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Editar</a>
                         <a class="link_delete" href="eliminar_tarea.php?id=<?php echo $data["id_tareas"]; ?>">Eliminar</a>
                         <br>
-                        <a class="link_reasignar" href="reasignar_f.php?id=<?php echo $data["id_tareas"]; ?>">Reasignar</a>
+                        <?php if ($data['estado'] == 'En Progreso') {
+                            echo '<a class="link_reasignar" href="reasignar_f.php?id='.$data["id_tareas"].'">Reasignar</a>';
+                        }
+                        ?>
                     </td>
                 </tr>
         <?php

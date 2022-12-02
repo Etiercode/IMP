@@ -87,24 +87,23 @@ $fecha_actual = new DateTime(date("d-m-Y"));
 
             <label>Seleccione las Tareas que se incluirán dentro del flujo<span style="color: red;">*</span></label>
             <br>
+            <br>
             <?php 
                 $query_checkbox = mysqli_query($conexion, "SELECT * FROM tareas_sin");
                 $result_checkbox = mysqli_num_rows($query_checkbox);
                 if($result_checkbox > 0){
                     while($data_checkbox = mysqli_fetch_array($query_checkbox)){
-                        echo '<br> <input type="checkbox" value="'.$data_checkbox['id_tarea_sin'].'" name="tarea[]">'.$data_checkbox['titulo_tarea_r'].'<br> <br>';
+                        echo '
+                        <label class="checkbox-inline" style="padding-right: 7px; padding-left: 7px;border-right:1px solid gray;">
+                            <input type="checkbox" value="'.$data_checkbox['id_tarea_sin'].'" name="tarea[]">'.$data_checkbox['titulo_tarea_r'].'
+                        </label>
+                        ';
                     }
                 }else{
                     echo '<br> No hay tareas creadas para seleccionar <br> <br>' ;
                 }
             ?>
-            <label for="checkbox" class="mycheckbox">
-                <input type="checkbox" id="checkbox" name="estatus">
-                <label>Estatus</label>
-                <span>
-                    <i class="fas fa-checko"></i>
-                </span>
-            </label>
+            <br>
             <br>
             <button class="btn" style="margin-top: 15px;" type="submit">Crear Flujo</button>
         </form>
