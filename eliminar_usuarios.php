@@ -38,14 +38,14 @@ if (!empty($_POST)) {
         echo '
         <script>
             alert("Usuario Eliminado");
-            header("location: usuarios.php");
+            window.location = "Usuarios.php";
         </script>';
-        header("location: usuarios.php");
+        header("location: Usuarios.php");
     } else {
         echo '
         <script>
             alert("Error al eliminar usuario");
-            header("location: usuarios.php");
+            window.location = "Usuarios.php";
         </script>';
     }
 }
@@ -54,7 +54,7 @@ if (empty($_REQUEST['id'])) {
     echo '
     <script>
         alert("Usuario No existe");
-        header("location: usuarios.php");
+        window.location = "Usuarios.php";
     </script>';
 } else {
 
@@ -76,7 +76,7 @@ if (empty($_REQUEST['id'])) {
             $correo = $data['correo'];
         }
     } else {
-        header("location: usuarios.php");
+        header("location: Usuarios.php");
     }
 }
 

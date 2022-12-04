@@ -5,7 +5,6 @@ include 'conexion_back.php';
 date_default_timezone_set("America/Santiago");
 $fecha_actual = new DateTime(date("d-m-Y"));
 
-
 $date1 = strtotime($_REQUEST['fecha_inicio']);
 $date2 = strtotime($_REQUEST['fecha_termino']);
 
@@ -37,15 +36,15 @@ if (empty($titulo_tarea)) {
 }
 if (empty($descripcion)) {
     echo '<script>alert("Campo Descripción Vacío");
-        window.location = "../tareas.php";</script>';
+        window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
+
 if ($plazo <= 0) {
     echo '<script>alert("Fechas Introducidas son Invalidas");
     window.location = "../tareas.php";</script>';
     mysqli_close($conexion);
 }
-
 
 $query = "INSERT INTO tareas(id_funcionario,id_asignador,titulo_tarea, descripcion, estado, progreso, fecha_inicio, fecha_termino, plazo) 
 VALUES('$id_usuario','$id_asignador','$titulo_tarea','$descripcion', '$estado', '$progreso', '$fecha_inicio', '$fecha_termino', '$plazo')";
@@ -57,7 +56,7 @@ if ($ejecutar) {
 
         <script>
         alert("Tarea Agregada");
-        window.location = "../tareas.php";
+        window.location = "../Tareas.php";
         </script>
 
         ';
@@ -67,7 +66,7 @@ if ($ejecutar) {
 
         <script>
         alert("Tarea no Agregada favor de revisar bien");
-        window.location = "../tareas.php";
+        window.location = "../Tareas.php";
         </script>
 
         ';
