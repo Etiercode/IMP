@@ -63,13 +63,13 @@ if (!empty($_POST)) {
         echo '
                 <script>
                     alert("Responsable Actualizado Correctamente");
-                    window.location = "inicio_general.php";
+                    window.location = "Flujos_tarea.php";
                 </script>';
     } else {
         echo '
                 <script>
                     alert("Error al actualizar responsable");
-                    window.location = "inicio_general.php";
+                    window.location = "Flujos_tarea.php";
                 </script>';
     }
 }

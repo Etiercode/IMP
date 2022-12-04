@@ -127,15 +127,15 @@ $id = $_SESSION['id_usuario_log'];
                     <?php if ($data['estado'] == 'En Progreso') {
                         if ($atrasado == 'light') {
                             echo '<td data-titulo="Estado">' . $data["progreso"] . '</td>';
-                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $dias, ' dia(s)</td>';
+                            echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ',$meses,'  mes(es) y  ', $dias, ' dia(s)</td>';
                         }
                         if ($atrasado == 'warning') {
                             echo '<td data-titulo="Estado">' . $data["progreso"] . '</td>';
-                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $dias, ' dia(s)</td>';
+                            echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ',$meses,'  mes(es) y  ', $dias, ' dia(s)</td>';
                         }
                         if ($atrasado == 'danger') {
                             echo '<td data-titulo="Estado">' . $data["progreso"] . '</td>';
-                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $dias, ' dia(s)</td>';
+                            echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ',$meses,'  mes(es) y  ', $dias, ' dia(s)</td>';
                         }
                     } ?>
                     <?php

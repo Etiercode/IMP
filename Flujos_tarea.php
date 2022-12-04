@@ -67,12 +67,15 @@ include "../IMP/php/conexion_back.php";
     f.tareas_sin_f,
     tsf.titulo_tarea_r,
     f.estatus,
-    l.nombreusuario
+    l.nombreusuario,
+    fd.duracion_flujo_fd
     FROM flujos_tarea f
     INNER JOIN login l
     ON id_funcionario_flujo=id_usuario
     INNER JOIN tareas_sin tsf
-    ON id_tarea_sin=tareas_sin_f");
+    ON id_tarea_sin=tareas_sin_f
+    INNER JOIN flujo_detalle fd
+    ON id_flujo=id_flujo_fd");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -87,6 +90,7 @@ include "../IMP/php/conexion_back.php";
                     <th>Descripcion</th>
                     <th>Estatus</th>
                     <th>Tareas Asignadas al Flujo</th>
+                    <th>Duración</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
@@ -106,11 +110,13 @@ include "../IMP/php/conexion_back.php";
 
                     <td data-titulo="Tareas Asignadas">
                         <ul>
-                            <?php foreach (explode(', ', $data['tareas_sin_f']) as $tareas_sin){ ?>
-                               <li><?php echo 'Id: ',htmlspecialchars($tareas_sin) ?></li> 
+                            <?php foreach (explode(', ', $data['tareas_sin_f']) as $tareas_sin) { ?>
+                                <li><?php echo 'Id: ', htmlspecialchars($tareas_sin) ?></li>
                             <?php } ?>
                         </ul>
+                        <ul></ul>
                     </td>
+                    <td data-titulo="Duración Flujo"><?php echo $data["duracion_flujo_fd"] ?></td>
                     <td data-titulo="Acciones">
                         <a class="link_reasignar" href="reasignar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>&responsable_actual=<?php echo $data['nombreusuario'] ?>">Reasignar</a>
                         <br>
@@ -121,7 +127,7 @@ include "../IMP/php/conexion_back.php";
                         <a class="link_edit" href="reporte_f.php?id_flujo=<?php echo $data["id_flujo"]; ?>">Reporte</a>
                     </td>
                 </tr>
-                
+
         <?php
         }
     } else {

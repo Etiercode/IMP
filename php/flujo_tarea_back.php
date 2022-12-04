@@ -43,12 +43,12 @@ if (empty($desc_flujo)) {
 
 $query_flujo = "INSERT INTO flujos_tarea(id_funcionario_flujo, id_creador_flujo, titulo_flujo, desc_flujo, tareas_sin_f, estatus) 
 VALUES('$id_funcionario_flujo', '$usuario_log', '$titulo_flujo', '$desc_flujo', '$t', '$estatus')";
+
 $ejecutar_flujo = mysqli_query($conexion, $query_flujo);
 
-
-$query_id_flujo = "SELECT id_flujo FROM flujos_tarea ORDER BY id_flujo DESC LIMIT 1;";
-$id_flujo_new = intval($query_id_flujo);
-
+if ($conexion->query($query_flujo) == true){
+    $id_flujo_last = $conexion->insert_id;
+}
 $sum = 0;
 
 foreach (explode(', ', $t) as $tareas_sin) {
@@ -58,9 +58,9 @@ foreach (explode(', ', $t) as $tareas_sin) {
     }
     $sum = $sum+$duraciones;
 }
-$query_flujo_D = "INSERT INTO flujo_detalle (id_flujo_fd,id_responsable_fd,duracion_flujo_fd) 
-VALUES ('$id_flujo_new','$id_funcionario_flujo','$sum')";
 
+$query_flujo_D = "INSERT INTO flujo_detalle (id_flujo_fd,id_responsable_fd,duracion_flujo_fd) 
+VALUES ('$id_flujo_last','$id_funcionario_flujo','$sum')";
 
 $ejecutar_flujo_d = mysqli_query($conexion, $query_flujo_D);
 

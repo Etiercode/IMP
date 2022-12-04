@@ -80,14 +80,6 @@ include "../IMP/php/conexion_back.php";
                     <td data-titulo="Nombre Usuario"><?php echo $data["mensaje"]; ?></td>
                     <td data-titulo="Acciones">
                         &nbsp;
-                        <?php if ($_SESSION['rol'] == 1) {
-                            echo '<a class="link_edit fa-solid fa-check" href="inicio_general.php"></a>';
-                        }
-                        ?>
-                        <?php if ($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3) {
-                            echo '<a class="link_edit fa-solid fa-check" href="inicio.php"></a>';
-                        }
-                        ?>
                         <a class="link_delete fa-solid fa-x" href="eliminar_r.php?id=<?php echo $data["id_reporte"]; ?>"></a>
                     </td>
                 </tr>

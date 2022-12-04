@@ -48,6 +48,7 @@ include "../IMP/php/conexion_back.php";
     <br>
     <h2 class="HeaderLista">Listado de Reportes</h2>
     <table>
+
         <?php
         $query = mysqli_query($conexion, "SELECT 	
         rf.id_reporte_f,

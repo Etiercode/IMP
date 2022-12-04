@@ -14,7 +14,7 @@ if (!isset($_SESSION['usuario'])) {
     session_destroy();
     die();
 }
-if ($_SESSION['rol'] == 2) {
+if ($_SESSION['rol'] == 3) {
     echo '
      <script>
          alert("Debes iniciar sesión con un rol diferente");

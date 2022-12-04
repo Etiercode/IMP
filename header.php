@@ -69,19 +69,21 @@
                 <a href="php/cerrar_sesion.php">Cerrar Sesión</a>
             </li>
             <li>
-                <a href="reportes.php">
-                    <i class="fa fa-bell"></i>
-                    <span class="">
-                        <?php
-                        $query_count = mysqli_query($conexion, "SELECT COUNT(id_reporte)AS cantidad_reportes, id_asignador_t FROM reportes WHERE $_SESSION[id_usuario_log]=id_asignador_t");
-                        $resultado_count = mysqli_num_rows($query_count);
-                        if ($resultado_count > 0) {
-                            $data = mysqli_fetch_array($query_count);
-                            echo $data['cantidad_reportes'];
-                        }
-                        ?>
-                    </span>
-                </a>
+                <?php if ($_SESSION['rol'] == 3 || $_SESSION['rol'] == 1) { ?>
+                    <a href="reportes.php">
+                        <i class="fa fa-bell"></i>
+                        <span class="">
+                            <?php
+                            $query_count = mysqli_query($conexion, "SELECT COUNT(id_reporte)AS cantidad_reportes, id_asignador_t FROM reportes WHERE $_SESSION[id_usuario_log]=id_asignador_t");
+                            $resultado_count = mysqli_num_rows($query_count);
+                            if ($resultado_count > 0) {
+                                $data = mysqli_fetch_array($query_count);
+                                echo $data['cantidad_reportes'];
+                            }
+                            ?>
+                        </span>
+                    </a>
+                <?php } ?>
                 <?php if ($_SESSION['rol'] == 2 || $_SESSION['rol'] == 1) { ?>
                     <a href="reportes_f.php">
                         <i class="fa-sharp fa-solid fa-list-check"></i>
