@@ -21,13 +21,6 @@ if ($_SESSION['rol'] == 2) {
          window.location = "inicio.php";
      </script>';
 }
-if ($_SESSION['rol'] == 3) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-         window.location = "inicio.php";
-     </script>';
-}
 ?>
 
 <?php
@@ -53,10 +46,10 @@ if ($_SESSION['rol'] == 1) {
         echo '
         <script>
             alert("Tarea no existe");
-            window.location = "inicio_general.php";
+            window.location = "inicio.php";
         </script>
         ';
-        header('location: inicio_general.php');
+        header('location: inicio.php');
     } else {
         while ($data = mysqli_fetch_array($sql)) {
             $id_tareas = $data['id_tareas'];

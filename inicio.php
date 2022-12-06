@@ -58,11 +58,14 @@ $id = $_SESSION['id_usuario_log'];
     <?php if ($_SESSION['rol'] == 1) { ?>
         <a href="inicio_general.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
     <?php } ?>
+    <?php if ($_SESSION['rol'] == 3) { ?>
+        <a href="todas_t_funcionario.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
+    <?php } ?>
     <h3 class="HeaderLista"><i class="fa-solid fa-list-check"></i> Tareas Asignadas a usted</h3>
     <br>
     <div style="overflow-x:auto;overflow-y:auto;max-height: 400px;">
         <?php
-        $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario,t.id_asignador FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario AND estado = 'Sin Terminar' OR estado = 'En Progreso'");
+        $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario,t.id_asignador FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_usuario AND estado = 'En Progreso'");
 
         $result = mysqli_num_rows($query);
         if ($result > 0) {
@@ -92,28 +95,28 @@ $id = $_SESSION['id_usuario_log'];
                         if ($vencido == 0) {
                             $meses = $meses * (-1);
                             $dias = $dias * (-1);
-                            $atrasado = 'Tarea_Terminada_con_Atraso';
+                            $atrasado = 'Tarea_terminada_con_atraso';
                         } else {
-                            if ($dias > 3 && $meses > 0) {
-                                $atrasado = 'Tarea_Terminada';
+                            if ($dias > 3) {
+                                $atrasado = 'Tarea_terminada';
                             }
-                            if ($dias <= 3 && $meses <= 0) {
-                                $atrasado = 'Tarea_Terminada_';
+                            if ($dias <= 3) {
+                                $atrasado = 'Tarea_terminada_';
                             }
                         }
                         ?>
                         <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                         <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
+                        <td data-titulo="Estado"><?php echo $data['estado'] ?></td>
                         <?php if ($data['estado'] == 'En Progreso') {
-                            echo '<td data-titulo="Estado">En Progreso</td>';
-                            if ($atrasado == 'Tarea_Terminada') {
-                                echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $meses, '  mes(es) y  ', $dias, ' dia(s)</td>';
+                            if ($atrasado == 'Tarea_terminada') {
+                                echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $meses, ' meses  y  ', $dias, ' dia(s)</td>';
                             }
-                            if ($atrasado == 'Tarea_Terminada_') {
-                                echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $meses, '  mes(es) y  ', $dias, ' dia(s)</td>';
+                            if ($atrasado == 'Tarea_terminada_') {
+                                echo '<td data-titulo="Progreso" style="color: yellow;">Queda(n) ', $meses, ' meses  y  ', $dias, ' dia(s)</td>';
                             }
-                            if ($atrasado == 'Tarea_Terminada_con_Atraso') {
-                                echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en ', $meses, '  mes(es) y  ', $dias, ' dia(s)</td>';
+                            if ($atrasado == 'Tarea_terminada_con_atraso') {
+                                echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en Queda(n) ', $meses, ' meses  y  ', $dias, ' dia(s)</td>';
                             }
                         } ?>
                         <?php if ($data['estado'] == 'Terminado') {
@@ -145,29 +148,28 @@ $id = $_SESSION['id_usuario_log'];
     <hr>
     <br>
     <br>
+    <br>
     <h3 class="HeaderLista"><i class="fa-sharp fa-solid fa-bars-progress"></i> Flujos Asignadas a usted </h3>
     <div style="overflow-x:auto;overflow-y:auto;max-height: 400px;">
         <?php
         $query_flujo = mysqli_query($conexion, "SELECT 	
-            f.id_flujo,	
-            f.id_funcionario_flujo,	
-            f.id_creador_flujo,	
-            f.titulo_flujo,	
-            f.desc_flujo,	
-            f.tareas_sin_f,
-            tsf.titulo_tarea_r,
-            f.estatus,
-            l.nombreusuario,
-            fd.duracion_flujo_fd
-            FROM flujos_tarea f
-            INNER JOIN login l
-            ON id_funcionario_flujo=id_usuario
-            INNER JOIN tareas_sin tsf
-            ON id_tarea_sin=tareas_sin_f
-            INNER JOIN flujo_detalle fd
-            ON id_flujo=id_flujo_fd
-            WHERE $_SESSION[id_usuario_log]=id_funcionario_flujo
-            AND estatus=1");
+        f.id_flujo,	
+        f.id_funcionario_flujo,	
+        f.id_creador_flujo,	
+        f.titulo_flujo,	
+        f.desc_flujo,	
+        f.tareas_sin_f,
+        tsf.titulo_tarea_r,
+        f.estatus,
+        l.nombreusuario,
+        f.duracion_flujo
+        FROM flujos_tarea f
+        INNER JOIN login l
+        ON id_funcionario_flujo=id_usuario
+        INNER JOIN tareas_sin tsf
+        ON id_tarea_sin=tareas_sin_f
+        WHERE $_SESSION[id_usuario_log]=id_funcionario_flujo
+        AND estatus=1");
 
         $validacion_f = mysqli_num_rows($query_flujo);
         if ($validacion_f > 0) {
@@ -200,9 +202,8 @@ $id = $_SESSION['id_usuario_log'];
                                     <li><?php echo 'Id: ', htmlspecialchars($tareas_sin) ?></li>
                                 <?php } ?>
                             </ul>
-
                         </td>
-                        <td data-titulo="Duración Flujo"><?php echo $data_f["duracion_flujo_fd"] ?></td>
+                        <td data-titulo="Duración Flujo"><?php echo $data_f["duracion_flujo"] ?> Dias</td>
                         <td data-titulo="Acciones">
                             <a class="link_edit" href="editar_estado_f.php?id_flujo=<?php echo $data_f["id_flujo"]; ?>&id_funcionario_flujo=<?php echo $data_f["id_funcionario_flujo"]; ?>&id_creador_flujo=<?php echo $data_f["id_creador_flujo"]; ?>&titulo_flujo=<?php echo $data_f['titulo_flujo'] ?>&estatus=0">Terminar Flujo</a>
                             <br>
@@ -238,6 +239,7 @@ $id = $_SESSION['id_usuario_log'];
         ?>
                 <table>
                     <tr>
+                        <th>Id Tarea</th>
                         <th>Id Asignador</th>
                         <th>Titulo Tarea</th>
                         <th>Descripción Tarea</th>
@@ -250,7 +252,7 @@ $id = $_SESSION['id_usuario_log'];
                         ?>
                     </tr>
                     <tr>
-
+                        <td data-titulo="Id Tarea"><?php echo $data_sin["id_tarea_sin"] ?></td>
                         <td data-titulo="Id Asignador"><?php echo $data_sin["id_asignador_r"] ?></td>
                         <td data-titulo="Titulo"><?php echo $data_sin["titulo_tarea_r"] ?></td>
                         <td data-titulo="Descripción"><?php echo $data_sin["descripcion_r"] ?></td>

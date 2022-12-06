@@ -68,14 +68,12 @@ include "../IMP/php/conexion_back.php";
     tsf.titulo_tarea_r,
     f.estatus,
     l.nombreusuario,
-    fd.duracion_flujo_fd
+    f.duracion_flujo
     FROM flujos_tarea f
     INNER JOIN login l
     ON id_funcionario_flujo=id_usuario
     INNER JOIN tareas_sin tsf
-    ON id_tarea_sin=tareas_sin_f
-    INNER JOIN flujo_detalle fd
-    ON id_flujo=id_flujo_fd");
+    ON id_tarea_sin=tareas_sin_f");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -116,7 +114,7 @@ include "../IMP/php/conexion_back.php";
                         </ul>
                         <ul></ul>
                     </td>
-                    <td data-titulo="Duración Flujo"><?php echo $data["duracion_flujo_fd"] ?></td>
+                    <td data-titulo="Duración Flujo"><?php echo $data["duracion_flujo"] ?>   Dias</td>
                     <td data-titulo="Acciones">
                         <a class="link_reasignar" href="reasignar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>&responsable_actual=<?php echo $data['nombreusuario'] ?>">Reasignar</a>
                         <br>

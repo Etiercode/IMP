@@ -17,20 +17,13 @@ if ($_SESSION['rol'] == 2) {
         window.location = "inicio.php";
     </script>';
 }
-if ($_SESSION['rol'] == 3) {
-    echo '
-    <script>
-        alert("Debes iniciar sesión con un rol diferente");
-        window.location = "inicio.php";
-    </script>';
-}
-?>
-<?php
-include "../IMP/php/conexion_back.php";
 ?>
 <?php
 date_default_timezone_set("America/Santiago");
 $fecha_actual = new DateTime(date("d-m-Y"));
+?>
+<?php
+include "../IMP/php/conexion_back.php";
 ?>
 <?php
 $id = $_SESSION['id_usuario_log'];
@@ -42,7 +35,7 @@ $id = $_SESSION['id_usuario_log'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMP | Panel General</title>
+    <title>IMP | Inicio</title>
 
     <!--Icono Pestaña-->
     <link rel="icon" href="img/IMPlogo.png" type="image" sizes="16x16">
@@ -69,33 +62,28 @@ $id = $_SESSION['id_usuario_log'];
     ?>
     <br>
     <h2 class="HeaderLista">Bienvenido <?php echo $_SESSION['usuario'] ?></h2>
-    <h2 class="HeaderLista">Carga de Trabajo de todos los usuarios</h2>
-    <a href="inicio.php" style="margin-left: 45%; Color: green">Ver Mis Tareas</a>
+    <?php if ($_SESSION['rol'] == 1) { ?>
+        <a href="inicio_general.php" style="margin-left: 45%; Color: green">Ver Todas las Tareas</a>
+    <?php } ?>
+    <h3 class="HeaderLista"><i class="fa-solid fa-list-check"></i> Tareas que usted a asignado</h3>
     <br>
-    <div class="containerTextNoTask" style="display: none;">
-        <div class="notasktext">No Hay tareaas en ningun usuario</div>
-        <a href="inicio.php" style="margin-left: 45%; Color: green">Ver Mis Tareas</a>
-    </div>
-
     <?php
-    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario");
+    $query = mysqli_query($conexion, "SELECT t.id_tareas,t.titulo_tarea,t.descripcion,t.estado,t.progreso,t.fecha_inicio,t.fecha_termino,t.plazo,l.id_usuario,l.nombreusuario,t.id_asignador FROM tareas t INNER JOIN login l on t.id_funcionario = l.id_usuario WHERE $_SESSION[id_usuario_log]=id_asignador");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
+
         while ($data = mysqli_fetch_array($query)) {
     ?>
             <table>
                 <tr>
-                    <th>Id tarea</th>
-                    <th>Responsable</th>
-                    <th>Id</th>
                     <th>Titulo Tarea</th>
                     <th>Descripción de la tarea</th>
                     <th>Estado de la tarea</th>
                     <th>Progreso</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha de término</th>
-                    <th>Plazo</th>
+                    <th>Plazo (Dias)</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
@@ -120,12 +108,9 @@ $id = $_SESSION['id_usuario_log'];
                         }
                     }
                     ?>
-                    <td data-titulo="Id Tarea"><?php echo $data["id_tareas"] ?></td>
-                    <td data-titulo="Nombre Usuario"><?php echo $data["nombreusuario"] ?></td>
-                    <td data-titulo="Id Usuario"><?php echo $data["id_usuario"] ?></td>
                     <td data-titulo="Titulo"><?php echo $data["titulo_tarea"] ?></td>
                     <td data-titulo="Descripcion"><?php echo $data["descripcion"] ?></td>
-                    <td data-titulo="Estado"><?php echo $data["estado"] ?></td>
+                    <td data-titulo="Estado"><?php echo $data['estado'] ?></td>
                     <?php if ($data['estado'] == 'En Progreso') {
                         if ($atrasado == 'Tarea_terminada') {
                             echo '<td data-titulo="Progreso" style="color: green;">Queda(n) ', $meses, ' meses  y  ', $dias, ' dia(s)</td>';
@@ -137,19 +122,10 @@ $id = $_SESSION['id_usuario_log'];
                             echo '<td data-titulo="Progreso" style="color: red;">Tarea Atrasada en Queda(n) ', $meses, ' meses  y  ', $dias, ' dia(s)</td>';
                         }
                     } ?>
-                    <?php
-                    if ($data['estado'] == 'Terminado') {
-                        if($data['progreso']=='Tarea_terminada'){
-                            echo '<td data-titulo="Progreso" style="color: green">Tarea Terminada</td>';
-                        }
-                        if($data['progreso']=='Tarea_terminada_'){
-                            echo '<td data-titulo="Progreso" style="color: yellow">Tarea Terminada</td>';
-                        }
-                        if($data['progreso']=='Tarea_terminada_con_atraso'){
-                            echo '<td data-titulo="Progreso" style="color: red">Tarea Terminada con Atraso</td>';
-                        }
-                    }
-                    ?>
+                    <?php if ($data['estado'] == 'Terminado') {
+                        echo '<td data-titulo="Estado">Terminado</td>';
+                        echo '<td data-titulo="Progreso" style="color: green;">Tarea Terminada</td>';
+                    } ?>
                     <td data-titulo="Fecha Inicio"><?php echo $data["fecha_inicio"] ?></td>
                     <td data-titulo="Fecha Termino"><?php echo $data["fecha_termino"] ?></td>
                     <td data-titulo="Plazo"><?php echo $data["plazo"] ?></td>
@@ -171,11 +147,17 @@ $id = $_SESSION['id_usuario_log'];
             width: 300px;
             border: 15px solid rgb(94, 94, 94);
             padding: 50px;
-            margin: auto; margin-top: 135px; margin-bottom: 135px">No Hay tareas Asignadas</div>';
+            margin: auto; margin-top: 135px; margin-bottom: 135px">No tienes tareas asignadas</div>';
     }
         ?>
             </table>
-
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
             <?php
             include "footer.php";
             ?>
