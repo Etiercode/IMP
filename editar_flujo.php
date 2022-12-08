@@ -147,8 +147,11 @@ if (!empty($_POST)) {
                 <label><?php
                         echo 'Tareas seleccionadas previamente: <br>';
                         foreach (explode(', ', $tareas_sin_f) as $tareas_sin) {
-
-                            echo 'Id: <span style="color: red;">' . htmlspecialchars($tareas_sin) . '</span> / ';
+                            $query_titulo = mysqli_query($conexion, "SELECT titulo_tarea_r FROM tareas_sin WHERE id_tarea_sin=$tareas_sin");
+                            while ($row = $query_titulo->fetch_assoc()) {
+                                $titulo = $row['titulo_tarea_r'];
+                            }
+                            echo 'Titulo: <span style="color: red;">' . $titulo . '</span> / ';
                         } ?>
                 </label>
                 <br>

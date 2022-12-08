@@ -27,6 +27,7 @@ include "../IMP/php/conexion_back.php";
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMP | Flujos de Tarea</title>
 
@@ -44,12 +45,82 @@ include "../IMP/php/conexion_back.php";
     <!--CSS-->
     <link rel="stylesheet" href="css/flujos.css">
 
+    <!--SweetAlert-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
 </head>
 
 <body>
     <div class="menu-btn">
         <i class="fas fa-bars fa-2x"></i>
     </div>
+    <style>
+        /* Popup container */
+        .popup {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        /* The actual popup (appears on top) */
+        .popup .popuptext {
+            visibility: hidden;
+            width: 160px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+        }
+
+        /* Popup arrow */
+        .popup .popuptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        /* Toggle this class when clicking on the popup container (hide and show the popup) */
+        .popup .show {
+            visibility: visible;
+            -webkit-animation: fadeIn 1s;
+            animation: fadeIn 1s
+        }
+
+        /* Add animation (fade in the popup) */
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
     <?php
     include "header.php";
     ?>
@@ -105,16 +176,20 @@ include "../IMP/php/conexion_back.php";
                         echo '<td data-titulo="Estatus"><a style="color: red" href="editar_estatus.php?id_flujo=' . $data['id_flujo'] . '&estatus=1">Desactivado</a></td>';
                     }
                     ?></td>
-
                     <td data-titulo="Tareas Asignadas">
-                        <ul>
-                            <?php foreach (explode(', ', $data['tareas_sin_f']) as $tareas_sin) { ?>
-                                <li><?php echo 'Id: ', htmlspecialchars($tareas_sin) ?></li>
-                            <?php } ?>
-                        </ul>
-                        <ul></ul>
+                        <?php foreach (explode(', ', $data['tareas_sin_f']) as $tareas_sin) {
+                            $query_titulo = mysqli_query($conexion, "SELECT titulo_tarea_r FROM tareas_sin WHERE id_tarea_sin=$tareas_sin");
+                            while ($row = $query_titulo->fetch_assoc()) {
+                                $titulo = $row['titulo_tarea_r'];
+                            }
+                            echo '<ul>
+                                    <li>
+                                        '.$titulo.'
+                                    </li>
+                                 </ul>';
+                        } ?>
                     </td>
-                    <td data-titulo="Duración Flujo"><?php echo $data["duracion_flujo"] ?>   Dias</td>
+                    <td data-titulo="Duración Flujo"><?php echo $data["duracion_flujo"] ?> Dias</td>
                     <td data-titulo="Acciones">
                         <a class="link_reasignar" href="reasignar_flujo.php?id_flujo=<?php echo $data["id_flujo"]; ?>&responsable_actual=<?php echo $data['nombreusuario'] ?>">Reasignar</a>
                         <br>
@@ -138,6 +213,13 @@ include "../IMP/php/conexion_back.php";
     }
         ?>
             </table>
+            <script>
+                // When the user clicks on <div>, open the popup
+                function myFunction() {
+                    var popup = document.getElementById("myPopup");
+                    popup.classList.toggle("show");
+                }
+            </script>
             <?php
             include "footer.php";
             ?>

@@ -4,32 +4,36 @@
     padding: 0;
 }
 
-.HeaderLista{
-    text-align: center;
-}
-.subTitleHeader{
+.HeaderLista {
     text-align: center;
 }
 
-table{
+.subTitleHeader {
+    text-align: center;
+}
+
+table {
     border-collapse: separate;
     width: 100%;
     height: auto;
 }
-table th{
+
+table th {
     font-size: 22px;
     text-align: center;
     background: #284356;
     color: #ffff;
     padding: 10px;
 }
-table td{
+
+table td {
     text-align: center;
     padding-top: 50px;
     padding-bottom: 50px;
     font-size: 20px;
 }
-table tr:nth-child(odd){
+
+table tr:nth-child(odd) {
     background-color: rgba(51, 50, 50, 0.518);
 }
 
@@ -56,16 +60,20 @@ ul {
     width: 90%;
     margin: auto;
 }
+
 /*NO TASK TEXT AND IMG*/
-.notasktext{
+.notasktext {
     display: none;
 }
-.notaskimg{
+
+.notaskimg {
     display: none;
 }
-.containerTextNoTask{
+
+.containerTextNoTask {
     height: 200px;
 }
+
 /*Navegacion*/
 
 .nav-main {
@@ -121,21 +129,107 @@ ul {
     align-items: center;
     justify-content: flex;
 }
-.link_delete{
+
+.link_delete {
     color: rgba(255, 0, 0, 0.823);
 }
-.link_edit{
+
+.link_edit {
     color: rgb(247, 251, 7);
 }
-.link_reasignar{
+
+.link_reasignar {
     color: rgb(18, 170, 216);
 }
-.link_verde{
+
+.link_verde {
     color: rgb(4, 167, 4);
 }
 
-/* Estatus Flujo */
+/* POP UP*/
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
 
 /*FOOTER LINKS*/
 
@@ -204,22 +298,27 @@ ul {
     .footer-links .footer-container {
         grid-template-columns: repeat(2, 1fr);
     }
-    table tr{
+
+    table tr {
         display: flex;
         flex-direction: column;
         padding: 1em;
         margin-bottom: 1em;
     }
-    table th{
+
+    table th {
         display: none;
     }
-    table td{
+
+    table td {
         padding: 0;
     }
-    table td [data-titulo]{
+
+    table td [data-titulo] {
         display: flex;
     }
-    table td[data-titulo]::before{
+
+    table td[data-titulo]::before {
         content: attr(data-titulo);
         width: 90px;
         font-weight: bold;
