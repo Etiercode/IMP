@@ -24,14 +24,14 @@ if (!empty($_POST)) {
         echo '
         <script>
             alert("Tarea Eliminada");
-            window.location = "inicio.php";
+            window.location = "inicio_general.php";
         </script>
         ';
     } else {
         '
         <script>
             alert("Error al eliminar tarea");
-            window.location = "inicio.php";
+            window.location = "inicio_general.php";
         </script>
     ';
     }
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
 
 
 if (empty($_REQUEST['id'])) {
-    header("location: inicio.php");
+    header("location: inicio_general.php");
 } else {
 
     $idtareas = $_REQUEST['id'];
@@ -56,7 +56,7 @@ if (empty($_REQUEST['id'])) {
         echo '
         <script>
             alert("Tarea no Existente");
-            window.location = "inicio.php";
+            window.location = "inicio_general.php";
         </script>
     ';
     }

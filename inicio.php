@@ -198,9 +198,17 @@ $id = $_SESSION['id_usuario_log'];
                         ?>
                         <td data-titulo="Tareas Asignadas">
                             <ul>
-                                <?php foreach (explode(', ', $data_f['tareas_sin_f']) as $tareas_sin) { ?>
-                                    <li><?php echo 'Id: ', htmlspecialchars($tareas_sin) ?></li>
-                                <?php } ?>
+                                <?php foreach (explode(', ', $data_f['tareas_sin_f']) as $tareas_sin) {
+                                    $query_titulo = mysqli_query($conexion, "SELECT titulo_tarea_r FROM tareas_sin WHERE id_tarea_sin=$tareas_sin");
+                                    while ($row = $query_titulo->fetch_assoc()) {
+                                        $titulo = $row['titulo_tarea_r'];
+                                    }
+                                    echo '<ul>
+                                    <li>
+                                        ' . $titulo . '
+                                    </li>
+                                 </ul>';
+                                } ?>
                             </ul>
                         </td>
                         <td data-titulo="Duración Flujo"><?php echo $data_f["duracion_flujo"] ?> Dias</td>
