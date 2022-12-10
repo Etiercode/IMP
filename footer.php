@@ -6,15 +6,16 @@
 
             </li>
         </ul>
-        <ul>
-            <li>
-                <h2>Aplicación de Escritorio</h2>
-            </li>
-            <li>
-
-                <a href="">(URL DESCARGA)</a>
-            </li>
-        </ul>
+        <?php if ($_SESSION['rol'] == 1) { ?>
+            <ul>
+                <li>
+                    <h2>Aplicación de Escritorio</h2>
+                </li>
+                <li>
+                    <a href="https://www.mediafire.com/file/2kh8vbvyqv2xojl/IMP.exe/file" target="_blank">Link de Descarga</a>
+                </li>
+            </ul>
+        <?php } ?>
     </div>
     <footer class="footer">
         <h3>Improve My Process Copyright</h3>
