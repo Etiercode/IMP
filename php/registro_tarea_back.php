@@ -21,17 +21,17 @@ $id_asignador = $_POST['id_asignador'];
 
 if (strlen($descripcion) > 200) {
     echo '<script>alert("Campo Descripcion supera lo permitido");
-    window.location = "../tareas.php";</script>';
+    window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
 if (strlen($titulo_tarea) > 30) {
     echo '<script>alert("Campo Titulo supera lo permitido");
-    window.location = "../tareas.php";</script>';
+    window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
 if (empty($titulo_tarea)) {
     echo '<script>alert("Campo Titulo Vacío");
-        window.location = "../tareas.php";</script>';
+        window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
 if (empty($descripcion)) {
@@ -42,7 +42,7 @@ if (empty($descripcion)) {
 
 if ($plazo <= 0) {
     echo '<script>alert("Fechas Introducidas son Invalidas");
-    window.location = "../tareas.php";</script>';
+    window.location = "../Tareas.php";</script>';
     mysqli_close($conexion);
 }
 

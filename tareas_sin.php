@@ -63,7 +63,7 @@ $fecha_now = date("Y-m-d");
     <div class="showcase">
         <h2>Agregar Tareas</h2>
         <h3>Usted está agregando tareas como <?php echo $_SESSION['usuario'] ?></h3>
-        <p><a href="tareas.php" style="color: red;">Agregar Tarea con Responsable</a></p>
+        <p><a href="Tareas.php" style="color: red;">Agregar Tarea con Responsable</a></p>
     </div>
     <div class="container">
         <div class="row">

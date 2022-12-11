@@ -9,6 +9,6 @@ $q="DELETE FROM tareas_sin WHERE id_tarea_sin=$id_tarea_sin";
 
 mysqli_query($conexion, $q);
 
-header('location: Inicio.php');
+header('location: inicio.php');
 
 ?>

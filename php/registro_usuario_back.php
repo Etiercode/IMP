@@ -91,12 +91,6 @@ if (empty($usuario)) {
         alert("Campo Correo Invalido");
         window.location = "../agregar_usuario.php";
     </script>';
-} elseif (strlen($numero_telef) > 9 || strlen($numero_telef) <= 8) {
-    echo '
-    <script>
-        alert("Numero de telefono es invalido");
-        window.location = "../agregar_usuario.php";
-    </script>';
 } elseif (empty($direccion)) {
     echo '
     <script>
